@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>raka — portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0d0d0d;
+      color: #e0e0e0;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 4rem 2rem 8rem;
+    }
+
+    /* the big R at the top */
+    .ascii {
+      font-size: 11px;
+      line-height: 1.18;
+      white-space: pre;
+      color: #e0e0e0;
+      margin-bottom: 2.2rem;
+      user-select: none;
+      display: inline-block;
+      animation: breathe 4s ease-in-out infinite;
+    }
+
+    /* soft glow that pulses — like it's alive */
+    @keyframes breathe {
+      0%, 100% {
+        text-shadow:
+          0 0 8px rgba(255,255,255,0.12),
+          0 0 20px rgba(255,255,255,0.06),
+          0 0 50px rgba(255,255,255,0.03);
+      }
+      50% {
+        text-shadow:
+          0 0 10px rgba(255,255,255,0.25),
+          0 0 30px rgba(255,255,255,0.12),
+          0 0 70px rgba(255,255,255,0.06),
+          0 0 120px rgba(255,255,255,0.03);
+      }
+    }
+
+    .name {
+      font-size: 1.45rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 0.2rem;
+    }
+
+    .sub { color: #555; }
+    .w   { color: #e0e0e0; }
+
+    /* each "command block" */
+    .cmd { margin-top: 1.8rem; }
+
+    .cmd-line {
+      display: flex;
+      gap: 0.5em;
+      flex-wrap: wrap;
+    }
+
+    .ps1   { color: #444; }
+    .ps1 .u { color: #e0e0e0; }
+    .input { color: #e0e0e0; }
+
+    .out { margin-top: 0.3rem; }
+
+    /* project list */
+    .entry {
+      display: grid;
+      grid-template-columns: 3ch 1fr;
+      gap: 0 1.2em;
+      line-height: 1.6;
+    }
+    .entry .n { color: #333; font-size: 12px; padding-top: 1px; }
+    .entry .t { color: #e0e0e0; }
+    .entry .s { color: #3a3a3a; font-size: 12px; }
+
+    /* contact buttons */
+    .btns {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      border: 1px solid #2a2a2a;
+      color: #666;
+      text-decoration: none;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      padding: 0.3rem 0.85rem;
+      transition: border-color 0.15s, color 0.15s;
+      background: none;
+      cursor: pointer;
+    }
+    .btn:hover {
+      border-color: #e0e0e0;
+      color: #e0e0e0;
+    }
+
+    /* blinking cursor at the bottom */
+    .cur {
+      display: inline-block;
+      width: 7px;
+      height: 12px;
+      background: #e0e0e0;
+      vertical-align: middle;
+      animation: blink 1.1s step-end infinite;
+      margin-left: 1px;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    /* fade in each section one by one */
+    .line {
+      opacity: 0;
+      transform: translateY(3px);
+      animation: fadein 0.3s ease forwards;
+    }
+    @keyframes fadein {
+      to { opacity: 1; transform: none; }
+    }
+
+    .l1 { animation-delay: 0.05s; }
+    .l2 { animation-delay: 0.2s;  }
+    .l3 { animation-delay: 0.5s;  }
+    .l4 { animation-delay: 0.7s;  }
+    .l5 { animation-delay: 0.9s;  }
+
+    ::selection {
+      background: #e0e0e0;
+      color: #0d0d0d;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- broadway capital R in ascii -->
+  <div class="ascii line l1">8 888888888o.
+8 8888    `88.
+8 8888     `88
+8 8888     ,88
+8 8888.   ,88'
+8 888888888P'
+8 8888`8b
+8 8888 `8b.
+8 8888   `8b.
+8 8888     `88.</div>
+
+  <!-- name + tagline -->
+  <div class="line l2">
+    <div class="name">Adyaraka Banyu Langit</div>
+    <div class="sub">incoming CS <span class="w">@NYCU</span> · AI &amp; software</div>
+  </div>
+
+  <!-- projects -->
+  <div class="cmd line l3">
+    <div class="cmd-line">
+      <span class="ps1"><span class="u">raka</span>@portfolio:~/projects$</span>
+      <span class="input">ls</span>
+    </div>
+    <div class="out">
+      <div class="entry">
+        <span class="n">01</span>
+        <div>
+          <span class="t">flappy bird</span>
+          <span class="s"> — flappy bird clone · scratch · cs50</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- contact -->
+  <div class="cmd line l4">
+    <div class="cmd-line">
+      <span class="ps1"><span class="u">raka</span>@portfolio:~$</span>
+      <span class="input">cat contact.txt</span>
+    </div>
+    <div class="btns">
+      <a class="btn" href="mailto:banyulangitadyaraka@gmail.com">gmail</a>
+      <a class="btn" href="https://github.com/valleysonata" target="_blank">github</a>
+      <a class="btn" href="https://www.linkedin.com/in/adyaraka-banyu-langit-63456a317/" target="_blank">linkedin</a>
+    </div>
+  </div>
+
+  <!-- idle cursor -->
+  <div class="cmd line l5">
+    <div class="cmd-line">
+      <span class="ps1"><span class="u">raka</span>@portfolio:~$</span>
+      <span class="cur"></span>
+    </div>
+  </div>
+
+</body>
+</html>
