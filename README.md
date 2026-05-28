@@ -28,8 +28,8 @@ Instead, this project utilizes a **100% Serverless Frontend Architecture**. The 
 
 To ensure the embedded AI functions reliably as a professional portfolio representative, the system prompt strictly enforces the following design constraints:
 * **Strict Context Locking:** The agent is explicitly forbidden from hallucinating or answering out-of-bounds questions (like generic chat or writing external code). It can only answer questions using the embedded resume text.
+* **Jekyll-Proof Data Injection:** Originally, the resume data was injected into the JavaScript system prompt using a template literal tag (`${RESUME_CONTEXT}`). When pushed to GitHub Pages, the backend compiler (Jekyll) mistook this syntax for a server-side environment variable. It silently scrubbed the data, leaving the AI's system prompt blank and causing it to hallucinate. To prevent this, the data is isolated safely inside the standard HTML DOM structure where the compiler leaves it untouched, preserving full context tracking at runtime.
 * **Visual Theme Alignment:** To match the vintage terminal theme, the system prompt forces the AI model to respond entirely in lowercase syntax, limit answers to 2–3 sentences max, and refrain from outputting raw markdown or bullet points which would break the layout metrics.
-* **Identity Enforcement:** The model is locked to a masculine persona, eliminating accidental gender pronoun errors when describing my background.
 
 ---
 
