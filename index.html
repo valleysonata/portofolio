@@ -153,7 +153,9 @@
       outline: none;
       width: 100%;
       padding: 0.15rem 0;
-      caret-color: transparent; 
+      caret-color: #e0e0e0; 
+      position: relative;
+      z-index: 2;
     }
     #chat-input:disabled {
       opacity: 0.4;
@@ -168,9 +170,15 @@
       font-size: 13px;
       color: #e0e0e0;
       pointer-events: none;
-      visibility: visible;
       line-height: 1;
       margin-top: -1px;
+      z-index: 1;
+      display: block;
+    }
+
+    /* The exact second you click or type, hide the block cursor element completely */
+    #chat-input:focus + .terminal-cursor {
+      display: none !important;
     }
 
     .blink-mode {
@@ -197,7 +205,6 @@
 </head>
 <body>
 
-  <!-- Dynamic Isolated Canvas Terminal Rain -->
   <div class="canvas-container">
     <canvas id="matrix-canvas"></canvas>
   </div>
@@ -207,7 +214,6 @@
     <div class="sub">incoming CS <span class="w">@NYCU</span> · AI &amp; software</div>
   </div>
 
-  <!-- contact -->
   <div class="cmd line l3">
     <div class="cmd-line">
       <span class="ps1"><span class="u">raka</span>@portfolio:~$</span>
@@ -220,7 +226,6 @@
     </div>
   </div>
 
-  <!-- AI agent -->
   <div class="cmd line l4">
     <div class="cmd-line">
       <span class="ps1"><span class="u">raka</span>@portfolio:~/ask$</span>
@@ -248,6 +253,37 @@
     <div class="chat-hint">press enter to send</div>
   </div>
 
+  <div id="raw-resume-context" style="display: none !important; visibility: hidden !important;">
+    Adyaraka Banyu Langit
+    Email: banyulangitadyaraka@gmail.com | Phone: +62-877-4311-0466
+
+    EDUCATION
+    - National Yang Ming Chiao Tung University (NYCU), Hsinchu, Taiwan
+      Incoming Bachelor of Science in Computer Science, starting September 2026
+      Honors: NYCU International Student Scholarship (Type B)
+    - Rosedale Global High School, Ontario Secondary School Diploma (OSSD)
+      Markham, Ontario | Sep 2023 – Jun 2026
+
+    WORK EXPERIENCE
+    - Data Analyst Intern @ Work Unusual, Jakarta, Indonesia | Jan 2026 – Apr 2026
+      · Processed and analyzed operational records (2024–2025) using Jupyter Notebook to map business waste metrics and workflow efficiency across multiple operational categories.
+      · Performed statistical analysis using pandas, NumPy, and SciPy, including correlation analysis and Kruskal-Wallis testing to surface significant operational patterns.
+      · Built data visualizations and trend analyses with Matplotlib and Seaborn to identify efficiency changes and communicate findings to stakeholders.
+      · Conducted exploratory data analysis (EDA) on multi-category operational waste data to generate actionable business insights.
+
+    TECHNICAL SKILLS
+    Languages: Python, C, SQL, HTML, CSS, JavaScript
+    Frameworks/Libraries: pandas, NumPy, SciPy, Matplotlib, Seaborn, Jupyter Notebook
+    AI & Cloud: Generative AI, Prompt Engineering, Machine Learning, Cloud MLOps, GPU compute optimization, intelligent system architectures (RAG & Autonomous Agents)
+    Tools: Git, GitHub, VS Code, Microsoft Excel, Canva, Notion
+
+    CERTIFICATIONS
+    - HackerRank SQL Basic: Joins, subqueries, multi-table query optimization
+    - Alibaba Cloud Academy: Generative AI, Prompt Engineering, ML/DL, GPU ECS, PAI Platform, RAG & Agents
+    - HP LIFE: Data Science & Analytics Course
+    - Coding Bee Academy: Python Programming Course, Achieved grade A
+  </div>
+
   <script>
     // ── NATIVE CANVAS TEXT-RAIN ENGINE ──
     const canvas = document.getElementById("matrix-canvas");
@@ -269,7 +305,6 @@
     const fontSize = 11;
     ctx.font = "11px 'IBM Plex Mono', monospace";
     
-    // Exact sizing setup matching text layout dynamics
     const sampleLine = asciiLines[0];
     const letterWidth = ctx.measureText("8").width; 
     const lineHeight = fontSize * 1.18;
@@ -282,14 +317,12 @@
     const rainSpeeds = Array(columnsCount).fill(0).map(() => Math.random() * 0.35 + 0.15);
 
     function drawMatrixRain() {
-      // Clean frame refresh clear
       ctx.fillStyle = "#0d0d0d";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.font = "11px 'IBM Plex Mono', monospace";
       ctx.textBaseline = "top";
 
-      // Process vertical character data array map loops
       for (let r = 0; r < asciiLines.length; r++) {
         for (let c = 0; c < asciiLines[r].length; c++) {
           const char = asciiLines[r][c];
@@ -298,19 +331,18 @@
           const charX = c * letterWidth;
           const charY = r * lineHeight;
 
-          // Calculate distance relationship between rain dynamic position index and character
           const currentDropY = drops[c];
           const distance = currentDropY - r;
 
-          let charColor = "#333333"; // Ambient background letter state
+          let charColor = "#333333";
 
           if (distance >= 0 && distance < 6) {
             if (Math.floor(distance) === 0) {
-              charColor = "#ffffff"; // Glowing tip head of rain array
+              charColor = "#ffffff";
             } else if (distance < 3) {
-              charColor = "#999999"; // Dense internal bright trail
+              charColor = "#999999";
             } else {
-              charColor = "#555555"; // Gradual fading trace tail
+              charColor = "#555555";
             }
           }
 
@@ -319,7 +351,6 @@
         }
       }
 
-      // Progress position loop logic array
       for (let i = 0; i < drops.length; i++) {
         drops[i] += rainSpeeds[i];
         if (drops[i] > asciiLines.length + 6 && Math.random() > 0.96) {
@@ -329,7 +360,6 @@
       }
     }
 
-    // High performance drawing frame rendering cycle
     function runLoop() {
       drawMatrixRain();
       requestAnimationFrame(runLoop);
@@ -340,55 +370,23 @@
     // ── PORTFOLIO CONTEXT & CHAT OPERATIONS ──
     const API_ENDPOINT = "https://text.pollinations.ai/";
 
-    const RESUME_CONTEXT = `
-Adyaraka Banyu Langit
-Email: banyulangitadyaraka@gmail.com | Phone: +62-877-4311-0466
+    // Safely capture the raw text data straight from the HTML DOM layout
+    const RESUME_CONTEXT = document.getElementById("raw-resume-context").textContent.trim();
 
-EDUCATION
-- National Yang Ming Chiao Tung University (NYCU), Hsinchu, Taiwan
-  Incoming Bachelor of Science in Computer Science, starting September 2026
-  Honors: NYCU International Student Scholarship (Type B)
-- Rosedale Global High School, Ontario Secondary School Diploma (OSSD)
-  Markham, Ontario | Sep 2023 – Jun 2026
-
-WORK EXPERIENCE
-- Data Analyst Intern @ Work Unusual, Jakarta, Indonesia | Jan 2026 – Apr 2026
-  · Processed and analyzed operational records (2024–2025) using Jupyter Notebook to map business waste metrics and workflow efficiency across multiple operational categories.
-  · Performed statistical analysis using pandas, NumPy, and SciPy, including correlation analysis and Kruskal-Wallis testing to surface significant operational patterns.
-  · Built data visualizations and trend analyses with Matplotlib and Seaborn to identify efficiency changes and communicate findings to stakeholders.
-  · Conducted exploratory data analysis (EDA) on multi-category operational waste data to generate actionable business insights.
-
-TECHNICAL SKILLS
-Languages: Python, C, SQL, HTML, CSS, JavaScript
-Frameworks/Libraries: pandas, NumPy, SciPy, Matplotlib, Seaborn, Jupyter Notebook
-AI & Cloud: Generative AI, Prompt Engineering, Machine Learning, Cloud MLOps, GPU compute optimization, intelligent system architectures (RAG & Autonomous Agents)
-Tools: Git, GitHub, VS Code, Microsoft Excel, Canva, Notion
-
-CERTIFICATIONS
-- HackerRank SQL Basic: Joins, subqueries, multi-table query optimization
-- Alibaba Cloud Academy: Generative AI, Prompt Engineering, ML/DL, GPU ECS, PAI Platform, RAG & Agents
-- HP LIFE: Data Science & Analytics Course
-- Coding Bee Academy: Python Programming Course, Achieved grade A
-`;
-
-    const SYSTEM_PROMPT = `You are an AI assistant embedded in Adyaraka Banyu Langit's (Raka's) personal portfolio website. You help recruiters and visitors learn about Raka.
-
-Personal Details:
-- Name: Adyaraka Banyu Langit (Raka)
-- Gender: Male (he/him)
-- Age: 18 years old
-- Location: Jakarta, Indonesia
-
-Core Rules:
-- Raka is male. Do not use feminine pronouns under any circumstance.
-- Address the user chatting with you directly as "you" or keep responses gender-neutral.
-- Only answer based on Raka's resume data provided below. Do not make up info.
-- Keep answers short: 2–3 sentences max.
-- Write in lowercase, casual but professional.
-- No bullet points or markdown formatting. Plain text only.
-
-Resume Context:
-\${RESUME_CONTEXT}`;
+    const SYSTEM_PROMPT = "You are an AI assistant embedded in Adyaraka Banyu Langit's (Raka's) personal portfolio website. You help recruiters and visitors learn about Raka.\n\n" +
+                          "Personal Details:\n" +
+                          "- Name: Adyaraka Banyu Langit (Raka)\n" +
+                          "- Gender: Male (he/him)\n" +
+                          "- Age: 18 years old\n" +
+                          "- Location: Jakarta, Indonesia\n\n" +
+                          "Core Rules:\n" +
+                          "- Raka is male. Do not use feminine pronouns under any circumstance.\n" +
+                          "- Address the user chatting with you directly as 'you' or keep responses gender-neutral.\n" +
+                          "- Only answer based on Raka's resume data provided below. Do not make up info.\n" +
+                          "- Keep answers short: 2–3 sentences max.\n" +
+                          "- Write in lowercase, casual but professional.\n" +
+                          "- No bullet points or markdown formatting. Plain text only.\n\n" +
+                          "Resume Context:\n" + RESUME_CONTEXT;
 
     const chatLog = document.getElementById("chat-log");
     const chatInput = document.getElementById("chat-input");
@@ -396,15 +394,6 @@ Resume Context:
 
     function updateCursorPosition() {
       const text = chatInput.value;
-      const canvasText = updateCursorPosition.canvas || (updateCursorPosition.canvas = document.createElement("canvas"));
-      const context = canvasText.getContext("2d");
-      context.font = "13px 'IBM Plex Mono', monospace";
-      
-      const metrics = context.measureText(text);
-      const textWidth = metrics.width;
-      
-      termCursor.style.left = `\${textWidth}px`;
-
       if (text.length > 0) {
         termCursor.classList.remove("blink-mode");
       } else {
@@ -413,17 +402,6 @@ Resume Context:
     }
 
     chatInput.addEventListener("input", updateCursorPosition);
-    chatInput.addEventListener("keydown", () => setTimeout(updateCursorPosition, 0));
-
-    chatInput.addEventListener("focus", () => {
-      termCursor.textContent = "▋";
-      termCursor.style.opacity = "1";
-      updateCursorPosition();
-    });
-    chatInput.addEventListener("blur", () => {
-      termCursor.textContent = " "; 
-      termCursor.classList.add("blink-mode");
-    });
 
     function appendMessage(role, text, streaming = false) {
       const div = document.createElement("div");
@@ -480,7 +458,6 @@ Resume Context:
       if (!text) return;
 
       chatInput.value = "";
-      termCursor.style.visibility = "hidden";
       chatInput.disabled = true;
 
       appendMessage("user", text);
@@ -528,7 +505,6 @@ Resume Context:
 
     function finalizeInput() {
       chatInput.disabled = false;
-      termCursor.style.visibility = "visible";
       chatInput.focus();
       updateCursorPosition();
     }
