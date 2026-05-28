@@ -24,33 +24,18 @@
       padding: 4rem 2rem 8rem;
     }
 
-    /* the big R at the top */
-    .ascii {
-      font-size: 11px;
-      line-height: 1.18;
-      white-space: pre;
-      color: #e0e0e0;
-      margin-bottom: 2.2rem;
-      user-select: none;
+    /* ── Canvas Matrix Layout Container ── */
+    .canvas-container {
+      margin-bottom: 1.8rem;
+      opacity: 0;
+      transform: translateY(3px);
+      animation: fadein 0.3s ease 0.05s forwards;
       display: inline-block;
-      animation: breathe 4s ease-in-out infinite;
     }
 
-    /* soft glow that pulses — like it's alive */
-    @keyframes breathe {
-      0%, 100% {
-        text-shadow:
-          0 0 8px rgba(255,255,255,0.12),
-          0 0 20px rgba(255,255,255,0.06),
-          0 0 50px rgba(255,255,255,0.03);
-      }
-      50% {
-        text-shadow:
-          0 0 10px rgba(255,255,255,0.25),
-          0 0 30px rgba(255,255,255,0.12),
-          0 0 70px rgba(255,255,255,0.06),
-          0 0 120px rgba(255,255,255,0.03);
-      }
+    canvas {
+      display: block;
+      user-select: none;
     }
 
     .name {
@@ -61,10 +46,9 @@
       margin-bottom: 0.2rem;
     }
 
-    .sub { color: #555; }
+    .sub { color: #777; }
     .w   { color: #e0e0e0; }
 
-    /* each "command block" */
     .cmd { margin-top: 1.8rem; }
 
     .cmd-line {
@@ -73,24 +57,12 @@
       flex-wrap: wrap;
     }
 
-    .ps1   { color: #444; }
+    .ps1   { color: #555; }
     .ps1 .u { color: #e0e0e0; }
     .input { color: #e0e0e0; }
 
     .out { margin-top: 0.3rem; }
 
-    /* project list */
-    .entry {
-      display: grid;
-      grid-template-columns: 3ch 1fr;
-      gap: 0 1.2em;
-      line-height: 1.6;
-    }
-    .entry .n { color: #333; font-size: 12px; padding-top: 1px; }
-    .entry .t { color: #e0e0e0; }
-    .entry .s { color: #3a3a3a; font-size: 12px; }
-
-    /* contact buttons */
     .btns {
       display: flex;
       gap: 0.6rem;
@@ -100,8 +72,8 @@
 
     .btn {
       display: inline-block;
-      border: 1px solid #2a2a2a;
-      color: #666;
+      border: 1px solid #444;
+      color: #888;
       text-decoration: none;
       font-family: 'IBM Plex Mono', monospace;
       font-size: 12px;
@@ -115,21 +87,6 @@
       color: #e0e0e0;
     }
 
-    /* blinking cursor at the bottom */
-    .cur {
-      display: inline-block;
-      width: 7px;
-      height: 12px;
-      background: #e0e0e0;
-      vertical-align: middle;
-      animation: blink 1.1s step-end infinite;
-      margin-left: 1px;
-    }
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
-
-    /* fade in each section one by one */
     .line {
       opacity: 0;
       transform: translateY(3px);
@@ -139,57 +96,119 @@
       to { opacity: 1; transform: none; }
     }
 
-    .l1 { animation-delay: 0.05s; }
     .l2 { animation-delay: 0.2s;  }
     .l3 { animation-delay: 0.5s;  }
     .l4 { animation-delay: 0.7s;  }
-    .l5 { animation-delay: 0.9s;  }
 
     ::selection {
       background: #e0e0e0;
       color: #0d0d0d;
     }
+
+    /* ── chat UI ── */
+    #chat-log {
+      margin-top: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      max-height: 320px;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+    #chat-log::-webkit-scrollbar { display: none; }
+
+    .chat-msg-user {
+      color: #e0e0e0;
+    }
+    .chat-msg-user .chat-label { color: #555; }
+
+    .chat-msg-agent {
+      color: #aaa;
+    }
+    .chat-msg-agent .chat-label { color: #555; }
+    .chat-msg-agent.done { color: #b0b0b0; }
+
+    /* ── Advanced Terminal Input ── */
+    .chat-input-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      margin-top: 0.5rem;
+      position: relative;
+    }
+
+    .input-container {
+      position: relative;
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    #chat-input {
+      background: none;
+      border: none;
+      color: #e0e0e0;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      outline: none;
+      width: 100%;
+      padding: 0.15rem 0;
+      caret-color: transparent; 
+    }
+    #chat-input:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .terminal-cursor {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 13px;
+      color: #e0e0e0;
+      pointer-events: none;
+      visibility: visible;
+      line-height: 1;
+      margin-top: -1px;
+    }
+
+    .blink-mode {
+      animation: terminalBlink 1.1s step-end infinite;
+    }
+
+    @keyframes terminalBlink {
+      50% { opacity: 0; }
+    }
+
+    .chat-hint {
+      color: #444;
+      font-size: 11px;
+      margin-top: 0.4rem;
+    }
+
+    .typing-dot {
+      display: inline-block;
+      animation: terminalBlink 1.1s step-end infinite;
+      vertical-align: middle;
+      margin-left: 2px;
+    }
   </style>
 </head>
 <body>
 
-  <!-- broadway capital R in ascii -->
-  <div class="ascii line l1">8 888888888o.
-8 8888    `88.
-8 8888     `88
-8 8888     ,88
-8 8888.   ,88'
-8 888888888P'
-8 8888`8b
-8 8888 `8b.
-8 8888   `8b.
-8 8888     `88.</div>
+  <!-- Dynamic Isolated Canvas Terminal Rain -->
+  <div class="canvas-container">
+    <canvas id="matrix-canvas"></canvas>
+  </div>
 
-  <!-- name + tagline -->
   <div class="line l2">
     <div class="name">Adyaraka Banyu Langit</div>
     <div class="sub">incoming CS <span class="w">@NYCU</span> · AI &amp; software</div>
   </div>
 
-  <!-- projects -->
-  <div class="cmd line l3">
-    <div class="cmd-line">
-      <span class="ps1"><span class="u">raka</span>@portfolio:~/projects$</span>
-      <span class="input">ls</span>
-    </div>
-    <div class="out">
-      <div class="entry">
-        <span class="n">01</span>
-        <div>
-          <span class="t">flappy bird</span>
-          <span class="s"> — flappy bird clone · scratch · cs50</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- contact -->
-  <div class="cmd line l4">
+  <div class="cmd line l3">
     <div class="cmd-line">
       <span class="ps1"><span class="u">raka</span>@portfolio:~$</span>
       <span class="input">cat contact.txt</span>
@@ -201,13 +220,325 @@
     </div>
   </div>
 
-  <!-- idle cursor -->
-  <div class="cmd line l5">
+  <!-- AI agent -->
+  <div class="cmd line l4">
     <div class="cmd-line">
-      <span class="ps1"><span class="u">raka</span>@portfolio:~$</span>
-      <span class="cur"></span>
+      <span class="ps1"><span class="u">raka</span>@portfolio:~/ask$</span>
+      <span class="input">./raka-agent --interactive</span>
     </div>
+
+    <div id="chat-log">
+      <div class="chat-msg-agent done">
+        <span class="chat-label">raka-agent &gt; </span>hey — i'm an ai trained on raka's resume. ask me about his background, skills, or experience.
+      </div>
+    </div>
+
+    <div class="chat-input-row">
+      <span class="ps1" style="white-space:nowrap;"><span class="u">you</span>@ask:~$</span>
+      <div class="input-container">
+        <input
+          id="chat-input"
+          type="text"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <div id="term-cursor" class="terminal-cursor blink-mode">▋</div>
+      </div>
+    </div>
+    <div class="chat-hint">press enter to send</div>
   </div>
+
+  <script>
+    // ── NATIVE CANVAS TEXT-RAIN ENGINE ──
+    const canvas = document.getElementById("matrix-canvas");
+    const ctx = canvas.getContext("2d");
+
+    const asciiLines = [
+      "8 888888888o.  ",
+      "8 8888    `88. ",
+      "8 8888     `88 ",
+      "8 8888     ,88 ",
+      "8 8888.   ,88' ",
+      "8 888888888P'  ",
+      "8 8888`8b      ",
+      "8 8888 `8b.    ",
+      "8 8888   `8b.  ",
+      "8 8888     `88."
+    ];
+
+    const fontSize = 11;
+    ctx.font = "11px 'IBM Plex Mono', monospace";
+    
+    // Exact sizing setup matching text layout dynamics
+    const sampleLine = asciiLines[0];
+    const letterWidth = ctx.measureText("8").width; 
+    const lineHeight = fontSize * 1.18;
+
+    canvas.width = letterWidth * sampleLine.length;
+    canvas.height = lineHeight * asciiLines.length;
+
+    const columnsCount = sampleLine.length;
+    const drops = Array(columnsCount).fill(0);
+    const rainSpeeds = Array(columnsCount).fill(0).map(() => Math.random() * 0.35 + 0.15);
+
+    function drawMatrixRain() {
+      // Clean frame refresh clear
+      ctx.fillStyle = "#0d0d0d";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.font = "11px 'IBM Plex Mono', monospace";
+      ctx.textBaseline = "top";
+
+      // Process vertical character data array map loops
+      for (let r = 0; r < asciiLines.length; r++) {
+        for (let c = 0; c < asciiLines[r].length; c++) {
+          const char = asciiLines[r][c];
+          if (char === " " || char === "\n") continue;
+
+          const charX = c * letterWidth;
+          const charY = r * lineHeight;
+
+          // Calculate distance relationship between rain dynamic position index and character
+          const currentDropY = drops[c];
+          const distance = currentDropY - r;
+
+          let charColor = "#333333"; // Ambient background letter state
+
+          if (distance >= 0 && distance < 6) {
+            if (Math.floor(distance) === 0) {
+              charColor = "#ffffff"; // Glowing tip head of rain array
+            } else if (distance < 3) {
+              charColor = "#999999"; // Dense internal bright trail
+            } else {
+              charColor = "#555555"; // Gradual fading trace tail
+            }
+          }
+
+          ctx.fillStyle = charColor;
+          ctx.fillText(char, charX, charY);
+        }
+      }
+
+      // Progress position loop logic array
+      for (let i = 0; i < drops.length; i++) {
+        drops[i] += rainSpeeds[i];
+        if (drops[i] > asciiLines.length + 6 && Math.random() > 0.96) {
+          drops[i] = -5; 
+          rainSpeeds[i] = Math.random() * 0.35 + 0.15;
+        }
+      }
+    }
+
+    // High performance drawing frame rendering cycle
+    function runLoop() {
+      drawMatrixRain();
+      requestAnimationFrame(runLoop);
+    }
+    runLoop();
+
+
+    // ── PORTFOLIO CONTEXT & CHAT OPERATIONS ──
+    const API_ENDPOINT = "https://text.pollinations.ai/";
+
+    const RESUME_CONTEXT = `
+Adyaraka Banyu Langit
+Email: banyulangitadyaraka@gmail.com | Phone: +62-877-4311-0466
+
+EDUCATION
+- National Yang Ming Chiao Tung University (NYCU), Hsinchu, Taiwan
+  Incoming Bachelor of Science in Computer Science, starting September 2026
+  Honors: NYCU International Student Scholarship (Type B)
+- Rosedale Global High School, Ontario Secondary School Diploma (OSSD)
+  Markham, Ontario | Sep 2023 – Jun 2026
+
+WORK EXPERIENCE
+- Data Analyst Intern @ Work Unusual, Jakarta, Indonesia | Jan 2026 – Apr 2026
+  · Processed and analyzed operational records (2024–2025) using Jupyter Notebook to map business waste metrics and workflow efficiency across multiple operational categories.
+  · Performed statistical analysis using pandas, NumPy, and SciPy, including correlation analysis and Kruskal-Wallis testing to surface significant operational patterns.
+  · Built data visualizations and trend analyses with Matplotlib and Seaborn to identify efficiency changes and communicate findings to stakeholders.
+  · Conducted exploratory data analysis (EDA) on multi-category operational waste data to generate actionable business insights.
+
+TECHNICAL SKILLS
+Languages: Python, C, SQL, HTML, CSS, JavaScript
+Frameworks/Libraries: pandas, NumPy, SciPy, Matplotlib, Seaborn, Jupyter Notebook
+AI & Cloud: Generative AI, Prompt Engineering, Machine Learning, Cloud MLOps, GPU compute optimization, intelligent system architectures (RAG & Autonomous Agents)
+Tools: Git, GitHub, VS Code, Microsoft Excel, Canva, Notion
+
+CERTIFICATIONS
+- HackerRank SQL Basic: Joins, subqueries, multi-table query optimization
+- Alibaba Cloud Academy: Generative AI, Prompt Engineering, ML/DL, GPU ECS, PAI Platform, RAG & Agents
+- HP LIFE: Data Science & Analytics Course
+- Coding Bee Academy: Python Programming Course, Achieved grade A
+`;
+
+    const SYSTEM_PROMPT = `You are an AI assistant embedded in Adyaraka Banyu Langit's (Raka's) personal portfolio website. You help recruiters and visitors learn about Raka.
+
+Personal Details:
+- Name: Adyaraka Banyu Langit (Raka)
+- Gender: Male (he/him)
+- Age: 18 years old
+- Location: Jakarta, Indonesia
+
+Core Rules:
+- Raka is male. Do not use feminine pronouns under any circumstance.
+- Address the user chatting with you directly as "you" or keep responses gender-neutral.
+- Only answer based on Raka's resume data provided below. Do not make up info.
+- Keep answers short: 2–3 sentences max.
+- Write in lowercase, casual but professional.
+- No bullet points or markdown formatting. Plain text only.
+
+Resume Context:
+\${RESUME_CONTEXT}`;
+
+    const chatLog = document.getElementById("chat-log");
+    const chatInput = document.getElementById("chat-input");
+    const termCursor = document.getElementById("term-cursor");
+
+    function updateCursorPosition() {
+      const text = chatInput.value;
+      const canvasText = updateCursorPosition.canvas || (updateCursorPosition.canvas = document.createElement("canvas"));
+      const context = canvasText.getContext("2d");
+      context.font = "13px 'IBM Plex Mono', monospace";
+      
+      const metrics = context.measureText(text);
+      const textWidth = metrics.width;
+      
+      termCursor.style.left = `\${textWidth}px`;
+
+      if (text.length > 0) {
+        termCursor.classList.remove("blink-mode");
+      } else {
+        termCursor.classList.add("blink-mode");
+      }
+    }
+
+    chatInput.addEventListener("input", updateCursorPosition);
+    chatInput.addEventListener("keydown", () => setTimeout(updateCursorPosition, 0));
+
+    chatInput.addEventListener("focus", () => {
+      termCursor.textContent = "▋";
+      termCursor.style.opacity = "1";
+      updateCursorPosition();
+    });
+    chatInput.addEventListener("blur", () => {
+      termCursor.textContent = " "; 
+      termCursor.classList.add("blink-mode");
+    });
+
+    function appendMessage(role, text, streaming = false) {
+      const div = document.createElement("div");
+      div.className = role === "user" ? "chat-msg-user" : "chat-msg-agent";
+      const label = document.createElement("span");
+      label.className = "chat-label";
+      label.textContent = role === "user" ? "you > " : "raka-agent > ";
+      const content = document.createElement("span");
+      content.className = "chat-content";
+      
+      if (streaming) {
+        const dot = document.createElement("span");
+        dot.className = "typing-dot";
+        dot.textContent = "▋";
+        content.appendChild(dot);
+      } else {
+        content.textContent = text;
+        if (role === "agent") div.classList.add("done");
+      }
+      
+      div.appendChild(label);
+      div.appendChild(content);
+      chatLog.appendChild(div);
+      chatLog.scrollTop = chatLog.scrollHeight;
+      return content;
+    }
+
+    function typeOutText(element, totalText, doneCallback) {
+      let index = 0;
+      element.textContent = "";
+      
+      const streamCursor = document.createElement("span");
+      streamCursor.className = "typing-dot";
+      streamCursor.textContent = "▋";
+      element.parentElement.appendChild(streamCursor);
+
+      function typeNextChar() {
+        if (index < totalText.length) {
+          const chunk = totalText.slice(index, index + 2);
+          element.textContent += chunk;
+          index += chunk.length;
+          chatLog.scrollTop = chatLog.scrollHeight;
+          setTimeout(typeNextChar, 12); 
+        } else {
+          streamCursor.remove();
+          if (doneCallback) doneCallback();
+        }
+      }
+      typeNextChar();
+    }
+
+    async function sendMessage() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+
+      chatInput.value = "";
+      termCursor.style.visibility = "hidden";
+      chatInput.disabled = true;
+
+      appendMessage("user", text);
+      const contentEl = appendMessage("agent", "", true);
+
+      try {
+        const response = await fetch(API_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            messages: [
+              { role: "system", content: SYSTEM_PROMPT },
+              { role: "user", content: text }
+            ],
+            model: "openai",
+            jsonMode: false
+          })
+        });
+
+        const activeDot = document.querySelector(".typing-dot");
+        if (activeDot) activeDot.remove();
+
+        if (!response.ok) {
+          contentEl.textContent = "error: communication channel closed. retry request.";
+          finalizeInput();
+          return;
+        }
+
+        const replyText = await response.text();
+        const formattedReply = replyText.toLowerCase().trim();
+        
+        typeOutText(contentEl, formattedReply, () => {
+          contentEl.parentElement.classList.add("done");
+          finalizeInput();
+        });
+
+      } catch (e) {
+        const activeDot = document.querySelector(".typing-dot");
+        if (activeDot) activeDot.remove();
+        contentEl.textContent = "error: system failure connection offline.";
+        console.error(e);
+        finalizeInput();
+      }
+    }
+
+    function finalizeInput() {
+      chatInput.disabled = false;
+      termCursor.style.visibility = "visible";
+      chatInput.focus();
+      updateCursorPosition();
+    }
+
+    chatInput.addEventListener("keydown", e => {
+      if (e.key === "Enter") sendMessage();
+    });
+
+    updateCursorPosition();
+  </script>
 
 </body>
 </html>
