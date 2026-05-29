@@ -1,0 +1,20 @@
+/* animations.css — keyframes and staggered fade-in delays */
+
+@keyframes fadein {
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes terminalBlink {
+  50% { opacity: 0; }
+}
+
+/* Staggered entrance: each .line starts hidden and fades in */
+.line {
+  opacity: 0;
+  transform: translateY(3px);
+  animation: fadein 0.3s ease forwards;
+}
+
+.l2 { animation-delay: 0.2s; }
+.l3 { animation-delay: 0.5s; }
+.l4 { animation-delay: 0.7s; }
