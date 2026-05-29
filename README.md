@@ -1,4 +1,4 @@
-# raka — portfolio
+# raka - portfolio
 
 <div align="center">
 
@@ -31,9 +31,6 @@ Zero build steps. Zero dependencies. Pure HTML, CSS, and vanilla JS.
 
 ```
 portfolio/
-├── index.html            # Markup + hidden resume context for the AI agent
-├── LICENSE               # MIT License
-├── README.md             # You're reading it
 ├── css/
 │   ├── reset.css         # Browser default reset
 │   ├── base.css          # Body, typography, text selection
@@ -41,12 +38,15 @@ portfolio/
 │   ├── animations.css    # @keyframes + staggered .l2 .l3 .l4 delays
 │   ├── buttons.css       # .btn component
 │   └── chat.css          # Chat log, messages, input row, cursors
-└── js/
-    ├── config.js         # API settings, system prompt, resume context reader
-    ├── cursor.js         # Block cursor blink toggle
-    ├── messages.js       # appendMessage(), typeOut() typewriter renderer
-    ├── matrix.js         # Canvas ASCII rain engine
-    └── chat.js           # Orchestration: fetch, input lock, event listeners
+├── js/
+│   ├── config.js         # API settings, system prompt, resume context reader
+│   ├── cursor.js         # Block cursor blink toggle
+│   ├── messages.js       # appendMessage(), typeOut() typewriter renderer
+│   ├── matrix.js         # Canvas ASCII rain engine
+│   └── chat.js           # Orchestration: fetch, input lock, event listeners
+├── LICENSE
+├── README.md
+└── index.html            # Markup + hidden resume context for the AI agent
 ```
 
 ---
