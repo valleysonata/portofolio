@@ -4,216 +4,32 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>raka — portfolio</title>
+
+  <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background: #0d0d0d;
-      color: #e0e0e0;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 13px;
-      line-height: 1.7;
-      max-width: 620px;
-      margin: 0 auto;
-      padding: 4rem 2rem 8rem;
-    }
-
-    /* ── Canvas Matrix Layout Container ── */
-    .canvas-container {
-      margin-bottom: 1.8rem;
-      opacity: 0;
-      transform: translateY(3px);
-      animation: fadein 0.3s ease 0.05s forwards;
-      display: inline-block;
-    }
-
-    canvas {
-      display: block;
-      user-select: none;
-    }
-
-    .name {
-      font-size: 1.45rem;
-      font-weight: 500;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-      margin-bottom: 0.2rem;
-    }
-
-    .sub { color: #777; }
-    .w   { color: #e0e0e0; }
-
-    .cmd { margin-top: 1.8rem; }
-
-    .cmd-line {
-      display: flex;
-      gap: 0.5em;
-      flex-wrap: wrap;
-    }
-
-    .ps1   { color: #555; }
-    .ps1 .u { color: #e0e0e0; }
-    .input { color: #e0e0e0; }
-
-    .out { margin-top: 0.3rem; }
-
-    .btns {
-      display: flex;
-      gap: 0.6rem;
-      margin-top: 0.4rem;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-block;
-      border: 1px solid #444;
-      color: #888;
-      text-decoration: none;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 12px;
-      padding: 0.3rem 0.85rem;
-      transition: border-color 0.15s, color 0.15s;
-      background: none;
-      cursor: pointer;
-    }
-    .btn:hover {
-      border-color: #e0e0e0;
-      color: #e0e0e0;
-    }
-
-    .line {
-      opacity: 0;
-      transform: translateY(3px);
-      animation: fadein 0.3s ease forwards;
-    }
-    @keyframes fadein {
-      to { opacity: 1; transform: none; }
-    }
-
-    .l2 { animation-delay: 0.2s;  }
-    .l3 { animation-delay: 0.5s;  }
-    .l4 { animation-delay: 0.7s;  }
-
-    ::selection {
-      background: #e0e0e0;
-      color: #0d0d0d;
-    }
-
-    /* ── chat UI ── */
-    #chat-log {
-      margin-top: 0.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-      max-height: 320px;
-      overflow-y: auto;
-      scrollbar-width: none;
-    }
-    #chat-log::-webkit-scrollbar { display: none; }
-
-    .chat-msg-user {
-      color: #e0e0e0;
-    }
-    .chat-msg-user .chat-label { color: #555; }
-
-    .chat-msg-agent {
-      color: #aaa;
-    }
-    .chat-msg-agent .chat-label { color: #555; }
-    .chat-msg-agent.done { color: #b0b0b0; }
-
-    /* ── Advanced Terminal Input ── */
-    .chat-input-row {
-      display: flex;
-      align-items: center;
-      gap: 0.5em;
-      margin-top: 0.5rem;
-      position: relative;
-    }
-
-    .input-container {
-      position: relative;
-      flex: 1;
-      display: flex;
-      align-items: center;
-    }
-
-    #chat-input {
-      background: none;
-      border: none;
-      color: #e0e0e0;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 13px;
-      outline: none;
-      width: 100%;
-      padding: 0.15rem 0;
-      caret-color: #e0e0e0; 
-      position: relative;
-      z-index: 2;
-    }
-    #chat-input:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-
-    .terminal-cursor {
-      position: absolute;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 13px;
-      color: #e0e0e0;
-      pointer-events: none;
-      line-height: 1;
-      margin-top: -1px;
-      z-index: 1;
-      display: block;
-    }
-
-    /* The exact second you click or type, hide the block cursor element completely */
-    #chat-input:focus + .terminal-cursor {
-      display: none !important;
-    }
-
-    .blink-mode {
-      animation: terminalBlink 1.1s step-end infinite;
-    }
-
-    @keyframes terminalBlink {
-      50% { opacity: 0; }
-    }
-
-    .chat-hint {
-      color: #444;
-      font-size: 11px;
-      margin-top: 0.4rem;
-    }
-
-    .typing-dot {
-      display: inline-block;
-      animation: terminalBlink 1.1s step-end infinite;
-      vertical-align: middle;
-      margin-left: 2px;
-    }
-  </style>
+  <!-- Styles (load order matters: reset → base → layout → components) -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/chat.css">
 </head>
 <body>
 
+  <!-- ASCII matrix rain canvas (driven by js/matrix.js) -->
   <div class="canvas-container">
     <canvas id="matrix-canvas"></canvas>
   </div>
 
+  <!-- Hero: name + tagline -->
   <div class="line l2">
     <div class="name">Adyaraka Banyu Langit</div>
     <div class="sub">incoming CS <span class="w">@NYCU</span> · AI &amp; software</div>
   </div>
 
+  <!-- Contact links -->
   <div class="cmd line l3">
     <div class="cmd-line">
       <span class="ps1"><span class="u">raka</span>@portfolio:~$</span>
@@ -226,6 +42,7 @@
     </div>
   </div>
 
+  <!-- AI chat agent -->
   <div class="cmd line l4">
     <div class="cmd-line">
       <span class="ps1"><span class="u">raka</span>@portfolio:~/ask$</span>
@@ -253,7 +70,12 @@
     <div class="chat-hint">press enter to send</div>
   </div>
 
-  <div id="raw-resume-context" style="display: none !important; visibility: hidden !important;">
+  <!--
+    Resume context for raka-agent.
+    Hidden from the UI; read by js/config.js at runtime.
+    Update this whenever your resume changes — no other files need editing.
+  -->
+  <div id="raw-resume-context" style="display:none !important; visibility:hidden !important;">
     Adyaraka Banyu Langit
     Email: banyulangitadyaraka@gmail.com | Phone: +62-877-4311-0466
 
@@ -284,237 +106,19 @@
     - Coding Bee Academy: Python Programming Course, Achieved grade A
   </div>
 
-  <script>
-    // ── NATIVE CANVAS TEXT-RAIN ENGINE ──
-    const canvas = document.getElementById("matrix-canvas");
-    const ctx = canvas.getContext("2d");
-
-    const asciiLines = [
-      "8 888888888o.  ",
-      "8 8888    `88. ",
-      "8 8888     `88 ",
-      "8 8888     ,88 ",
-      "8 8888.   ,88' ",
-      "8 888888888P'  ",
-      "8 8888`8b      ",
-      "8 8888 `8b.    ",
-      "8 8888   `8b.  ",
-      "8 8888     `88."
-    ];
-
-    const fontSize = 11;
-    ctx.font = "11px 'IBM Plex Mono', monospace";
-    
-    const sampleLine = asciiLines[0];
-    const letterWidth = ctx.measureText("8").width; 
-    const lineHeight = fontSize * 1.18;
-
-    canvas.width = letterWidth * sampleLine.length;
-    canvas.height = lineHeight * asciiLines.length;
-
-    const columnsCount = sampleLine.length;
-    const drops = Array(columnsCount).fill(0);
-    const rainSpeeds = Array(columnsCount).fill(0).map(() => Math.random() * 0.35 + 0.15);
-
-    function drawMatrixRain() {
-      ctx.fillStyle = "#0d0d0d";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.font = "11px 'IBM Plex Mono', monospace";
-      ctx.textBaseline = "top";
-
-      for (let r = 0; r < asciiLines.length; r++) {
-        for (let c = 0; c < asciiLines[r].length; c++) {
-          const char = asciiLines[r][c];
-          if (char === " " || char === "\n") continue;
-
-          const charX = c * letterWidth;
-          const charY = r * lineHeight;
-
-          const currentDropY = drops[c];
-          const distance = currentDropY - r;
-
-          let charColor = "#333333";
-
-          if (distance >= 0 && distance < 6) {
-            if (Math.floor(distance) === 0) {
-              charColor = "#ffffff";
-            } else if (distance < 3) {
-              charColor = "#999999";
-            } else {
-              charColor = "#555555";
-            }
-          }
-
-          ctx.fillStyle = charColor;
-          ctx.fillText(char, charX, charY);
-        }
-      }
-
-      for (let i = 0; i < drops.length; i++) {
-        drops[i] += rainSpeeds[i];
-        if (drops[i] > asciiLines.length + 6 && Math.random() > 0.96) {
-          drops[i] = -5; 
-          rainSpeeds[i] = Math.random() * 0.35 + 0.15;
-        }
-      }
-    }
-
-    function runLoop() {
-      drawMatrixRain();
-      requestAnimationFrame(runLoop);
-    }
-    runLoop();
-
-
-    // ── PORTFOLIO CONTEXT & CHAT OPERATIONS ──
-    const API_ENDPOINT = "https://text.pollinations.ai/";
-
-    // Safely capture the raw text data straight from the HTML DOM layout
-    const RESUME_CONTEXT = document.getElementById("raw-resume-context").textContent.trim();
-
-    const SYSTEM_PROMPT = "You are an AI assistant embedded in Adyaraka Banyu Langit's (Raka's) personal portfolio website. You help recruiters and visitors learn about Raka.\n\n" +
-                          "Personal Details:\n" +
-                          "- Name: Adyaraka Banyu Langit (Raka)\n" +
-                          "- Gender: Male (he/him)\n" +
-                          "- Age: 18 years old\n" +
-                          "- Location: Jakarta, Indonesia\n\n" +
-                          "Core Rules:\n" +
-                          "- Raka is male. Do not use feminine pronouns under any circumstance.\n" +
-                          "- Address the user chatting with you directly as 'you' or keep responses gender-neutral.\n" +
-                          "- Only answer based on Raka's resume data provided below. Do not make up info.\n" +
-                          "- Keep answers short: 2–3 sentences max.\n" +
-                          "- Write in lowercase, casual but professional.\n" +
-                          "- No bullet points or markdown formatting. Plain text only.\n\n" +
-                          "Resume Context:\n" + RESUME_CONTEXT;
-
-    const chatLog = document.getElementById("chat-log");
-    const chatInput = document.getElementById("chat-input");
-    const termCursor = document.getElementById("term-cursor");
-
-    function updateCursorPosition() {
-      const text = chatInput.value;
-      if (text.length > 0) {
-        termCursor.classList.remove("blink-mode");
-      } else {
-        termCursor.classList.add("blink-mode");
-      }
-    }
-
-    chatInput.addEventListener("input", updateCursorPosition);
-
-    function appendMessage(role, text, streaming = false) {
-      const div = document.createElement("div");
-      div.className = role === "user" ? "chat-msg-user" : "chat-msg-agent";
-      const label = document.createElement("span");
-      label.className = "chat-label";
-      label.textContent = role === "user" ? "you > " : "raka-agent > ";
-      const content = document.createElement("span");
-      content.className = "chat-content";
-      
-      if (streaming) {
-        const dot = document.createElement("span");
-        dot.className = "typing-dot";
-        dot.textContent = "▋";
-        content.appendChild(dot);
-      } else {
-        content.textContent = text;
-        if (role === "agent") div.classList.add("done");
-      }
-      
-      div.appendChild(label);
-      div.appendChild(content);
-      chatLog.appendChild(div);
-      chatLog.scrollTop = chatLog.scrollHeight;
-      return content;
-    }
-
-    function typeOutText(element, totalText, doneCallback) {
-      let index = 0;
-      element.textContent = "";
-      
-      const streamCursor = document.createElement("span");
-      streamCursor.className = "typing-dot";
-      streamCursor.textContent = "▋";
-      element.parentElement.appendChild(streamCursor);
-
-      function typeNextChar() {
-        if (index < totalText.length) {
-          const chunk = totalText.slice(index, index + 2);
-          element.textContent += chunk;
-          index += chunk.length;
-          chatLog.scrollTop = chatLog.scrollHeight;
-          setTimeout(typeNextChar, 12); 
-        } else {
-          streamCursor.remove();
-          if (doneCallback) doneCallback();
-        }
-      }
-      typeNextChar();
-    }
-
-    async function sendMessage() {
-      const text = chatInput.value.trim();
-      if (!text) return;
-
-      chatInput.value = "";
-      chatInput.disabled = true;
-
-      appendMessage("user", text);
-      const contentEl = appendMessage("agent", "", true);
-
-      try {
-        const response = await fetch(API_ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            messages: [
-              { role: "system", content: SYSTEM_PROMPT },
-              { role: "user", content: text }
-            ],
-            model: "openai",
-            jsonMode: false
-          })
-        });
-
-        const activeDot = document.querySelector(".typing-dot");
-        if (activeDot) activeDot.remove();
-
-        if (!response.ok) {
-          contentEl.textContent = "error: communication channel closed. retry request.";
-          finalizeInput();
-          return;
-        }
-
-        const replyText = await response.text();
-        const formattedReply = replyText.toLowerCase().trim();
-        
-        typeOutText(contentEl, formattedReply, () => {
-          contentEl.parentElement.classList.add("done");
-          finalizeInput();
-        });
-
-      } catch (e) {
-        const activeDot = document.querySelector(".typing-dot");
-        if (activeDot) activeDot.remove();
-        contentEl.textContent = "error: system failure connection offline.";
-        console.error(e);
-        finalizeInput();
-      }
-    }
-
-    function finalizeInput() {
-      chatInput.disabled = false;
-      chatInput.focus();
-      updateCursorPosition();
-    }
-
-    chatInput.addEventListener("keydown", e => {
-      if (e.key === "Enter") sendMessage();
-    });
-
-    updateCursorPosition();
-  </script>
+  <!--
+    Scripts — load order is critical:
+    1. config.js   → sets window.PORTFOLIO_CONFIG and window.SYSTEM_PROMPT
+    2. cursor.js   → sets window.Cursor (needs #chat-input in DOM)
+    3. messages.js → sets window.Messages (needs #chat-log in DOM)
+    4. matrix.js   → self-contained, needs #matrix-canvas
+    5. chat.js     → orchestrates everything above
+  -->
+  <script src="js/config.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/messages.js"></script>
+  <script src="js/matrix.js"></script>
+  <script src="js/chat.js"></script>
 
 </body>
 </html>
