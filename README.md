@@ -66,7 +66,7 @@ Edit the hidden `<div id="raw-resume-context">` block inside `index.html`. The a
 
 ## Local development
 
-No build tools needed. Clone and open `index.html` directly, or use a dev server:
+No build tools needed. Clone and open `index.html` directly, or use a dev server: 
 
 ```bash
 # Clone
