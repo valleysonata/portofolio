@@ -49,7 +49,11 @@
       return "#555555";
     }
 
+    var frameCount = 0;
     function draw() {
+      frameCount++;
+      if (frameCount % 2 !== 0) { requestAnimationFrame(draw); return; }
+
       ctx.fillStyle    = "#0d0d0d";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.font         = FONT;
@@ -73,9 +77,13 @@
       }
     }
 
-    (function loop() { draw(); requestAnimationFrame(loop); })();
+    requestAnimationFrame(draw);
   }
 
-  initCanvas("matrix-canvas");
-  initCanvas("matrix-canvas-mobile");
+  var isMobile = window.matchMedia("(max-width: 768px)").matches;
+  if (isMobile) {
+    initCanvas("matrix-canvas-mobile");
+  } else {
+    initCanvas("matrix-canvas");
+  }
 })();

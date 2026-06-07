@@ -31,4 +31,16 @@
   width: 0%;
   background: rgba(255, 255, 255, 0.85);
   border-radius: 2px;
+  animation: bootBarFill 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes bootBarFill {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+
+@media (max-width: 768px) {
+  #apple-boot {
+    display: none !important;
+  }
 }

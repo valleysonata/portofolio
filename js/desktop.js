@@ -34,11 +34,7 @@
     var fill = document.getElementById("boot-bar-fill");
     if (!bootEl || !fill) { if (callback) callback(); return; }
 
-    fill.style.width = "0%";
-    setTimeout(function () {
-      fill.style.transition = "width 2.5s cubic-bezier(0.4, 0, 0.2, 1)";
-      fill.style.width = "100%";
-    }, 50);
+    // CSS animation handles the bar fill — just set up dismiss timing
 
     // Fade out after bar fills
     setTimeout(function () {
