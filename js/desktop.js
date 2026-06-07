@@ -59,12 +59,9 @@
   var isMobile = window.matchMedia("(max-width: 768px)").matches;
 
   if (isMobile) {
-    initBootScreen(function () {
-      var mobilePortfolio = document.querySelector(".mobile-portfolio");
-      if (mobilePortfolio) mobilePortfolio.style.display = "block";
-      // Init mobile chat
-      window.Chat.init("chat-input-mobile", "chat-log-mobile");
-    });
+    var mobilePortfolio = document.querySelector(".mobile-portfolio");
+    if (mobilePortfolio) mobilePortfolio.style.display = "block";
+    window.Chat.init("chat-input-mobile", "chat-log-mobile");
     return;
   }
 

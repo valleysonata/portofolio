@@ -105,3 +105,10 @@
   font-size: 11px;
   margin-top: 0.4rem;
 }
+
+/* ── Mobile: remove neon glow from cursor ── */
+@media (max-width: 768px) {
+  #term-cursor-mobile {
+    text-shadow: none !important;
+  }
+}
