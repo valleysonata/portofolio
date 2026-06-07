@@ -19,6 +19,9 @@
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 
+  <!-- Spotify IFrame API (preloaded) -->
+  <script async src="https://open.spotify.com/embed/iframe-api/v1"></script>
+
   <!-- Styles -->
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/base.css">
@@ -222,9 +225,11 @@
       </div>
       <div class="window-title">Spotify — Now Playing</div>
     </div>
-    <div class="window-body">
-      <div id="spotify-embed-container"></div>
-    </div>
+      <div class="window-body">
+        <div id="spotify-embed-container">
+          <div id="spotify-loading" style="display:flex;align-items:center;justify-content:center;height:100%;color:#b3b3b3;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;background:#121212;">Loading...</div>
+        </div>
+      </div>
     <div class="window-resize-handles">
       <div class="resize-handle resize-n"></div>
       <div class="resize-handle resize-s"></div>

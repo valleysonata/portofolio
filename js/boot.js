@@ -4,8 +4,7 @@
  * Types out the entire terminal session into #terminal-output:
  *   1. Boot log (types out with typewriter)
  *   2. whoami → output
- *   3. cat contact.txt → buttons
- *   4. ./raka-agent --interactive → chat UI
+ *   3. ./raka-agent --interactive → chat UI
  *
  * Depends on: nothing
  * Writes to:  window.Boot
@@ -87,18 +86,7 @@
     output.appendChild(whoamiBlock);
 
     // ── Contact block (hidden initially) ──
-    const contactBlock = el("div", "terminal-block");
-    contactBlock.style.display = "none";
-    contactBlock.innerHTML =
-      '<div class="cmd-line">' + PS1 + '<span class="input">cat contact.txt</span></div>' +
-      '<div class="cmd-result">' +
-        '<div class="btns">' +
-          '<a class="btn" href="mailto:banyulangitadyaraka@gmail.com">gmail</a>' +
-          '<a class="btn" href="https://github.com/valleysonata" target="_blank">github</a>' +
-          '<a class="btn" href="https://www.linkedin.com/in/adyaraka-banyu-langit-63456a317/" target="_blank">linkedin</a>' +
-        '</div>' +
-      '</div>';
-    output.appendChild(contactBlock);
+    const contactBlock = null;
 
     // ── Chat block (hidden initially) ──
     const chatBlock = el("div", "terminal-block");
@@ -142,7 +130,6 @@
       });
 
       showBlock(whoamiBlock);
-      showBlock(contactBlock);
       showBlock(chatBlock);
 
       setTimeout(function () {
@@ -174,13 +161,10 @@
         setTimeout(function () {
           showBlock(whoamiBlock);
           setTimeout(function () {
-            showBlock(contactBlock);
+            showBlock(chatBlock);
             setTimeout(function () {
-              showBlock(chatBlock);
-              setTimeout(function () {
-                if (window.Chat && window.Chat.init) window.Chat.init();
-              }, 100);
-            }, BLOCK_PAUSE);
+              if (window.Chat && window.Chat.init) window.Chat.init();
+            }, 100);
           }, BLOCK_PAUSE);
         }, 600);
         return;
