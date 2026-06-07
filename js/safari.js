@@ -7,9 +7,13 @@
   var content_area = document.getElementById("safari-page-container");
   var back_btn = document.getElementById("safari-back");
   var forward_btn = document.getElementById("safari-forward");
-  var refresh_btn = document.getElementById("safari-refresh");
   var history = [];
   var history_index = -1;
+
+  var PROXIES = [
+    "https://api.allorigins.win/raw?url=",
+    "https://api.cors.lol/?url=",
+  ];
 
   function showLoading() {
     loading_bar.style.width = "0%";
@@ -29,28 +33,28 @@
   function showErrorPage(url, retryCallback) {
     content_area.innerHTML = "";
     var container = document.createElement("div");
-    container.style.cssText = "display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;font-family:-apple-system,BlinkMacSystemFont,sans-serif;color:#555;background:#fff;";
+    container.style.cssText = "display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;font-family:-apple-system,BlinkMacSystemFont,sans-serif;color:#999;background:#1e1e1e;padding:24px;";
 
-    var icon = document.createElement("div");
-    icon.style.cssText = "font-size:48px;margin-bottom:16px;";
-    icon.textContent = "!";
     var circle = document.createElement("div");
-    circle.style.cssText = "width:80px;height:80px;border-radius:50%;border:3px solid #ccc;display:flex;align-items:center;justify-content:center;margin-bottom:24px;";
+    circle.style.cssText = "width:80px;height:80px;border-radius:50%;border:3px solid #444;display:flex;align-items:center;justify-content:center;margin-bottom:24px;";
+    var icon = document.createElement("div");
+    icon.style.cssText = "font-size:36px;color:#666;";
+    icon.textContent = "!";
     circle.appendChild(icon);
 
     var title = document.createElement("div");
-    title.style.cssText = "font-size:20px;font-weight:bold;margin-bottom:8px;color:#333;";
+    title.style.cssText = "font-size:18px;font-weight:600;margin-bottom:8px;color:#ccc;";
     title.textContent = "Page can\u2019t be reached";
 
     var subtitle = document.createElement("div");
-    subtitle.style.cssText = "font-size:14px;color:#888;margin-bottom:24px;max-width:400px;text-align:center;word-break:break-all;";
-    subtitle.textContent = url + " took too long to respond or is unreachable.";
+    subtitle.style.cssText = "font-size:13px;color:#777;margin-bottom:24px;max-width:400px;text-align:center;word-break:break-all;line-height:1.5;";
+    subtitle.textContent = url + " is unavailable or blocks external access. This is a portfolio demo browser.";
 
     var retryBtn = document.createElement("button");
     retryBtn.textContent = "Try Again";
-    retryBtn.style.cssText = "padding:10px 24px;background:#007AFF;color:#fff;border:none;border-radius:6px;font-size:14px;cursor:pointer;";
-    retryBtn.onmouseover = function() { retryBtn.style.background = "#005EC4"; };
-    retryBtn.onmouseout = function() { retryBtn.style.background = "#007AFF"; };
+    retryBtn.style.cssText = "padding:8px 20px;background:#444;color:#ccc;border:1px solid #555;border-radius:6px;font-size:13px;cursor:pointer;font-family:-apple-system,BlinkMacSystemFont,sans-serif;transition:background 0.15s;";
+    retryBtn.onmouseover = function() { retryBtn.style.background = "#555"; };
+    retryBtn.onmouseout = function() { retryBtn.style.background = "#444"; };
     retryBtn.onclick = function() { retryCallback(); };
 
     container.appendChild(circle);
@@ -58,6 +62,43 @@
     container.appendChild(subtitle);
     container.appendChild(retryBtn);
     content_area.appendChild(container);
+  }
+
+  function tryFetchWithProxy(url, proxyIndex, onSuccess, onAllFailed) {
+    if (proxyIndex >= PROXIES.length) {
+      onAllFailed();
+      return;
+    }
+    var proxyUrl = PROXIES[proxyIndex] + encodeURIComponent(url);
+    var controller = new AbortController();
+    var timeout = setTimeout(function() { controller.abort(); }, 6000);
+
+    fetch(proxyUrl, { signal: controller.signal })
+      .then(function(response) {
+        clearTimeout(timeout);
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        return response.text();
+      })
+      .then(function(html) {
+        if (html && html.length > 100) {
+          onSuccess(html);
+        } else {
+          throw new Error("Empty response");
+        }
+      })
+      .catch(function() {
+        clearTimeout(timeout);
+        tryFetchWithProxy(url, proxyIndex + 1, onSuccess, onAllFailed);
+      });
+  }
+
+  function renderInIframe(html) {
+    content_area.innerHTML = "";
+    var iframe = document.createElement("iframe");
+    iframe.style.cssText = "width:100%;height:100%;border:none;background:#fff;";
+    iframe.sandbox = "allow-scripts allow-same-origin allow-forms allow-popups";
+    iframe.srcdoc = html;
+    content_area.appendChild(iframe);
   }
 
   function fetchAndRender(url) {
@@ -70,25 +111,14 @@
     history.push(url);
     history_index = history.length - 1;
     showLoading();
-    var proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(url);
-    fetch(proxyUrl)
-      .then(function(response) {
-        if (!response.ok) throw new Error("Network response was not ok");
-        return response.text();
-      })
-      .then(function(html) {
-        hideLoading();
-        content_area.innerHTML = "";
-        var iframe = document.createElement("iframe");
-        iframe.style.cssText = "width:100%;height:100%;border:none;";
-        iframe.sandbox = "allow-scripts allow-same-origin allow-forms allow-popups";
-        iframe.srcdoc = html;
-        content_area.appendChild(iframe);
-      })
-      .catch(function() {
-        hideLoading();
-        showErrorPage(url, function() { fetchAndRender(url); });
-      });
+
+    tryFetchWithProxy(url, 0, function(html) {
+      hideLoading();
+      renderInIframe(html);
+    }, function() {
+      hideLoading();
+      showErrorPage(url, function() { fetchAndRender(url); });
+    });
   }
 
   if (address_input) {
@@ -119,17 +149,8 @@
     });
   }
 
-  if (refresh_btn) {
-    refresh_btn.addEventListener("click", function() {
-      if (history_index >= 0) {
-        fetchAndRender(history[history_index]);
-      }
-    });
-  }
-
   window.SafariApp = {
     open: function(url) {
-      // Called by launchpad — just show the window
       if (window_el) {
         window_el.style.display = "flex";
       }
@@ -141,7 +162,6 @@
       }
     },
     init: function() {
-      // Called by desktop.js after genie animation — focus address bar
       if (address_input) {
         address_input.focus();
       }
