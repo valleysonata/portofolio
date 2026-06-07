@@ -2,7 +2,7 @@
  * boot.js — unified terminal boot sequence
  *
  * Types out the entire terminal session into #terminal-output:
- *   1. Boot log
+ *   1. Boot log (types out with typewriter)
  *   2. whoami → output
  *   3. cat contact.txt → buttons
  *   4. ./raka-agent --interactive → chat UI
@@ -25,7 +25,7 @@
 
   const TYPEWRITER_MS = 5;
   const LINE_PAUSE = 60;
-  const BLOCK_PAUSE = 200;
+  const BLOCK_PAUSE = 180;
 
   const PS1 = '<span class="ps1"><span class="u">raka</span>@portfolio:~$</span>';
 
@@ -50,16 +50,14 @@
     tick();
   }
 
-  function appendHTML(host, html) {
-    const tmp = document.createElement("div");
-    tmp.innerHTML = html;
-    while (tmp.firstChild) host.appendChild(tmp.firstChild);
-    return host.lastElementChild;
-  }
-
   function scrollToBottom() {
     const body = document.querySelector(".window-body");
     if (body) body.scrollTop = body.scrollHeight;
+  }
+
+  function showBlock(block) {
+    block.style.display = "";
+    scrollToBottom();
   }
 
   function start() {
@@ -70,27 +68,12 @@
     output.innerHTML = "";
 
     let cancelled = false;
-    let done = false;
 
     // ── Boot log container ──
     const bootBlock = el("div", "terminal-block");
     const bootLines = el("div", "boot-lines");
     bootBlock.appendChild(bootLines);
     output.appendChild(bootBlock);
-
-    // ── Welcome line ──
-    const welcomeBlock = el("div", "terminal-block boot-welcome-block");
-    welcomeBlock.style.opacity = "0";
-    welcomeBlock.style.transition = "opacity 0.3s ease";
-    welcomeBlock.textContent = "welcome to raka@portfolio";
-    output.appendChild(welcomeBlock);
-
-    // ── Skip hint ──
-    const skipHint = el("div", "boot-skip");
-    skipHint.textContent = "[ press any key to continue ]";
-    skipHint.style.opacity = "0";
-    skipHint.style.transition = "opacity 0.2s ease";
-    output.appendChild(skipHint);
 
     // ── Whoami block (hidden initially) ──
     const whoamiBlock = el("div", "terminal-block");
@@ -143,13 +126,11 @@
 
     scrollToBottom();
 
-    // ── Skip logic ──
+    // ── Skip logic (press any key to skip typing) ──
     function skip() {
-      if (done || !output.dataset.ran) return;
-      done = true;
+      if (cancelled) return;
       cancelled = true;
 
-      // Show boot lines immediately
       bootLines.innerHTML = "";
       BOOT_LINES.forEach(function (line) {
         var lineEl = el("div", "boot-line " + (line.cls || ""));
@@ -162,17 +143,10 @@
         bootLines.appendChild(lineEl);
       });
 
-      welcomeBlock.style.opacity = "1";
-      skipHint.style.opacity = "0";
+      showBlock(whoamiBlock);
+      showBlock(contactBlock);
+      showBlock(chatBlock);
 
-      // Show all command blocks
-      whoamiBlock.style.display = "";
-      contactBlock.style.display = "";
-      chatBlock.style.display = "";
-
-      scrollToBottom();
-
-      // Re-init chat after elements exist
       setTimeout(function () {
         if (window.Chat && window.Chat.init) window.Chat.init();
       }, 50);
@@ -195,35 +169,22 @@
     function typeBootLine() {
       if (cancelled) return;
       if (bi >= BOOT_LINES.length) {
-        // Boot done — show welcome, then start commands
-        welcomeBlock.style.opacity = "1";
-        skipHint.style.opacity = "1";
-        scrollToBottom();
+        // Boot done — reveal command blocks
+        document.removeEventListener("keydown", onKey);
+        document.removeEventListener("click", onClick);
 
         setTimeout(function () {
-          skipHint.style.opacity = "0";
-          document.removeEventListener("keydown", onKey);
-          document.removeEventListener("click", onClick);
-
-          // Show command blocks with small delays
-          whoamiBlock.style.display = "";
-          scrollToBottom();
-
+          showBlock(whoamiBlock);
           setTimeout(function () {
-            contactBlock.style.display = "";
-            scrollToBottom();
-
+            showBlock(contactBlock);
             setTimeout(function () {
-              chatBlock.style.display = "";
-              scrollToBottom();
-
-              // Init chat
+              showBlock(chatBlock);
               setTimeout(function () {
                 if (window.Chat && window.Chat.init) window.Chat.init();
               }, 100);
             }, BLOCK_PAUSE);
           }, BLOCK_PAUSE);
-        }, 1200);
+        }, 600);
         return;
       }
 

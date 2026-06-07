@@ -16,12 +16,10 @@
 (function () {
   "use strict";
 
-  // ── State ──
   let windowOpen = false;
   let windowMinimized = false;
   let windowMaximized = false;
 
-  // ── DOM refs ──
   const menubar = document.querySelector(".mac-menubar");
   const desktop = document.querySelector(".desktop");
   const dock = document.querySelector(".dock");
@@ -34,7 +32,6 @@
   const btnMaximize = win.querySelector(".window-btn.maximize");
   const clock = document.querySelector(".menubar-time");
 
-  // ── Mobile bypass ──
   const isMobile = window.matchMedia("(max-width: 768px)").matches;
   if (isMobile) {
     const mobilePortfolio = document.querySelector(".mobile-portfolio");
@@ -42,7 +39,6 @@
     return;
   }
 
-  // ── Clock ──
   function updateClock() {
     const now = new Date();
     const opts = { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit", hour12: true };
@@ -51,15 +47,26 @@
   updateClock();
   setInterval(updateClock, 30000);
 
-  // ── Open window ──
+  function resetWindowStyles() {
+    win.style.transform = "";
+    win.style.opacity = "";
+    win.style.top = "";
+    win.style.left = "";
+    win.style.width = "";
+    win.style.height = "";
+    win.classList.remove("animating", "closing", "minimizing", "maximized");
+  }
+
   function openWindow() {
     if (windowOpen && !windowMinimized) return;
 
     if (windowMinimized) {
+      resetWindowStyles();
       win.style.display = "flex";
       win.classList.add("open", "animating");
       void win.offsetHeight;
-      win.classList.remove("minimizing");
+      win.style.transform = "translate(-50%, -50%) scale(1)";
+      win.style.opacity = "1";
       windowMinimized = false;
       windowOpen = true;
       dockTerminal.classList.add("active");
@@ -70,25 +77,29 @@
     setTimeout(() => {
       dockTerminal.classList.remove("bouncing");
 
+      resetWindowStyles();
       win.style.display = "flex";
-      win.style.left = "50%";
-      win.style.top = "100%";
-      win.style.transform = "translate(-50%, 0) scale(0.05) perspective(800px) rotateX(20deg)";
-      win.style.opacity = "0";
-      win.classList.add("open", "animating");
+      win.classList.add("open");
 
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          win.style.transform = "translate(-50%, -50%) scale(1) perspective(800px) rotateX(0deg)";
-          win.style.opacity = "1";
-          win.style.top = "50%";
-        });
-      });
+      // Start at dock position (scaled down, rotated)
+      win.style.transform = "translate(-50%, -50%) scale(0.05) perspective(800px) rotateX(20deg)";
+      win.style.opacity = "0";
+      win.classList.add("animating");
+
+      // Force reflow, then animate to center
+      void win.offsetHeight;
+      win.style.transform = "translate(-50%, -50%) scale(1) perspective(800px) rotateX(0deg)";
+      win.style.opacity = "1";
 
       windowOpen = true;
       windowMinimized = false;
       dockTerminal.classList.add("active");
       desktopTerminal.classList.add("selected");
+
+      // Remove animating class after transition completes
+      setTimeout(() => {
+        win.classList.remove("animating");
+      }, 550);
 
       setTimeout(() => {
         if (window.Boot && window.Boot.start) {
@@ -98,26 +109,25 @@
     }, 600);
   }
 
-  // ── Close window ──
   function closeWindow() {
     if (!windowOpen) return;
     win.classList.remove("animating");
     win.classList.add("closing");
+
     setTimeout(() => {
       win.classList.remove("open", "closing");
       win.style.display = "none";
+      resetWindowStyles();
       windowOpen = false;
       windowMinimized = false;
       windowMaximized = false;
       dockTerminal.classList.remove("active");
       desktopTerminal.classList.remove("selected");
-      // Reset terminal for next open
       const output = document.getElementById("terminal-output");
       if (output) { output.innerHTML = ""; output.dataset.ran = ""; }
     }, 450);
   }
 
-  // ── Minimize window ──
   function minimizeWindow() {
     if (!windowOpen || windowMinimized) return;
     win.classList.remove("animating");
@@ -126,10 +136,10 @@
     setTimeout(() => {
       win.classList.remove("open", "minimizing");
       win.style.display = "none";
+      resetWindowStyles();
     }, 500);
   }
 
-  // ── Maximize / restore window ──
   function toggleMaximize() {
     if (!windowOpen || windowMinimized) return;
     if (windowMaximized) {
@@ -142,16 +152,10 @@
       windowMaximized = false;
     } else {
       win.classList.add("maximized");
-      win.style.transform = "none";
-      win.style.top = "24px";
-      win.style.left = "0";
-      win.style.width = "100vw";
-      win.style.height = "calc(100vh - 24px)";
       windowMaximized = true;
     }
   }
 
-  // ── Event listeners ──
   desktopTerminal.addEventListener("dblclick", (e) => {
     e.preventDefault();
     openWindow();

@@ -1,17 +1,17 @@
-/* layout.css — terminal flow, neofetch layout, command output blocks */
+/* layout.css — neofetch-style terminal layout */
 
 /* ── Terminal flow (single unified container) ── */
 .terminal-flow {
   display: flex;
-  gap: 1.5rem;
-  padding: 1.2rem 1.5rem 2rem;
+  gap: 2rem;
+  padding: 1.5rem 2rem 2rem;
   align-items: flex-start;
 }
 
 .neofetch-left {
   flex-shrink: 0;
   position: sticky;
-  top: 1.2rem;
+  top: 1.5rem;
 }
 
 .neofetch-right {
@@ -21,6 +21,7 @@
 
 .canvas-container {
   display: inline-block;
+  line-height: 0;
 }
 
 canvas {
@@ -28,9 +29,31 @@ canvas {
   user-select: none;
 }
 
+/* ── Neofetch info block (name + subtitle) ── */
+.neofetch-info {
+  margin-bottom: 1rem;
+}
+
+.neofetch-info .name {
+  color: #e0e0e0;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.neofetch-info .sub {
+  color: #888;
+  font-size: 12px;
+  margin-top: 0.2rem;
+}
+
+.neofetch-info .w {
+  color: #aaa;
+}
+
 /* ── Terminal command block ── */
 .terminal-block {
-  margin-top: 0.8rem;
+  margin-top: 0.9rem;
 }
 
 .cmd-line {
@@ -41,30 +64,8 @@ canvas {
 }
 
 .cmd-result {
-  margin-top: 0.3rem;
+  margin-top: 0.35rem;
   margin-bottom: 0.1rem;
-}
-
-/* ── Neofetch info block ── */
-.neofetch-info {
-  margin-bottom: 0.5rem;
-}
-
-.neofetch-info .name {
-  color: #e0e0e0;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-}
-
-.neofetch-info .sub {
-  color: #888;
-  font-size: 12px;
-  margin-top: 0.15rem;
-}
-
-.neofetch-info .w {
-  color: #aaa;
 }
 
 /* Prompt and input text colors */
@@ -77,6 +78,6 @@ canvas {
 .btns {
   display: flex;
   gap: 0.6rem;
-  margin-top: 0.3rem;
+  margin-top: 0.35rem;
   flex-wrap: wrap;
 }
