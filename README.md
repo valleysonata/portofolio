@@ -19,7 +19,25 @@
 
 ---
 
-## About
+## Project Stats
+
+<div align="center">
+
+| | |
+|---|---|
+| **Lines of code** | ~2,800 (frontend only) |
+| **Files** | 25 (HTML + CSS + JS) |
+| **Frameworks used** | 0 |
+| **Cost** | $0 |
+| **Languages** | HTML, CSS, JavaScript |
+| **AI backend** | Groq AI (free tier) |
+| **Hosting** | GitHub Pages (free) |
+| **Cloud** | Cloudflare Workers (free tier, 100k req/day) |
+| **External APIs paid** | None |
+
+</div>
+
+---
 
 A fully interactive macOS Sequoia-style desktop environment that runs entirely in the browser. Features a working terminal with an AI agent, a Safari-style browser, Spotify player, Launchpad app launcher, and native-feeling window management with genie-like animations. The AI agent runs through a Cloudflare Worker proxy to Groq, keeping the API key secure.
 
