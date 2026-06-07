@@ -1,6 +1,7 @@
 
  <img width="960" height="454" alt="asdsadsad" src="https://github.com/user-attachments/assets/3062ebdd-deb6-4439-a77a-fa11601ddbda" />
-# portfolio V2
+ 
+## Portofolio V2
 
 <div align="center">
 
@@ -20,7 +21,7 @@ Pure HTML, CSS, and vanilla JS.
 
 ## About
 
-A retro terminal-styled personal portfolio website; the whole site is one HTML file plus a few CSS and JS modules. The AI agent runs through a small Cloudflare Worker that proxies requests to Groq, so the API key never ships in the frontend bundle.
+A MacOS terminal-styled personal portfolio website; the whole site is one HTML file plus a few CSS and JS modules. The AI agent runs through a small Cloudflare Worker that proxies requests to Groq, so the API key never ships in the frontend bundle.
 
 ## Features
 
