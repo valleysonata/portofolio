@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const { API_ENDPOINT, MODEL, USE_MOCK_MODE, GROQ_API_KEY } = window.PORTFOLIO_CONFIG;
+  const { API_ENDPOINT, MODEL, USE_MOCK_MODE } = window.PORTFOLIO_CONFIG;
   const chatInput = document.getElementById("chat-input");
 
   const KNOWLEDGE_BASE = {
@@ -53,7 +53,6 @@
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${GROQ_API_KEY}`,
           },
           body: JSON.stringify({
             messages: [
