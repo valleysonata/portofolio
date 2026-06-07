@@ -245,4 +245,10 @@
 .window[data-app="spotify"] {
   width: 350px;
   height: 500px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.window[data-app="spotify"] .window-body {
+  border-radius: 0;
 }

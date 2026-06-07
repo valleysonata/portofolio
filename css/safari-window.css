@@ -45,19 +45,28 @@
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 6px;
-  color: #ccc;
-  font-size: 12px;
-  font-family: 'IBM Plex Mono', monospace;
-  outline: none;
+  display: flex;
+  align-items: center;
   transition: background 0.15s, border-color 0.15s;
 }
 
-.safari-address-bar:focus {
+.safari-address-bar:focus-within {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.18);
 }
 
-.safari-address-bar::placeholder {
+.safari-address-bar input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #ccc;
+  font-size: 12px;
+  font-family: 'IBM Plex Mono', monospace;
+  outline: none;
+  width: 100%;
+}
+
+.safari-address-bar input::placeholder {
   color: rgba(255, 255, 255, 0.25);
 }
 
@@ -86,15 +95,18 @@
 /* ── iframe content area ── */
 .safari-content {
   flex: 1;
-  background: #fff;
+  background: #1e1e1e;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .safari-content iframe {
   width: 100%;
   height: 100%;
   border: none;
+  flex: 1;
 }
 
 /* ── Error page ── */
@@ -145,7 +157,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  flex: 1;
   background: #1e1e1e;
   padding: 40px;
 }

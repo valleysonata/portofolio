@@ -27,10 +27,16 @@
     if (indicator_el) {
       var existingBolt = indicator_el.querySelector(".battery-bolt");
       if (charging && !existingBolt) {
-        var bolt = document.createElement("span");
-        bolt.className = "battery-bolt";
-        bolt.textContent = "\u26A1";
-        bolt.style.cssText = "font-size:9px;margin-left:2px;color:#4cd964;";
+        var bolt = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        bolt.setAttribute("class", "battery-bolt");
+        bolt.setAttribute("width", "10");
+        bolt.setAttribute("height", "12");
+        bolt.setAttribute("viewBox", "0 0 10 12");
+        bolt.style.cssText = "margin-left:2px;vertical-align:middle;";
+        var boltPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        boltPath.setAttribute("d", "M6 0L0 7h4l-1 5 5-7H4l1-5z");
+        boltPath.setAttribute("fill", "#4cd964");
+        bolt.appendChild(boltPath);
         indicator_el.appendChild(bolt);
       } else if (!charging && existingBolt) {
         existingBolt.remove();
