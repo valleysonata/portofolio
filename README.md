@@ -33,7 +33,7 @@
 | **AI backend** | Groq AI (free tier) |
 | **Hosting** | GitHub Pages (free) |
 | **Cloud** | Cloudflare Workers (free tier, 100k req/day) |
-| **External APIs paid** | None |
+| **Rage Quits** | ♾️ |
 
 </div>
 
