@@ -1,7 +1,7 @@
 
- <img width="960" height="454" alt="asdsadsad" src="https://github.com/user-attachments/assets/3062ebdd-deb6-4439-a77a-fa11601ddbda" />
- 
-## Portofolio V2
+<img width="960" alt="portfolio banner" src="https://github.com/user-attachments/assets/3062ebdd-deb6-4439-a77a-fa11601ddbda" />
+
+## Portfolio V2
 
 <div align="center">
 
@@ -10,8 +10,8 @@
 [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
-**Terminal-themed personal portfolio with an AI chat agent.**  
-Pure HTML, CSS, and vanilla JS.
+**macOS Sequoia-inspired desktop environment with an AI chat agent.**
+Pure HTML, CSS, and vanilla JS. No frameworks, no bundlers.
 
 [**View Live**](https://valleysonata.github.io/portofolio/)
 
@@ -21,70 +21,133 @@ Pure HTML, CSS, and vanilla JS.
 
 ## About
 
-A MacOS terminal-styled personal portfolio website; the whole site is one HTML file plus a few CSS and JS modules. The AI agent runs through a small Cloudflare Worker that proxies requests to Groq, so the API key never ships in the frontend bundle.
+A fully interactive macOS Sequoia-style desktop environment that runs entirely in the browser. Features a working terminal with an AI agent, a Safari-style browser, Spotify player, Launchpad app launcher, and native-feeling window management with genie animations — all built from scratch with vanilla JS. The AI agent runs through a Cloudflare Worker proxy to Groq, keeping the API key secure.
 
 ## Features
 
-- **ASCII matrix rain** - canvas animation over the name logo, each column drops at a randomised speed
-- **raka-agent** - AI assistant trained on the resume, answers recruiter questions in real time
-- **Typewriter renderer** - agent replies stream in character by character like a real terminal
-- **Staggered entrance** - sections fade in sequentially on load
-- **No framework, no bundler** - works offline, deploys instantly on GitHub Pages
-- **Secure backend** - API key hidden behind a Cloudflare Worker proxy
+### Desktop Environment
+- **Apple boot screen** — CSS keyframe loading bar, desktop only (hidden on mobile)
+- **macOS Sequoia menu bar** — app name, Wi-Fi, battery with real-time level/charging indicator, live clock
+- **Glassy dock** — bounce animations, active window dots, hover scale effects
+- **Desktop icons** — double-click to open Terminal
+- **Launchpad** — fullscreen overlay with search bar, 6-app grid, Esc/click-outside close
+
+### Windows
+- **Genie effect** — CSS 3D transform open/close/minimize animations targeting dock position
+- **Draggable windows** — all windows are drag-to-move via titlebar
+- **Resizable windows** — drag edge/corner handles to resize (min 480×300)
+- **Traffic light buttons** — close (red), minimize (yellow), maximize (green) with hover symbols
+- **Menubar updates** — app name changes to match focused window
+
+### Terminal
+- **ASCII matrix rain** — canvas animation over the R logo, randomized column speeds
+- **raka-agent** — AI assistant trained on the resume, answers recruiter questions in real time
+- **Typewriter renderer** — agent replies stream character by character
+- **neofetch-style layout** — system info on the right, matrix canvas on the left
+
+### Safari Browser
+- **Address bar** — type URLs and press Enter to browse
+- **Multi-proxy fallback** — tries multiple CORS proxies with timeout for reliability
+- **Start page** — Favorites grid with GitHub, LinkedIn, Gmail icons
+- **Navigation** — back/forward buttons with history stack
+- **Loading bar** — animated progress indicator
+- **Error page** — dark-themed failure page for blocked/inaccessible sites
+
+### Spotify Player
+- **iFrame embed** — real playable Spotify playlist via Spotify IFrame API
+- **Rounded window** — macOS-style window frame with clipped embed content
+
+### Mobile
+- **Responsive fallback** — desktop UI hidden on screens < 768px
+- **Mobile terminal** — simplified terminal with AI chat, matrix rain, contact buttons
+- **No boot screen** — jumps straight to content on mobile
 
 ## Tech stack
 
 | Layer | Tech |
 |---|---|
 | Markup | HTML5 |
-| Styling | CSS3 - custom properties, keyframe animations |
+| Styling | CSS3 — custom properties, keyframe animations, glassmorphism, CSS 3D transforms |
 | Logic | Vanilla JavaScript (ES2020), modular IIFE pattern |
-| AI API | Groq AI (via Cloudflare Worker proxy) |
-| Backend | Cloudflare Workers |
-| Font | [IBM Plex Mono](https://fonts.google.com/specimen/IBM+Plex+Mono) |
+| AI API | Groq AI (`llama-3.3-70b-versatile`) |
+| Backend | Cloudflare Workers (free tier, 100k req/day) |
+| Fonts | [IBM Plex Mono](https://fonts.google.com/specimen/IBM+Plex+Mono), system `-apple-system` stack |
 | Hosting | GitHub Pages |
 
 ## File structure
 
 ```
 portfolio/
+|-- index.html               # Markup + hidden resume context for the AI agent
 |-- css/
-|   |-- reset.css         # Browser default reset
-|   |-- base.css          # Body, typography, text selection
-|   |-- layout.css        # Terminal prompt chrome, canvas wrapper, contact row
-|   |-- animations.css    # @keyframes + staggered .l2 .l3 .l4 delays
-|   |-- buttons.css       # .btn component
-|   |-- chat.css          # Chat log, messages, input row, cursors
+|   |-- reset.css             # Browser default reset
+|   |-- base.css              # Body background, vignette, text-shadow: none
+|   |-- desktop.css           # Menu bar, dock, desktop icons, mobile media query
+|   |-- window.css            # Window chrome, titlebar, traffic lights, resize handles,
+|   |                         # genie animations, Safari/Spotify size overrides
+|   |-- safari-window.css     # Safari toolbar, address bar, start page, error page
+|   |-- spotify-window.css    # Spotify dark theme, embed container
+|   |-- launchpad.css         # Fullscreen overlay, search bar, app grid, close hint
+|   |-- apple-boot.css        # Apple boot screen + keyframe animation + mobile hide
+|   |-- layout.css            # Neofetch two-column layout
+|   |-- animations.css        # @keyframes + staggered delays
+|   |-- chat.css              # Chat log, messages, input row, cursors
+|   |-- boot.css              # Boot log line styles
+|   |-- buttons.css           # Contact link buttons
 |-- js/
-|   |-- config.js         # API settings, system prompt, resume context reader
-|   |-- cursor.js         # Block cursor blink toggle
-|   |-- messages.js       # appendMessage(), typeOut() typewriter renderer
-|   |-- matrix.js         # Canvas ASCII rain engine
-|   |-- chat.js           # Orchestration: fetch, input lock, event listeners
-|-- worker/               # Cloudflare Worker backend (hides API key)
-|   |-- index.js          # Worker script
-|   |-- wrangler.toml     # Cloudflare config
-|   |-- package.json      # Dependencies
-|   |-- deploy.bat        # One-click deployment script
-|   |-- SETUP.md          # Setup instructions
+|   |-- config.js             # API settings, system prompt, resume context reader
+|   |-- cursor.js             # Block cursor blink toggle
+|   |-- messages.js           # appendMessage(), typeOut() typewriter renderer
+|   |-- matrix.js             # Canvas ASCII rain engine (desktop + mobile)
+|   |-- boot.js               # Terminal boot sequence (whoami block)
+|   |-- chat.js               # Orchestration: fetch, input lock, event listeners
+|   |-- desktop.js            # Boot screen, genie effect, window drag/resize,
+|   |                         # menubar updates, dock handlers, keyboard shortcuts
+|   |-- safari.js             # Safari browser: CORS proxy, srcdoc rendering, history
+|   |-- spotify.js            # Spotify iFrame API embed
+|   |-- launchpad.js          # Launchpad toggle, app dispatch
+|   |-- battery.js            # Battery API, SVG level updates, charging bolt
+|-- assets/
+|   |-- wallpaper.jpg         # Desktop background
+|   |-- apple-logo.svg        # Apple logo for boot screen + menubar
+|   |-- terminal-icon.svg     # Terminal dock/desktop icon
+|   |-- safari-icon.png       # Safari dock/launchpad icon
+|   |-- spotify-icon.png      # Spotify dock/launchpad icon
+|   |-- github-icon.png       # GitHub launchpad icon
+|   |-- gmail-icon.png        # Gmail launchpad icon
+|   |-- launchpad-icon.svg    # Launchpad grid icon
+|-- worker/                   # Cloudflare Worker backend (hides API key)
+|   |-- index.js              # Worker script
+|   |-- wrangler.toml         # Cloudflare config
+|   |-- package.json          # Dependencies
+|   |-- deploy.bat            # One-click deployment script
+|   |-- SETUP.md              # Setup instructions
 |-- LICENSE
 |-- README.md
-|-- index.html            # Markup + hidden resume context for the AI agent
 ```
 
 ## How it works
 
-### ASCII rain (`js/matrix.js`)
-Reads a hard-coded array of ASCII art lines and sweeps "drops" down each column using `requestAnimationFrame`. Characters are coloured white to grey to dark based on their distance from the active drop head. Each column has its own randomised fall speed so the rain feels organic.
+### Desktop environment (`js/desktop.js`)
+On load, the Apple boot screen plays a CSS-animated loading bar, then fades out to reveal the desktop. The boot sequence initializes the terminal's boot.js which types out system info. Windows open with a genie effect — a CSS 3D transform that compresses and skews the window toward the dock icon position. All windows support drag (via titlebar mousedown), resize (via edge/corner handles), and keyboard shortcuts (Ctrl/Cmd+W to close, Ctrl/Cmd+M to minimize).
+
+### Safari browser (`js/safari.js`)
+URLs are fetched through a cascade of CORS proxies with 6-second timeouts. If a proxy is down, it auto-falls back to the next one. The fetched HTML is rendered in a sandboxed `srcdoc` iframe. Sites that block external embedding show a dark error page. The start page displays favorites (GitHub, LinkedIn, Gmail) with PNG icons.
+
+### Spotify player (`js/spotify.js`)
+Uses the official Spotify IFrame API to embed a real playable playlist. The iframe is created dynamically and fills the window body. The window has rounded corners (border-radius: 10px) while the embed container clips with overflow: hidden for a clean look.
 
 ### AI agent (`js/chat.js` + `js/config.js`)
 On Enter, `chat.js` posts the user's message along with a system prompt to a Cloudflare Worker. The Worker proxies the request to Groq AI, keeping the API key secure. The system prompt is assembled in `config.js` from constants plus the resume text read out of a hidden `#raw-resume-context` DOM node in `index.html`. The reply is piped through `messages.js`'s typewriter renderer.
 
+### Battery indicator (`js/battery.js`)
+Uses the Battery API (`navigator.getBattery()`) to read real charge level and charging state. The SVG fill width scales with percentage. A green lightning bolt appears when charging. Falls back to a static 75% fill on browsers that don't support the API (Safari/Firefox).
+
 ### Backend (`worker/`)
-A small Cloudflare Worker that proxies requests to Groq AI, hides the API key (stored as a Cloudflare secret), and handles CORS. Free tier covers 100,000 requests/day.
+A Cloudflare Worker that proxies requests to Groq AI, hides the API key (stored as a Cloudflare secret), and handles CORS. Free tier covers 100,000 requests/day.
 
 ### Updating the resume
-Edit the hidden `<div id="raw-resume-context">` block inside `index.html`. The agent reads it at page load - no other files need touching.
+Edit the hidden `<div id="raw-resume-context">` block inside `index.html`. The agent reads it at page load — no other files need touching.
 
 ## Local development
 
@@ -130,63 +193,24 @@ MIT (c) 2025 Adyaraka Banyu Langit - see [LICENSE](LICENSE) for full text.
 
 ## The journey: V1 to V2
 
-This portfolio went through a complete rebuild. Here's what happened and what I learned.
+This portfolio went through a complete rebuild from a terminal-only chatbot to a full macOS desktop simulation.
 
-### V1: the original build (Pollinations AI)
+### V1: terminal chatbot
 
-The first version of the portfolio used the [Pollinations AI API](https://pollinations.ai) - a free, no-auth-required service that seemed perfect for a simple project.
+The first version was a simple terminal-themed page with an AI chat agent powered by Pollinations AI, later switched to Groq AI after Pollinations deprecated their free tier.
 
-**Tech stack:**
-- Frontend: HTML, CSS, vanilla JavaScript
-- AI API: Pollinations (`https://text.pollinations.ai/`)
-- Hosting: GitHub Pages
-- Architecture: Direct API calls from frontend
+### V2: macOS desktop environment
 
-**What worked:**
-- Initial deployment was smooth
-- Free with no API key required
-- Simple architecture
-- GitHub Pages deployment was instant
+The rebuild transformed the single terminal into a fully interactive macOS Sequoia-inspired desktop with multiple apps, window management, and native-feeling animations — all in vanilla JS with no frameworks.
 
-### What went wrong with V1
-
-**1. Pollinations API deprecated**
-The free tier started returning 429 "Too Many Requests" errors, anonymous users got rate-limited, and the API showed a deprecation notice. Chat completely broke with the "communication channel closed" error.
-
-**2. API key exposure**
-While switching to Groq AI, the API key was accidentally committed to a public GitHub repo. GitHub's secret scanning detected it, Groq sent a security alert, and the key was disabled - forcing a rotation.
-
-**3. Git mess**
-A push went to the wrong repository (a different project). Trying to fix it with `git pull --rebase` caused conflicts. The fix was `rm -rf .git`, which deleted all 20+ original commits. The project had to be rebuilt from scratch.
-
-**4. File structure issues**
-Files got nested in `Downloads/portofolio-main (1)/portofolio-main/` paths, and other project files accidentally got mixed in. The repo structure was messy and unprofessional.
-
-**5. No backend**
-The API key was sitting in the frontend code, public to anyone who opened DevTools. No way to hide credentials.
-
-### V2: the rebuild
-
-**New tech stack:**
-- Frontend: HTML, CSS, vanilla JavaScript (same as V1)
-- AI API: Groq AI (`llama-3.3-70b-versatile`)
-- Backend: Cloudflare Workers (free tier, 100k requests/day)
-- Hosting: GitHub Pages
-- Architecture: Frontend calls Cloudflare Worker, Worker calls Groq AI
-
-**Key improvements:**
-
-1. **Secure API key storage** - key is a Cloudflare secret, never in frontend
-2. **Clean repo structure** - flat root, no nested folders, no leftover files, single clean commit
-3. **Reliable AI service** - Groq AI is fast, free, and not rate-limited
-4. **Proper backend** - Worker proxies requests, handles CORS, hides credentials
-5. **Better documentation** - clear setup, backend guide, architecture notes
-
-### What I learned
-
-1. **Always use environment variables or secrets for API keys.** Never commit them to public repos.
-2. **Don't delete git history casually.** It's hard to recover and you lose valuable context.
-3. **Verify the remote before pushing.** Accidentally pushing to the wrong repo causes chaos.
-4. **Use a backend for API key security.** Frontend-only architecture is fine for no-key APIs, but you need a backend when keys are required.
-5. **Read error messages carefully.** "Communication channel closed" was clearly an API issue, not a code issue.
-
+**What changed:**
+- Apple boot screen with CSS keyframe loading bar
+- macOS menu bar with live clock, battery indicator, and dynamic app names
+- Glassy dock with bounce animations and active window dots
+- Draggable + resizable windows with traffic light buttons
+- Genie effect open/close/minimize animations
+- Safari browser with CORS proxy fallback and start page
+- Spotify player with real iFrame embed
+- Launchpad fullscreen overlay with search
+- Mobile-responsive fallback
+- Battery API integration with charging state detection
