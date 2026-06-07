@@ -1,4 +1,4 @@
-﻿# raka - portfolio V1
+﻿# raka - portfolio V2
 
 <div align="center">
 
@@ -25,6 +25,124 @@ Pure HTML, CSS, and vanilla JS.
 - **Staggered entrance** - sections fade in sequentially on load
 - **No framework, no bundler** - works offline, deploys instantly on GitHub Pages
 - **Secure backend** - API key hidden behind Cloudflare Worker proxy
+
+---
+
+## The Journey: V1 to V2
+
+This portfolio went through a complete rebuild. Here's what happened and what I learned.
+
+### V1: The Original Build (Pollinations AI)
+
+The first version of the portfolio used the [Pollinations AI API](https://pollinations.ai) - a free, no-auth-required service that seemed perfect for a simple project.
+
+**Tech stack:**
+- Frontend: HTML, CSS, vanilla JavaScript
+- AI API: Pollinations (`https://text.pollinations.ai/`)
+- Hosting: GitHub Pages
+- Architecture: Direct API calls from frontend
+
+**What worked:**
+- Initial deployment was smooth
+- Free with no API key required
+- Simple architecture
+- GitHub Pages deployment was instant
+
+### What Went Wrong With V1
+
+**Problem 1: Pollinations API Deprecated**
+- The free tier started returning 429 "Too Many Requests" errors
+- Anonymous users were rate-limited
+- The API showed a deprecation notice
+- Chat completely broke with "communication channel closed" error
+
+**Problem 2: API Key Exposure**
+- During development, I switched to Groq AI and accidentally committed the API key to a public GitHub repo
+- GitHub's secret scanning detected it
+- Groq sent a security alert
+- The key was disabled
+- I had to rotate to a new key
+
+**Problem 3: Git Mess**
+- Accidentally pushed to the wrong repository (a different project)
+- Tried to fix it with `git pull --rebase` which caused conflicts
+- Ended up deleting all git history with `rm -rf .git`
+- Lost all 20+ original commits
+- Had to rebuild from scratch
+
+**Problem 4: File Structure Issues**
+- Files got nested in `Downloads/portofolio-main (1)/portofolio-main/` paths
+- Coffee shop project files accidentally got mixed in
+- Repo structure was messy and unprofessional
+
+**Problem 5: No Backend**
+- API key was in frontend code (public)
+- No way to hide credentials
+- Security risk
+
+### V2: The Rebuild
+
+I rebuilt the entire portfolio with proper architecture and security.
+
+**New tech stack:**
+- Frontend: HTML, CSS, vanilla JavaScript (same as V1)
+- AI API: Groq AI (llama-3.3-70b-versatile)
+- Backend: Cloudflare Workers (free tier, 100k requests/day)
+- Hosting: GitHub Pages
+- Architecture: Frontend calls Cloudflare Worker, Worker calls Groq AI
+
+**Key improvements:**
+
+1. **Secure API key storage**
+   - API key stored as Cloudflare Worker secret
+   - Never exposed in frontend code
+   - Safe even if repo is public
+
+2. **Clean repo structure**
+   - All files at root level (no nested folders)
+   - No leftover files from other projects
+   - Professional organization
+   - Single clean commit
+
+3. **Reliable AI service**
+   - Groq AI is fast and reliable
+   - No rate limiting issues
+   - Better quality responses
+   - Generous free tier
+
+4. **Proper backend architecture**
+   - Cloudflare Worker proxies API calls
+   - Hides credentials
+   - Handles CORS
+   - Global edge network for speed
+
+5. **Better documentation**
+   - Clear setup instructions
+   - Backend deployment guide
+   - Architecture explanation
+
+### What I Learned
+
+1. **Always use environment variables or secrets for API keys** - Never commit them to public repos
+2. **Don't delete git history casually** - It's hard to recover and you lose valuable context
+3. **Verify the remote before pushing** - Accidentally pushing to wrong repos causes chaos
+4. **Use a backend for API key security** - Frontend-only architecture is fine for no-key APIs, but you need a backend when keys are required
+5. **Read error messages carefully** - "Communication channel closed" was clearly an API issue, not a code issue
+6. **Test before declaring victory** - I should have tested the chat more thoroughly before saying it was fixed
+
+### Migration from V1 to V2
+
+If you have an existing V1 portfolio and want to upgrade:
+
+1. Get a free Groq API key from https://console.groq.com
+2. Install Wrangler: `npm install -g wrangler`
+3. Login: `wrangler login`
+4. Deploy the worker (see worker/SETUP.md)
+5. Update `js/config.js` with your worker URL
+6. Remove the API key from your code
+7. Push to GitHub
+
+The frontend code stayed mostly the same - just the API endpoint and key changed.
 
 ---
 
