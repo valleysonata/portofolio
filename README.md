@@ -12,7 +12,6 @@
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
 **macOS Sequoia-inspired desktop environment with an AI chat agent.**
-Pure HTML, CSS, and vanilla JS. No frameworks, no bundlers.
 
 [**View Live**](https://valleysonata.github.io/portofolio/)
 
