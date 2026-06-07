@@ -1,5 +1,5 @@
 ﻿/**
- * chat.js ΓÇö chat orchestration
+ * chat.js — chat orchestration
  */
 
 (function () {
@@ -7,6 +7,7 @@
 
   const { API_ENDPOINT, MODEL, USE_MOCK_MODE } = window.PORTFOLIO_CONFIG;
   let chatInput;
+  let activeLogId = "chat-log";
 
   const KNOWLEDGE_BASE = {
     "hello|hi|hey|greetings": "hey! i'm raka's ai resume agent. ask me about his background, skills, experience, or anything else from his resume.",
@@ -66,7 +67,7 @@
         });
 
         if (!response.ok) {
-          throw new Error(`API returned ${response.status}`);
+          throw new Error("API returned " + response.status);
         }
 
         const data = await response.json();
@@ -84,7 +85,7 @@
 
       reply = reply.toLowerCase().trim();
 
-      window.Messages.typeOut(contentEl, reply, () => {
+      window.Messages.typeOut(contentEl, reply, function () {
         contentEl.parentElement.classList.add("done");
         finalizeInput();
       });
@@ -103,16 +104,23 @@
     window.Cursor.update();
   }
 
-  function init() {
-    chatInput = document.getElementById("chat-input");
+  function init(inputId, logId) {
+    var targetInputId = inputId || "chat-input";
+    var targetLogId = logId || "chat-log";
+
+    chatInput = document.getElementById(targetInputId);
     if (!chatInput) return;
+
+    activeLogId = targetLogId;
+
     chatInput.addEventListener("keydown", function (e) {
       if (e.key === "Enter") sendMessage();
     });
-    window.Messages.init();
-    window.Cursor.init();
+
+    window.Messages.init(targetLogId);
+    window.Cursor.init(targetInputId, inputId === "chat-input-mobile" ? "term-cursor-mobile" : "term-cursor");
     window.Cursor.update();
   }
 
-  window.Chat = { init };
+  window.Chat = { init: init };
 })();

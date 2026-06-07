@@ -10,11 +10,7 @@
 (function () {
   "use strict";
 
-  const canvas = document.getElementById("matrix-canvas");
-  if (!canvas) return;
-  const ctx    = canvas.getContext("2d");
-
-  const asciiLines = [
+  const ASCII_LINES = [
     "8 888888888o.  ",
     "8 8888    `88. ",
     "8 8888     `88 ",
@@ -27,50 +23,59 @@
     "8 8888     `88.",
   ];
 
-  const FONT      = "16px 'IBM Plex Mono', monospace";
-  const FONT_SIZE = 16;
+  const FONT      = "11px 'IBM Plex Mono', monospace";
+  const FONT_SIZE = 11;
 
-  ctx.font = FONT;
-  const letterWidth  = ctx.measureText("8").width;
-  const lineHeight   = FONT_SIZE * 1.2;
-  const columnsCount = asciiLines[0].length;
+  function initCanvas(canvasId) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
 
-  canvas.width  = letterWidth * columnsCount;
-  canvas.height = lineHeight  * asciiLines.length;
+    ctx.font = FONT;
+    const letterWidth  = ctx.measureText("8").width;
+    const lineHeight   = FONT_SIZE * 1.18;
+    const columnsCount = ASCII_LINES[0].length;
 
-  const drops      = Array(columnsCount).fill(0);
-  const rainSpeeds = drops.map(() => Math.random() * 0.35 + 0.15);
+    canvas.width  = letterWidth * columnsCount;
+    canvas.height = lineHeight  * ASCII_LINES.length;
 
-  function getCharColor(distance) {
-    if (distance < 0 || distance >= 6)  return "#333333";
-    if (Math.floor(distance) === 0)     return "#ffffff";
-    if (distance < 3)                   return "#999999";
-    return "#555555";
-  }
+    const drops      = Array(columnsCount).fill(0);
+    const rainSpeeds = drops.map(() => Math.random() * 0.35 + 0.15);
 
-  function draw() {
-    ctx.fillStyle    = "transparent";
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.font         = FONT;
-    ctx.textBaseline = "top";
+    function getCharColor(distance) {
+      if (distance < 0 || distance >= 6)  return "#333333";
+      if (Math.floor(distance) === 0)     return "#ffffff";
+      if (distance < 3)                   return "#999999";
+      return "#555555";
+    }
 
-    for (let row = 0; row < asciiLines.length; row++) {
-      for (let col = 0; col < asciiLines[row].length; col++) {
-        const char = asciiLines[row][col];
-        if (char === " ") continue;
-        ctx.fillStyle = getCharColor(drops[col] - row);
-        ctx.fillText(char, col * letterWidth, row * lineHeight);
+    function draw() {
+      ctx.fillStyle    = "#0d0d0d";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font         = FONT;
+      ctx.textBaseline = "top";
+
+      for (let row = 0; row < ASCII_LINES.length; row++) {
+        for (let col = 0; col < ASCII_LINES[row].length; col++) {
+          const char = ASCII_LINES[row][col];
+          if (char === " ") continue;
+          ctx.fillStyle = getCharColor(drops[col] - row);
+          ctx.fillText(char, col * letterWidth, row * lineHeight);
+        }
+      }
+
+      for (let i = 0; i < drops.length; i++) {
+        drops[i] += rainSpeeds[i];
+        if (drops[i] > ASCII_LINES.length + 6 && Math.random() > 0.96) {
+          drops[i]      = -5;
+          rainSpeeds[i] = Math.random() * 0.35 + 0.15;
+        }
       }
     }
 
-    for (let i = 0; i < drops.length; i++) {
-      drops[i] += rainSpeeds[i];
-      if (drops[i] > asciiLines.length + 6 && Math.random() > 0.96) {
-        drops[i]      = -5;
-        rainSpeeds[i] = Math.random() * 0.35 + 0.15;
-      }
-    }
+    (function loop() { draw(); requestAnimationFrame(loop); })();
   }
 
-  (function loop() { draw(); requestAnimationFrame(loop); })();
+  initCanvas("matrix-canvas");
+  initCanvas("matrix-canvas-mobile");
 })();

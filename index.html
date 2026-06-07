@@ -22,6 +22,7 @@
   <!-- Styles -->
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/apple-boot.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/buttons.css">
@@ -31,6 +32,17 @@
   <link rel="stylesheet" href="css/window.css">
 </head>
 <body>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- APPLE BOOT SCREEN (first thing visible on page load)          -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+
+  <div id="apple-boot">
+    <img src="assets/apple-logo.svg" alt="" class="boot-logo">
+    <div class="boot-bar-track">
+      <div class="boot-bar-fill" id="boot-bar-fill"></div>
+    </div>
+  </div>
 
   <!-- ══════════════════════════════════════════════════════════════ -->
   <!-- MACOS DESKTOP (visible on desktop, hidden on mobile)         -->
@@ -130,7 +142,7 @@
   <!-- ══════════════════════════════════════════════════════════════ -->
 
   <div class="mobile-portfolio" style="display:none;">
-    <div class="terminal-body" style="padding-top: 2rem;">
+    <div class="mobile-terminal">
 
       <div class="canvas-container">
         <canvas id="matrix-canvas-mobile"></canvas>

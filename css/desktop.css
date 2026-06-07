@@ -222,5 +222,14 @@
   }
   .mobile-portfolio {
     display: block !important;
+    background: #0d0d0d;
+    min-height: 100vh;
+    padding: 2rem 1.5rem;
+  }
+  .mobile-terminal {
+    padding: 0;
+  }
+  .mobile-terminal .canvas-container {
+    margin-bottom: 1.5rem;
   }
 }

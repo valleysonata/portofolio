@@ -2,8 +2,7 @@
  * cursor.js — terminal block cursor behaviour
  *
  * Toggles the blinking block cursor element on/off based on whether
- * the chat input has content. When the user types, the native browser
- * caret takes over; the block cursor is only visible on an empty field.
+ * the chat input has content.
  *
  * Depends on: nothing
  * Writes to:  window.Cursor (consumed by chat.js)
@@ -14,10 +13,12 @@ window.Cursor = (function () {
 
   let input, cursorEl;
 
-  function init() {
-    input = document.getElementById("chat-input");
-    cursorEl = document.getElementById("term-cursor");
-    if (input) input.addEventListener("input", update);
+  function init(inputId, cursorId) {
+    input = document.getElementById(inputId || "chat-input");
+    cursorEl = document.getElementById(cursorId || "term-cursor");
+    if (input) {
+      input.addEventListener("input", update);
+    }
   }
 
   function update() {

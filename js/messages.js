@@ -14,19 +14,12 @@ window.Messages = (function () {
   const { TYPEWRITER_MS, TYPEWRITER_CHUNK } = window.PORTFOLIO_CONFIG;
   let chatLog;
 
-  function init() {
-    chatLog = document.getElementById("chat-log");
+  function init(targetId) {
+    chatLog = document.getElementById(targetId || "chat-log");
   }
 
-  /**
-   * Append a new message row to the chat log.
-   *
-   * @param {"user"|"agent"} role
-   * @param {string}         text       - Displayed immediately (ignored when streaming=true)
-   * @param {boolean}        streaming  - If true, shows a waiting blink cursor instead of text
-   * @returns {HTMLElement}  The content <span> — caller can write into it later
-   */
-  function append(role, text, streaming = false) {
+  function append(role, text, streaming) {
+    if (!chatLog) return document.createElement("span");
     const div     = document.createElement("div");
     div.className = role === "user" ? "chat-msg-user" : "chat-msg-agent";
 
@@ -55,14 +48,6 @@ window.Messages = (function () {
     return content;
   }
 
-  /**
-   * Animate text into an element one chunk at a time (typewriter effect).
-   * Appends a blinking cursor to the parent while typing; removes it on done.
-   *
-   * @param {HTMLElement} element     - Target element to write into
-   * @param {string}      totalText   - Complete string to render
-   * @param {Function}    [onComplete]- Called after the last character is rendered
-   */
   function typeOut(element, totalText, onComplete) {
     let index = 0;
     element.textContent = "";
@@ -76,7 +61,7 @@ window.Messages = (function () {
       if (index < totalText.length) {
         element.textContent += totalText.slice(index, index + TYPEWRITER_CHUNK);
         index += TYPEWRITER_CHUNK;
-        chatLog.scrollTop = chatLog.scrollHeight;
+        if (chatLog) chatLog.scrollTop = chatLog.scrollHeight;
         setTimeout(tick, TYPEWRITER_MS);
       } else {
         streamCursor.remove();

@@ -1,0 +1,34 @@
+/* apple-boot.css — Apple startup screen */
+
+#apple-boot {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+#apple-boot .boot-logo {
+  height: 80px;
+  width: auto;
+  opacity: 0.9;
+}
+
+.boot-bar-track {
+  width: 200px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+#boot-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 2px;
+}

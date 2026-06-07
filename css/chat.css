@@ -1,7 +1,8 @@
 /* chat.css — chat log, message bubbles, terminal input row, cursors */
 
 /* ── Log container ── */
-#chat-log {
+#chat-log,
+#chat-log-mobile {
   margin-top: 0.5rem;
   display: flex;
   flex-direction: column;
@@ -11,7 +12,8 @@
   scrollbar-width: none;
 }
 
-#chat-log::-webkit-scrollbar { display: none; }
+#chat-log::-webkit-scrollbar,
+#chat-log-mobile::-webkit-scrollbar { display: none; }
 
 /* ── Message types ── */
 .chat-msg-user              { color: #e0e0e0; }
@@ -37,7 +39,8 @@
   align-items: center;
 }
 
-#chat-input {
+#chat-input,
+#chat-input-mobile {
   background: none;
   border: none;
   color: #e0e0e0;
@@ -51,7 +54,8 @@
   z-index: 2;
 }
 
-#chat-input:disabled {
+#chat-input:disabled,
+#chat-input-mobile:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
@@ -75,7 +79,8 @@
 }
 
 /* Hide block cursor the moment the native caret is active */
-#chat-input:focus ~ .terminal-cursor {
+#chat-input:focus ~ .terminal-cursor,
+#chat-input-mobile:focus ~ .terminal-cursor {
   display: none !important;
 }
 

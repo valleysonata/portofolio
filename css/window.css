@@ -23,6 +23,7 @@
   z-index: 100;
   flex-direction: column;
   overflow: hidden;
+  transform-origin: bottom center;
 }
 
 /* Visible state */
@@ -30,27 +31,25 @@
   display: flex;
 }
 
-/* Opening animation — genie: scale up from bottom with perspective */
+/* Opening animation — genie: expand from dock */
 .window.animating {
   transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
               opacity 0.4s ease;
   opacity: 1;
 }
 
-/* Closing animation — genie: shrink toward bottom */
+/* Closing animation — genie: compress toward dock */
 .window.closing {
   transition: transform 0.4s cubic-bezier(0.55, 0, 1, 0.45),
               opacity 0.35s ease-in;
-  transform: translate(-50%, 0%) scale(0.05) perspective(800px) rotateX(20deg) !important;
-  opacity: 0 !important;
+  opacity: 0;
 }
 
-/* Minimize animation — genie: swoop down */
+/* Minimize animation — genie: swoop down to dock */
 .window.minimizing {
   transition: transform 0.45s cubic-bezier(0.55, 0, 1, 0.45),
               opacity 0.35s ease-in;
-  transform: translate(-50%, 50vh) scale(0.05) perspective(800px) rotateX(20deg) !important;
-  opacity: 0 !important;
+  opacity: 0;
 }
 
 /* Maximized state */
