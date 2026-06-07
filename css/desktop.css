@@ -1,0 +1,217 @@
+/* desktop.css — macOS menu bar, desktop, dock, glassy blur effects */
+
+/* ── macOS Menu Bar (top, 24px) ── */
+.mac-menubar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  background: rgba(20, 20, 20, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 12px;
+  color: #e8e8e8;
+  z-index: 200;
+  user-select: none;
+}
+
+.menubar-left, .menubar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.menubar-right {
+  margin-left: auto;
+  gap: 14px;
+}
+
+.apple-logo {
+  font-size: 14px;
+  line-height: 1;
+  margin-top: -1px;
+}
+
+.menubar-app {
+  font-weight: 600;
+}
+
+.menubar-item {
+  cursor: default;
+  opacity: 0.92;
+}
+
+.menubar-item:hover {
+  opacity: 1;
+}
+
+.menubar-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.9;
+}
+
+.menubar-time {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+
+/* ── Desktop (the area between menubar and dock) ── */
+.desktop {
+  position: fixed;
+  top: 24px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+}
+
+/* Desktop icon grid (top-right of desktop) */
+.desktop-icons {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+}
+
+.desktop-icon {
+  width: 84px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background 0.12s;
+  user-select: none;
+}
+
+.desktop-icon:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.desktop-icon.selected {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.desktop-icon-img {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.desktop-icon-label {
+  color: #fff;
+  font-size: 11px;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8), 0 0 4px rgba(0, 0, 0, 0.5);
+  line-height: 1.2;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+/* ── Dock (bottom, glassy) ── */
+.dock-wrap {
+  position: fixed;
+  bottom: 8px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 150;
+  pointer-events: none;
+}
+
+.dock {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 14px;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  pointer-events: auto;
+}
+
+.dock-item {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.dock-item:hover {
+  transform: scale(1.25) translateY(-4px);
+}
+
+.dock-item-img {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+/* Active dot under dock icon when window is open */
+.dock-item.active::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+}
+
+/* Bounce animation when launching */
+@keyframes dockBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.dock-item.bouncing {
+  animation: dockBounce 0.6s ease-in-out 2;
+}
+
+/* ── Mobile bypass: hide the Mac desktop, show portfolio directly ── */
+@media (max-width: 768px) {
+  .mac-menubar,
+  .desktop,
+  .dock-wrap {
+    display: none !important;
+  }
+  .window {
+    display: none !important;
+  }
+  .mobile-portfolio {
+    display: block !important;
+  }
+}

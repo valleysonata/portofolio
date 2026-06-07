@@ -1,0 +1,193 @@
+/* window.css — terminal window chrome, title bar, controls, drag */
+
+/* ── Window wrapper (hidden until opened) ── */
+.window {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  width: 720px;
+  height: 460px;
+  min-width: 480px;
+  min-height: 300px;
+  background: rgba(13, 13, 13, 0.96);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.6),
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  display: none;
+  z-index: 100;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Visible state */
+.window.open {
+  display: flex;
+}
+
+/* Opening animation */
+.window.animating {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 0.35s ease;
+  opacity: 1;
+}
+
+/* Closing animation */
+.window.closing {
+  transition: transform 0.3s ease-in, opacity 0.3s ease-in;
+  transform: translate(-50%, -50%) scale(0.3);
+  opacity: 0;
+}
+
+/* Minimize animation (fly down to dock) */
+.window.minimizing {
+  transition: transform 0.4s ease-in, opacity 0.4s ease-in;
+  transform: translate(-50%, calc(100vh + 100px)) scale(0.15);
+  opacity: 0;
+}
+
+/* Maximized state */
+.window.maximized {
+  top: 24px;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 24px);
+  transform: none;
+  border-radius: 0;
+  border: none;
+}
+
+/* ── Title bar (drag handle) ── */
+.window-titlebar {
+  height: 38px;
+  min-height: 38px;
+  background: rgba(30, 30, 30, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  cursor: grab;
+  user-select: none;
+  position: relative;
+}
+
+.window-titlebar:active {
+  cursor: grabbing;
+}
+
+/* ── Traffic light buttons ── */
+.window-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.window-btn {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: filter 0.12s;
+}
+
+.window-btn:hover {
+  filter: brightness(1.2);
+}
+
+.window-btn.close {
+  background: #ff5f57;
+  box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.15);
+}
+
+.window-btn.minimize {
+  background: #febc2e;
+  box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.15);
+}
+
+.window-btn.maximize {
+  background: #28c840;
+  box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.15);
+}
+
+/* Hover icons inside traffic lights */
+.window-controls:hover .window-btn.close::after {
+  content: "×";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.5);
+  line-height: 1;
+}
+
+.window-controls:hover .window-btn.minimize::after {
+  content: "−";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.5);
+  line-height: 1;
+}
+
+.window-controls:hover .window-btn.maximize::after {
+  content: "+";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.5);
+  line-height: 1;
+}
+
+/* ── Window title (centered in title bar) ── */
+.window-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #999;
+  font-size: 12px;
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* ── Window body (scrollable content area) ── */
+.window-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #444 transparent;
+}
+
+.window-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.window-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.window-body::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 3px;
+}

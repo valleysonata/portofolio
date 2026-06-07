@@ -1,11 +1,11 @@
 /**
- * boot.js — boot sequence overlay
+ * boot.js — boot sequence inside the terminal window
  *
- * Renders a fake BIOS-style boot log on first load, types it out line by
- * line, then fades out. Any keypress or click skips to the end. Called
- * automatically; exposes window.Boot for manual triggering.
+ * Types out a fake boot log into .boot-section inside the window body.
+ * Skippable on any keypress/click after a short delay.
  *
  * Depends on: nothing
+ * Writes to:  window.Boot
  */
 
 (function () {
@@ -25,24 +25,20 @@
   ].join("\n");
 
   const BOOT_LINES = [
-    { text: "raka-os v2.0.3 (build 2026-06-07)", cls: "dim", delay: 80 },
-    { text: "boot device: /dev/portfolio  size: 13kb  free: 4gb", cls: "dim", delay: 40 },
-    { text: "loading kernel modules", cls: "", delay: 60, ok: true },
-    { text: "mounting /etc/raka.cfg", cls: "", delay: 50, ok: true },
-    { text: "starting raka-agent in background", cls: "", delay: 60, ok: true },
-    { text: "initializing chat subsystem", cls: "", delay: 50, ok: true },
-    { text: "", cls: "dim", delay: 30 },
-    { text: "welcome to raka@portfolio", cls: "welcome", delay: 80 },
-    { text: "session opened. all systems nominal.", cls: "dim", delay: 40 },
+    { text: "raka-os v2.0.3 (build 2026-06-07)", cls: "dim" },
+    { text: "boot device: /dev/portfolio  size: 13kb  free: 4gb", cls: "dim" },
+    { text: "loading kernel modules", cls: "ok", ok: true },
+    { text: "mounting /etc/raka.cfg", cls: "ok", ok: true },
+    { text: "starting raka-agent in background", cls: "ok", ok: true },
+    { text: "initializing chat subsystem", cls: "ok", ok: true },
   ];
 
-  const TYPEWRITER_MS = 8;
-  const POST_LINE_PAUSE = 120;
+  const TYPEWRITER_MS = 6;
+  const POST_LINE_PAUSE = 80;
 
-  function el(tag, cls, text) {
+  function el(tag, cls) {
     const e = document.createElement(tag);
     if (cls) e.className = cls;
-    if (text != null) e.textContent = text;
     return e;
   }
 
@@ -62,73 +58,115 @@
   }
 
   function start() {
-    const screen = document.getElementById("boot-screen");
-    if (!screen) return;
+    const bootSection = document.getElementById("boot-section");
+    if (!bootSection) return;
+    // Don't restart if already run
+    if (bootSection.dataset.ran === "1") return;
+    bootSection.dataset.ran = "1";
 
-    const inner = screen.querySelector(".boot-inner");
-    inner.innerHTML = "";
+    bootSection.innerHTML = "";
 
-    const logo = el("div", "boot-ascii", ASCII_LOGO);
-    inner.appendChild(logo);
+    const logo = el("div", "boot-ascii");
+    logo.textContent = ASCII_LOGO;
+    bootSection.appendChild(logo);
 
     const linesHost = el("div", "boot-lines");
-    inner.appendChild(linesHost);
+    bootSection.appendChild(linesHost);
 
-    const prompt = el("div", "boot-prompt", "");
+    const welcome = el("div", "boot-welcome");
+    welcome.textContent = "welcome to raka@portfolio";
+    welcome.style.opacity = "0";
+    welcome.style.transition = "opacity 0.3s ease";
+    bootSection.appendChild(welcome);
+
+    const prompt = el("div", "boot-prompt");
     prompt.innerHTML =
       '<span class="ps1"><span class="u">raka</span>@portfolio:~$</span>' +
       '<span class="boot-cursor"></span>';
     prompt.style.opacity = "0";
     prompt.style.transition = "opacity 0.2s ease";
-    inner.appendChild(prompt);
+    bootSection.appendChild(prompt);
 
     const skipHint = el("div", "boot-skip", "[ press any key to continue ]");
-    inner.appendChild(skipHint);
+    skipHint.style.opacity = "0";
+    skipHint.style.transition = "opacity 0.2s ease";
+    bootSection.appendChild(skipHint);
 
     let cancelled = false;
     let done = false;
 
     function skip() {
-      if (done) return;
+      if (done || !bootSection.dataset.ran) return;
       done = true;
       cancelled = true;
-      screen.classList.add("is-done");
-      setTimeout(() => { screen.style.display = "none"; }, 400);
+      // Show everything immediately
+      linesHost.innerHTML = "";
+      BOOT_LINES.forEach(line => {
+        const lineEl = el("div", "boot-line " + (line.cls || ""));
+        lineEl.textContent = line.text;
+        if (line.ok) {
+          const tag = el("span", "boot-ok-tag");
+          tag.textContent = "  [ok]";
+          lineEl.appendChild(tag);
+        }
+        linesHost.appendChild(lineEl);
+      });
+      welcome.style.opacity = "1";
+      prompt.style.opacity = "1";
+      skipHint.style.opacity = "0";
+
+      // Fade out boot section after a moment, keep terminal visible
+      setTimeout(() => {
+        bootSection.style.transition = "opacity 0.4s ease";
+        bootSection.style.opacity = "0.4";
+      }, 800);
+
       document.removeEventListener("keydown", onKey);
-      screen.removeEventListener("click", onClick);
+      document.removeEventListener("click", onClick);
     }
 
     function onKey() { skip(); }
     function onClick() { skip(); }
 
-    document.addEventListener("keydown", onKey);
-    screen.addEventListener("click", onClick);
+    // Delay before accepting skip input
+    setTimeout(() => {
+      document.addEventListener("keydown", onKey);
+      document.addEventListener("click", onClick);
+    }, 500);
 
     let i = 0;
     function nextLine() {
       if (cancelled) return;
       if (i >= BOOT_LINES.length) {
+        welcome.style.opacity = "1";
         prompt.style.opacity = "1";
+        skipHint.style.opacity = "1";
+
+        // After boot finishes, fade section down to make room for content
+        setTimeout(() => {
+          bootSection.style.transition = "opacity 0.5s ease";
+          bootSection.style.opacity = "0.4";
+          // Remove skip listener
+          document.removeEventListener("keydown", onKey);
+          document.removeEventListener("click", onClick);
+        }, 1500);
         return;
       }
       const line = BOOT_LINES[i++];
       const lineEl = el("div", "boot-line " + (line.cls || ""));
       linesHost.appendChild(lineEl);
 
-      if (line.ok) {
-        typeInto(lineEl, line.text, () => {
-          const tag = el("span", "boot-ok-tag", "  [ok]");
+      typeInto(lineEl, line.text, () => {
+        if (line.ok) {
+          const tag = el("span", "boot-ok-tag");
+          tag.textContent = "  [ok]";
           lineEl.appendChild(tag);
-          setTimeout(nextLine, POST_LINE_PAUSE);
-        });
-      } else {
-        typeInto(lineEl, line.text, () => {
-          setTimeout(nextLine, POST_LINE_PAUSE);
-        });
-      }
+        }
+        setTimeout(nextLine, POST_LINE_PAUSE);
+      });
     }
 
-    setTimeout(nextLine, 350);
+    setTimeout(nextLine, 200);
   }
 
   window.Boot = { start };

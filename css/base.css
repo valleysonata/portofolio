@@ -1,11 +1,16 @@
-/* base.css — body, global typography, scanlines, phosphor glow */
+/* base.css — body, global typography, scanlines, wallpaper, phosphor glow */
 
 body {
   background: #0d0d0d;
+  background-image: url('../assets/wallpaper.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   color: #e0e0e0;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 13px;
-  line-height: 1.7;
+  line-height: 1.6;
   margin: 0;
   padding: 0;
   min-height: 100vh;
@@ -13,6 +18,7 @@ body {
   text-shadow: 0 0 1px rgba(224, 224, 224, 0.25);
   text-rendering: geometricPrecision;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 /* ── Faint scanlines overlay (covers entire viewport, ignores pointer) ── */
@@ -24,45 +30,36 @@ body::before {
     to bottom,
     rgba(255, 255, 255, 0) 0px,
     rgba(255, 255, 255, 0) 1px,
-    rgba(255, 255, 255, 0.035) 1px,
-    rgba(255, 255, 255, 0.035) 2px
+    rgba(255, 255, 255, 0.025) 1px,
+    rgba(255, 255, 255, 0.025) 2px
   );
   pointer-events: none;
   z-index: 9998;
 }
 
-/* ── Subtle vignette (darker edges, like a curved CRT) ── */
+/* ── Subtle vignette (darker edges) ── */
 body::after {
   content: "";
   position: fixed;
   inset: 0;
   background: radial-gradient(
     ellipse at center,
-    transparent 50%,
-    rgba(0, 0, 0, 0.35) 100%
+    transparent 40%,
+    rgba(0, 0, 0, 0.45) 100%
   );
   pointer-events: none;
   z-index: 9997;
 }
 
-/* ── Main content area (constrains width, centers between chrome + statusbar) ── */
-.terminal-body {
-  max-width: 620px;
-  margin: 0 auto;
-  padding: 2.4rem 2rem 5rem;
-  position: relative;
-  z-index: 1;
-}
-
 .name {
-  font-size: 1.45rem;
+  font-size: 1.15rem;
   font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.2;
   margin-bottom: 0.2rem;
 }
 
-.sub { color: #777; }
+.sub { color: #888; }
 .w   { color: #e0e0e0; }
 
 ::selection {
