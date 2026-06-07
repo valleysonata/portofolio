@@ -4,11 +4,12 @@
  * Handles:
  * - Apple boot screen on page load
  * - Desktop icon double-click → open terminal window
- * - Dock icon click → open/restore terminal window
+ * - Dock icon click → open/restore window
  * - Window controls (close, minimize, maximize)
  * - Draggable window + window resize
  * - Genie effect (open / close / minimize)
  * - Live clock in menu bar
+ * - Menubar app name change on window focus
  * - Mobile bypass (shows portfolio directly)
  *
  * Depends on: nothing
@@ -65,12 +66,16 @@
   var windowOpen = false;
   var windowMinimized = false;
   var windowMaximized = false;
+  var activeAppName = "Finder";
 
-  var menubar = document.querySelector(".mac-menubar");
+  var menubarApp = document.querySelector(".menubar-app");
   var desktop = document.querySelector(".desktop");
   var dock = document.querySelector(".dock");
   var dockTerminal = document.querySelector(".dock-item[data-app='terminal']");
   var desktopTerminal = document.querySelector(".desktop-icon[data-app='terminal']");
+  var dockSafari = document.querySelector(".dock-item[data-app='safari']");
+  var dockSpotify = document.querySelector(".dock-item[data-app='spotify']");
+  var dockLaunchpad = document.querySelector(".dock-item[data-app='launchpad']");
   var win = document.getElementById("terminal-window");
   var titlebar = win.querySelector(".window-titlebar");
   var btnClose = win.querySelector(".window-btn.close");
@@ -92,9 +97,16 @@
   updateClock();
   setInterval(updateClock, 30000);
 
+  // ── Menubar app name ──
+  function setMenubarApp(name) {
+    activeAppName = name;
+    if (menubarApp) menubarApp.textContent = name;
+  }
+
   // ── Get dock icon position for genie ──
-  function getDockPosition() {
-    var dockRect = dockTerminal.getBoundingClientRect();
+  function getDockPosition(dockItem) {
+    var item = dockItem || dockTerminal;
+    var dockRect = item.getBoundingClientRect();
     return {
       x: dockRect.left + dockRect.width / 2,
       y: dockRect.bottom
@@ -102,11 +114,11 @@
   }
 
   // ── Genie transform helpers ──
-  function genieClosedState() {
-    var dock = getDockPosition();
-    var winRect = win.getBoundingClientRect();
+  function genieClosedState(targetWin, dockItem) {
+    var dockPos = getDockPosition(dockItem);
+    var winRect = targetWin.getBoundingClientRect();
     var winCenterX = winRect.left + winRect.width / 2;
-    var dx = dock.x - winCenterX;
+    var dx = dockPos.x - winCenterX;
     return "translate(calc(-50% + " + dx + "px), 0) scaleX(0.12) scaleY(0.04) perspective(600px) rotateX(25deg)";
   }
 
@@ -118,7 +130,67 @@
     return "translate(-50%, 50vh) scaleX(0.08) scaleY(0.02) perspective(600px) rotateX(30deg)";
   }
 
-  // ── Reset window styles ──
+  // ── Generic window open/close for Safari/Spotify ──
+  function openGenericWindow(windowEl, dockItem, appName, onOpen) {
+    if (windowEl.classList.contains("open")) {
+      // Already open — just focus
+      windowEl.style.zIndex = "101";
+      setTimeout(function () { windowEl.style.zIndex = ""; }, 100);
+      setMenubarApp(appName);
+      return;
+    }
+
+    var dockPos = getDockPosition(dockItem);
+    var winRect = windowEl.getBoundingClientRect();
+    var winCenterX = winRect.left + winRect.width / 2;
+    var dx = dockPos.x - winCenterX;
+
+    dockItem.classList.add("bouncing");
+    setTimeout(function () {
+      dockItem.classList.remove("bouncing");
+
+      windowEl.style.display = "flex";
+      windowEl.style.top = "50%";
+      windowEl.style.left = "50%";
+      windowEl.style.transform = "translate(calc(-50% + " + dx + "px), 0) scaleX(0.12) scaleY(0.04) perspective(600px) rotateX(25deg)";
+      windowEl.style.opacity = "0";
+      windowEl.classList.add("open");
+      void windowEl.offsetHeight;
+      windowEl.classList.add("animating");
+      windowEl.style.transform = genieOpenState();
+      windowEl.style.opacity = "1";
+      dockItem.classList.add("active");
+      setMenubarApp(appName);
+
+      setTimeout(function () { windowEl.classList.remove("animating"); }, 550);
+      if (onOpen) setTimeout(onOpen, 300);
+    }, 600);
+  }
+
+  function closeGenericWindow(windowEl, dockItem) {
+    if (!windowEl.classList.contains("open")) return;
+
+    var dockPos = getDockPosition(dockItem);
+    var winRect = windowEl.getBoundingClientRect();
+    var winCenterX = winRect.left + winRect.width / 2;
+    var dx = dockPos.x - winCenterX;
+
+    windowEl.classList.remove("animating");
+    windowEl.classList.add("closing");
+    windowEl.style.transform = "translate(calc(-50% + " + dx + "px), 0) scaleX(0.12) scaleY(0.04) perspective(600px) rotateX(25deg)";
+    windowEl.style.opacity = "0";
+
+    setTimeout(function () {
+      windowEl.classList.remove("open", "closing");
+      windowEl.style.display = "none";
+      windowEl.style.transform = "";
+      windowEl.style.opacity = "";
+      dockItem.classList.remove("active");
+      setMenubarApp("Finder");
+    }, 450);
+  }
+
+  // ── Terminal window management ──
   function resetWindowStyles() {
     win.style.transform = "";
     win.style.opacity = "";
@@ -129,16 +201,21 @@
     win.classList.remove("animating", "closing", "minimizing", "maximized");
   }
 
-  // ── Open window ──
   function openWindow() {
-    if (windowOpen && !windowMinimized) return;
+    if (windowOpen && !windowMinimized) {
+      // Already open — just focus
+      win.style.zIndex = "101";
+      setTimeout(function () { win.style.zIndex = "100"; }, 100);
+      setMenubarApp("Terminal");
+      return;
+    }
 
     if (windowMinimized) {
       resetWindowStyles();
       win.style.display = "flex";
       win.style.top = "50%";
       win.style.left = "50%";
-      win.style.transform = genieClosedState();
+      win.style.transform = genieClosedState(win, dockTerminal);
       win.style.opacity = "0";
       win.classList.add("open");
       void win.offsetHeight;
@@ -148,6 +225,7 @@
       windowMinimized = false;
       windowOpen = true;
       dockTerminal.classList.add("active");
+      setMenubarApp("Terminal");
       setTimeout(function () { win.classList.remove("animating"); }, 550);
       return;
     }
@@ -160,7 +238,7 @@
       win.style.display = "flex";
       win.style.top = "50%";
       win.style.left = "50%";
-      win.style.transform = genieClosedState();
+      win.style.transform = genieClosedState(win, dockTerminal);
       win.style.opacity = "0";
       win.classList.add("open");
       void win.offsetHeight;
@@ -171,7 +249,8 @@
       windowOpen = true;
       windowMinimized = false;
       dockTerminal.classList.add("active");
-      desktopTerminal.classList.add("selected");
+      if (desktopTerminal) desktopTerminal.classList.add("selected");
+      setMenubarApp("Terminal");
 
       setTimeout(function () { win.classList.remove("animating"); }, 550);
 
@@ -181,12 +260,11 @@
     }, 600);
   }
 
-  // ── Close window ──
   function closeWindow() {
     if (!windowOpen) return;
     win.classList.remove("animating");
     win.classList.add("closing");
-    win.style.transform = genieClosedState();
+    win.style.transform = genieClosedState(win, dockTerminal);
     win.style.opacity = "0";
 
     setTimeout(function () {
@@ -197,13 +275,13 @@
       windowMinimized = false;
       windowMaximized = false;
       dockTerminal.classList.remove("active");
-      desktopTerminal.classList.remove("selected");
+      if (desktopTerminal) desktopTerminal.classList.remove("selected");
       var output = document.getElementById("terminal-output");
       if (output) { output.innerHTML = ""; output.dataset.ran = ""; }
+      setMenubarApp("Finder");
     }, 450);
   }
 
-  // ── Minimize window ──
   function minimizeWindow() {
     if (!windowOpen || windowMinimized) return;
     win.classList.remove("animating");
@@ -215,10 +293,10 @@
       win.classList.remove("open", "minimizing");
       win.style.display = "none";
       resetWindowStyles();
+      setMenubarApp("Finder");
     }, 500);
   }
 
-  // ── Maximize / restore ──
   function toggleMaximize() {
     if (!windowOpen || windowMinimized) return;
     if (windowMaximized) {
@@ -235,31 +313,26 @@
     }
   }
 
-  // ── Event listeners ──
-  desktopTerminal.addEventListener("dblclick", function (e) {
-    e.preventDefault();
-    openWindow();
-  });
+  // ── Terminal event listeners ──
+  if (desktopTerminal) {
+    desktopTerminal.addEventListener("dblclick", function (e) {
+      e.preventDefault();
+      openWindow();
+    });
 
-  desktopTerminal.addEventListener("click", function (e) {
-    e.stopPropagation();
-    document.querySelectorAll(".desktop-icon").forEach(function (el) { el.classList.remove("selected"); });
-    desktopTerminal.classList.add("selected");
-  });
+    desktopTerminal.addEventListener("click", function (e) {
+      e.stopPropagation();
+      document.querySelectorAll(".desktop-icon").forEach(function (el) { el.classList.remove("selected"); });
+      desktopTerminal.classList.add("selected");
+    });
+  }
 
   desktop.addEventListener("click", function () {
     document.querySelectorAll(".desktop-icon").forEach(function (el) { el.classList.remove("selected"); });
   });
 
   dockTerminal.addEventListener("click", function () {
-    if (!windowOpen) {
-      openWindow();
-    } else if (windowMinimized) {
-      openWindow();
-    } else {
-      win.style.zIndex = "101";
-      setTimeout(function () { win.style.zIndex = "100"; }, 100);
-    }
+    openWindow();
   });
 
   btnClose.addEventListener("click", closeWindow);
@@ -267,7 +340,105 @@
   btnMaximize.addEventListener("click", toggleMaximize);
   titlebar.addEventListener("dblclick", toggleMaximize);
 
-  // ── Draggable window ──
+  // ── Safari dock click ──
+  if (dockSafari) {
+    dockSafari.addEventListener("click", function () {
+      openGenericWindow(safariWin, dockSafari, "Safari", function() {
+        if (window.SafariApp) window.SafariApp.init();
+      });
+    });
+  }
+
+  // ── Spotify dock click ──
+  if (dockSpotify) {
+    dockSpotify.addEventListener("click", function () {
+      openGenericWindow(spotifyWin, dockSpotify, "Spotify", function() {
+        if (window.SpotifyApp) window.SpotifyApp.init();
+      });
+    });
+  }
+
+  // ── Launchpad dock click ──
+  if (dockLaunchpad) {
+    dockLaunchpad.addEventListener("click", function () {
+      if (window.Launchpad) window.Launchpad.toggle();
+    });
+  }
+
+  // ── Safari/Spotify window close buttons ──
+  var safariWin = document.getElementById("safari-window");
+  var spotifyWin = document.getElementById("spotify-window");
+
+  if (safariWin) {
+    var safariClose = safariWin.querySelector(".window-btn.close");
+    var safariMin = safariWin.querySelector(".window-btn.minimize");
+    if (safariClose) safariClose.addEventListener("click", function () {
+      closeGenericWindow(safariWin, dockSafari);
+    });
+    if (safariMin) safariMin.addEventListener("click", function () {
+      closeGenericWindow(safariWin, dockSafari);
+    });
+    // Make Safari draggable
+    makeDraggable(safariWin, dockSafari, "Safari");
+  }
+
+  if (spotifyWin) {
+    var spotifyClose = spotifyWin.querySelector(".window-btn.close");
+    var spotifyMin = spotifyWin.querySelector(".window-btn.minimize");
+    if (spotifyClose) spotifyClose.addEventListener("click", function () {
+      closeGenericWindow(spotifyWin, dockSpotify);
+    });
+    if (spotifyMin) spotifyMin.addEventListener("click", function () {
+      closeGenericWindow(spotifyWin, dockSpotify);
+    });
+    // Make Spotify draggable
+    makeDraggable(spotifyWin, dockSpotify, "Spotify");
+  }
+
+  // ── Generic drag handler for any window ──
+  function makeDraggable(windowEl, dockItem, appName) {
+    var isDragging = false;
+    var dragOffsetX = 0;
+    var dragOffsetY = 0;
+    var titlebarEl = windowEl.querySelector(".window-titlebar");
+
+    titlebarEl.addEventListener("mousedown", function (e) {
+      if (e.target.closest(".window-controls")) return;
+      if (windowEl.classList.contains("maximized")) return;
+
+      isDragging = true;
+      var rect = windowEl.getBoundingClientRect();
+      dragOffsetX = e.clientX - rect.left;
+      dragOffsetY = e.clientY - rect.top;
+      windowEl.style.transition = "none";
+      e.preventDefault();
+    });
+
+    document.addEventListener("mousemove", function (e) {
+      if (!isDragging) return;
+      var x = e.clientX - dragOffsetX;
+      var y = e.clientY - dragOffsetY;
+      var maxX = window.innerWidth - windowEl.offsetWidth;
+      var maxY = window.innerHeight - windowEl.offsetHeight - 60;
+      windowEl.style.left = Math.max(0, Math.min(x, maxX)) + "px";
+      windowEl.style.top = Math.max(24, Math.min(y, maxY)) + "px";
+      windowEl.style.transform = "none";
+    });
+
+    document.addEventListener("mouseup", function () {
+      if (isDragging) {
+        isDragging = false;
+        windowEl.style.transition = "";
+      }
+    });
+
+    // Focus on click
+    windowEl.addEventListener("mousedown", function () {
+      setMenubarApp(appName);
+    });
+  }
+
+  // ── Draggable terminal window ──
   var isDragging = false;
   var dragOffsetX = 0;
   var dragOffsetY = 0;
@@ -364,5 +535,18 @@
     if (e.key === "Escape" && windowOpen && chatInput && !chatInput.matches(":focus")) { closeWindow(); }
   });
 
-  window.Desktop = { openWindow: openWindow, closeWindow: closeWindow, minimizeWindow: minimizeWindow, toggleMaximize: toggleMaximize };
+  // ── Click to focus terminal ──
+  win.addEventListener("mousedown", function () {
+    setMenubarApp("Terminal");
+  });
+
+  window.Desktop = {
+    openWindow: openWindow,
+    closeWindow: closeWindow,
+    minimizeWindow: minimizeWindow,
+    toggleMaximize: toggleMaximize,
+    openGenericWindow: openGenericWindow,
+    closeGenericWindow: closeGenericWindow,
+    setMenubarApp: setMenubarApp
+  };
 })();

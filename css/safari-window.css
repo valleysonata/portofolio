@@ -1,0 +1,194 @@
+/* safari-window.css — Safari browser window styles */
+
+/* ── Toolbar (address bar + nav buttons) ── */
+.safari-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(30, 30, 30, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ── Back / Forward buttons ── */
+.safari-nav-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.safari-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.safari-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* ── Address bar ── */
+.safari-address-bar {
+  flex: 1;
+  height: 28px;
+  padding: 0 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  color: #ccc;
+  font-size: 12px;
+  font-family: 'IBM Plex Mono', monospace;
+  outline: none;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.safari-address-bar:focus {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.safari-address-bar::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+/* ── Loading progress bar ── */
+.safari-loading-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: #42a5f5;
+  border-radius: 1px;
+  transition: width 0.3s ease;
+  z-index: 1;
+}
+
+.safari-loading-bar.active {
+  width: 90%;
+}
+
+.safari-loading-bar.done {
+  width: 100%;
+  transition: width 0.15s ease;
+}
+
+/* ── iframe content area ── */
+.safari-content {
+  flex: 1;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.safari-content iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* ── Error page ── */
+.safari-error {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: #1e1e1e;
+  color: #999;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.safari-error-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ddd;
+}
+
+.safari-error-message {
+  font-size: 13px;
+  color: #777;
+  text-align: center;
+  max-width: 300px;
+}
+
+.safari-error-retry {
+  margin-top: 8px;
+  padding: 8px 20px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  color: #ccc;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.safari-error-retry:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* ── Start page ── */
+.safari-start-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: #1e1e1e;
+  padding: 40px;
+}
+
+.safari-start-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #999;
+  margin-bottom: 24px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.safari-start-grid {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.safari-favorite {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #ccc;
+  font-size: 11px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  transition: transform 0.15s;
+}
+
+.safari-favorite:hover {
+  transform: scale(1.08);
+}
+
+.safari-fav-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}

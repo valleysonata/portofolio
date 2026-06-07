@@ -82,8 +82,6 @@
       '<div class="cmd-line">' + PS1 + '<span class="input">whoami</span></div>' +
       '<div class="cmd-result">' +
         '<div class="neofetch-info">' +
-          '<div class="name">adyaraka banyu langit</div>' +
-          '<div class="sub">incoming cs <span class="w">@nycu</span> · ai &amp; software</div>' +
         '</div>' +
       '</div>';
     output.appendChild(whoamiBlock);

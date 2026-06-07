@@ -217,7 +217,8 @@
   .dock-wrap {
     display: none !important;
   }
-  .window {
+  .window,
+  #launchpad-overlay {
     display: none !important;
   }
   .mobile-portfolio {

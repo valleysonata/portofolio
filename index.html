@@ -30,6 +30,9 @@
   <link rel="stylesheet" href="css/boot.css">
   <link rel="stylesheet" href="css/desktop.css">
   <link rel="stylesheet" href="css/window.css">
+  <link rel="stylesheet" href="css/launchpad.css">
+  <link rel="stylesheet" href="css/safari-window.css">
+  <link rel="stylesheet" href="css/spotify-window.css">
 </head>
 <body>
 
@@ -75,6 +78,13 @@
           <line x1="23" y1="13" x2="23" y2="11"></line>
         </svg>
       </span>
+      <span class="menubar-battery" id="battery-indicator">
+        <svg width="20" height="12" viewBox="0 0 20 12" fill="none" stroke="currentColor" stroke-width="1">
+          <rect x="0.5" y="0.5" width="16" height="11" rx="2" fill="none"/>
+          <rect x="17" y="3" width="2.5" height="5" rx="1" fill="currentColor" opacity="0.5"/>
+          <rect x="2" y="2" width="13" height="7" rx="1" fill="currentColor" opacity="0.8" id="battery-level"/>
+        </svg>
+      </span>
       <span class="menubar-time"></span>
     </div>
   </div>
@@ -94,9 +104,24 @@
   <!-- Dock -->
   <div class="dock-wrap">
     <div class="dock">
+      <div class="dock-item" data-app="launchpad" title="Launchpad">
+        <div class="dock-item-img">
+          <img src="assets/launchpad-icon.svg" alt="Launchpad" width="42" height="42">
+        </div>
+      </div>
       <div class="dock-item" data-app="terminal" title="Terminal">
         <div class="dock-item-img">
           <img src="assets/terminal-icon.svg" alt="Terminal" width="42" height="42">
+        </div>
+      </div>
+      <div class="dock-item" data-app="safari" title="Safari">
+        <div class="dock-item-img">
+          <img src="assets/safari-icon.svg" alt="Safari" width="42" height="42">
+        </div>
+      </div>
+      <div class="dock-item" data-app="spotify" title="Spotify">
+        <div class="dock-item-img">
+          <img src="assets/spotify-icon.svg" alt="Spotify" width="42" height="42">
         </div>
       </div>
     </div>
@@ -124,6 +149,87 @@
         </div>
         <div class="neofetch-right" id="terminal-output"></div>
       </div>
+    </div>
+    <div class="window-resize-handles">
+      <div class="resize-handle resize-n"></div>
+      <div class="resize-handle resize-s"></div>
+      <div class="resize-handle resize-e"></div>
+      <div class="resize-handle resize-w"></div>
+      <div class="resize-handle resize-ne"></div>
+      <div class="resize-handle resize-nw"></div>
+      <div class="resize-handle resize-se"></div>
+      <div class="resize-handle resize-sw"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- SAFARI WINDOW                                                  -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+
+  <div class="window" id="safari-window" data-app="safari">
+    <div class="window-titlebar">
+      <div class="window-controls">
+        <button class="window-btn close" title="Close"></button>
+        <button class="window-btn minimize" title="Minimize"></button>
+        <button class="window-btn maximize" title="Maximize"></button>
+      </div>
+      <div class="safari-toolbar">
+        <button class="safari-nav-btn" id="safari-back" title="Back">&#9664;</button>
+        <button class="safari-nav-btn" id="safari-forward" title="Forward">&#9654;</button>
+        <div class="safari-address-bar">
+          <input type="text" id="safari-url" placeholder="Search or enter website name" spellcheck="false" />
+        </div>
+      </div>
+    </div>
+    <div class="window-body safari-content">
+      <div class="safari-loading-bar" id="safari-loading-bar"></div>
+      <div id="safari-page-container">
+        <div class="safari-start-page">
+          <div class="safari-start-title">Favorites</div>
+          <div class="safari-start-grid">
+            <a class="safari-favorite" href="https://github.com/valleysonata" target="_blank">
+              <div class="safari-fav-icon" style="background:#24292e;">GH</div>
+              <span>GitHub</span>
+            </a>
+            <a class="safari-favorite" href="https://www.linkedin.com/in/adyaraka-banyu-langit-63456a317/" target="_blank">
+              <div class="safari-fav-icon" style="background:#0077B5;">in</div>
+              <span>LinkedIn</span>
+            </a>
+            <a class="safari-favorite" href="mailto:banyulangitadyaraka@gmail.com">
+              <div class="safari-fav-icon" style="background:#EA4335;">@</div>
+              <span>Gmail</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="window-resize-handles">
+      <div class="resize-handle resize-n"></div>
+      <div class="resize-handle resize-s"></div>
+      <div class="resize-handle resize-e"></div>
+      <div class="resize-handle resize-w"></div>
+      <div class="resize-handle resize-ne"></div>
+      <div class="resize-handle resize-nw"></div>
+      <div class="resize-handle resize-se"></div>
+      <div class="resize-handle resize-sw"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- SPOTIFY WINDOW                                                 -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+
+  <div class="window" id="spotify-window" data-app="spotify">
+    <div class="window-titlebar">
+      <div class="window-controls">
+        <button class="window-btn close" title="Close"></button>
+        <button class="window-btn minimize" title="Minimize"></button>
+        <button class="window-btn maximize" title="Maximize"></button>
+      </div>
+      <div class="window-title">Spotify — Now Playing</div>
+    </div>
+    <div class="window-body">
+      <div id="spotify-embed-container"></div>
     </div>
     <div class="window-resize-handles">
       <div class="resize-handle resize-n"></div>
@@ -193,6 +299,43 @@
   </div>
 
   <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- LAUNCHPAD OVERLAY                                              -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+
+  <div id="launchpad-overlay">
+    <div class="launchpad-search">
+      <input type="text" id="launchpad-search" placeholder="Search" />
+    </div>
+    <div class="launchpad-grid">
+      <div class="launchpad-item" data-action="terminal">
+        <div class="launchpad-item-icon"><img src="assets/terminal-icon.svg" alt="Terminal" width="64" height="64"></div>
+        <div class="launchpad-item-label">Terminal</div>
+      </div>
+      <div class="launchpad-item" data-action="safari">
+        <div class="launchpad-item-icon"><img src="assets/safari-icon.svg" alt="Safari" width="64" height="64"></div>
+        <div class="launchpad-item-label">Safari</div>
+      </div>
+      <div class="launchpad-item" data-action="spotify">
+        <div class="launchpad-item-icon"><img src="assets/spotify-icon.svg" alt="Spotify" width="64" height="64"></div>
+        <div class="launchpad-item-label">Spotify</div>
+      </div>
+      <div class="launchpad-item" data-action="github">
+        <div class="launchpad-item-icon"><div class="launchpad-item-icon-placeholder" style="background:#24292e;border-radius:16px;width:64px;height:64px;display:flex;align-items:center;justify-content:center;color:white;font-size:24px;font-weight:bold;">GH</div></div>
+        <div class="launchpad-item-label">GitHub</div>
+      </div>
+      <div class="launchpad-item" data-action="linkedin">
+        <div class="launchpad-item-icon"><div class="launchpad-item-icon-placeholder" style="background:#0077B5;border-radius:16px;width:64px;height:64px;display:flex;align-items:center;justify-content:center;color:white;font-size:24px;font-weight:bold;">in</div></div>
+        <div class="launchpad-item-label">LinkedIn</div>
+      </div>
+      <div class="launchpad-item" data-action="gmail">
+        <div class="launchpad-item-icon"><div class="launchpad-item-icon-placeholder" style="background:#EA4335;border-radius:16px;width:64px;height:64px;display:flex;align-items:center;justify-content:center;color:white;font-size:24px;font-weight:bold;">@</div></div>
+        <div class="launchpad-item-label">Gmail</div>
+      </div>
+    </div>
+    <div class="launchpad-close-hint">Press Esc or click anywhere to close</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
   <!-- HIDDEN RESUME CONTEXT (AI data source)                       -->
   <!-- ══════════════════════════════════════════════════════════════ -->
 
@@ -238,6 +381,10 @@
   <script src="js/boot.js"></script>
   <script src="js/chat.js"></script>
   <script src="js/desktop.js"></script>
+  <script src="js/safari.js"></script>
+  <script src="js/spotify.js"></script>
+  <script src="js/launchpad.js"></script>
+  <script src="js/battery.js"></script>
 
 </body>
 </html>

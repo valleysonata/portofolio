@@ -234,3 +234,15 @@
   bottom: -4px; left: -4px; width: 12px; height: 12px;
   cursor: sw-resize;
 }
+
+/* ── Safari window overrides ── */
+.window[data-app="safari"] {
+  width: 900px;
+  height: 600px;
+}
+
+/* ── Spotify window overrides ── */
+.window[data-app="spotify"] {
+  width: 350px;
+  height: 500px;
+}

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#4DB8FF"/>
+      <stop offset="100%" stop-color="#1A7FD4"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.25)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </linearGradient>
+    <linearGradient id="needle" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#FF3B30"/>
+      <stop offset="50%" stop-color="#FF3B30"/>
+      <stop offset="50%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#FFFFFF"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Main rounded square -->
+  <rect x="16" y="16" width="480" height="480" rx="100" ry="100" fill="url(#bg)"/>
+
+  <!-- Inner bevel -->
+  <rect x="18" y="18" width="476" height="476" rx="98" ry="98" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+
+  <!-- Top highlight -->
+  <rect x="16" y="16" width="480" height="200" rx="100" ry="100" fill="url(#shine)"/>
+
+  <!-- Compass outer ring -->
+  <circle cx="256" cy="256" r="150" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+  <circle cx="256" cy="256" r="140" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+
+  <!-- Tick marks around compass -->
+  <g stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round">
+    <line x1="256" y1="112" x2="256" y2="125"/>
+    <line x1="256" y1="387" x2="256" y2="400"/>
+    <line x1="112" y1="256" x2="125" y2="256"/>
+    <line x1="387" y1="256" x2="400" y2="256"/>
+  </g>
+  <g stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-linecap="round">
+    <line x1="155" y1="155" x2="164" y2="164"/>
+    <line x1="357" y1="155" x2="348" y2="164"/>
+    <line x1="155" y1="357" x2="164" y2="348"/>
+    <line x1="357" y1="357" x2="348" y2="348"/>
+  </g>
+
+  <!-- Compass needle -->
+  <polygon points="256,130 244,256 256,260 268,256" fill="url(#needle)" opacity="0.95"/>
+
+  <!-- Center dot -->
+  <circle cx="256" cy="256" r="8" fill="white" opacity="0.9"/>
+  <circle cx="256" cy="256" r="4" fill="#1A7FD4"/>
+</svg>
