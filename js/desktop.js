@@ -18,29 +18,41 @@
   "use strict";
 
   // ── Apple Boot Screen ──
+  function dismissBootScreen(callback) {
+    var bootEl = document.getElementById("apple-boot");
+    if (!bootEl) { if (callback) callback(); return; }
+    bootEl.style.transition = "opacity 0.6s ease";
+    bootEl.style.opacity = "0";
+    setTimeout(function () {
+      bootEl.style.display = "none";
+      if (callback) callback();
+    }, 650);
+  }
+
   function initBootScreen(callback) {
     var bootEl = document.getElementById("apple-boot");
     var fill = document.getElementById("boot-bar-fill");
-    if (!bootEl || !fill) { callback(); return; }
+    if (!bootEl || !fill) { if (callback) callback(); return; }
 
-    // Animate the fill bar
     fill.style.width = "0%";
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        fill.style.transition = "width 2.5s cubic-bezier(0.4, 0, 0.2, 1)";
-        fill.style.width = "100%";
-      });
-    });
-
-    // After bar fills, fade out
     setTimeout(function () {
-      bootEl.style.transition = "opacity 0.6s ease";
-      bootEl.style.opacity = "0";
-      setTimeout(function () {
+      fill.style.transition = "width 2.5s cubic-bezier(0.4, 0, 0.2, 1)";
+      fill.style.width = "100%";
+    }, 50);
+
+    // Fade out after bar fills
+    setTimeout(function () {
+      dismissBootScreen(callback);
+    }, 2800);
+
+    // Safety: force dismiss after 4s no matter what
+    setTimeout(function () {
+      if (bootEl.style.display !== "none") {
+        bootEl.style.transition = "none";
         bootEl.style.display = "none";
-        callback();
-      }, 650);
-    }, 2900);
+        if (callback) callback();
+      }
+    }, 4000);
   }
 
   // ── Mobile bypass ──
