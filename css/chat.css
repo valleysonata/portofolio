@@ -73,9 +73,16 @@
   margin-top: -1px;
   z-index: 1;
   display: block;
-  text-shadow:
-    0 0 4px rgba(224, 224, 224, 0.6),
-    0 0 8px rgba(224, 224, 224, 0.25);
+  text-shadow: none;
+}
+
+/* Desktop only: add neon glow back */
+@media (min-width: 769px) {
+  .terminal-cursor {
+    text-shadow:
+      0 0 4px rgba(224, 224, 224, 0.6),
+      0 0 8px rgba(224, 224, 224, 0.25);
+  }
 }
 
 /* Hide block cursor the moment the native caret is active */
