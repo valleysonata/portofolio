@@ -380,6 +380,7 @@
     });
     // Make Safari draggable
     makeDraggable(safariWin, dockSafari, "Safari");
+    makeResizable(safariWin);
   }
 
   if (spotifyWin) {
@@ -393,6 +394,7 @@
     });
     // Make Spotify draggable
     makeDraggable(spotifyWin, dockSpotify, "Spotify");
+    makeResizable(spotifyWin);
   }
 
   // ── Generic drag handler for any window ──
@@ -435,6 +437,63 @@
     // Focus on click
     windowEl.addEventListener("mousedown", function () {
       setMenubarApp(appName);
+    });
+  }
+
+  // ── Generic resize handler for any window ──
+  function makeResizable(windowEl) {
+    var isResizing = false;
+    var resizeDir = "";
+    var resizeStartX = 0, resizeStartY = 0;
+    var resizeStartW = 0, resizeStartH = 0;
+    var resizeStartLeft = 0, resizeStartTop = 0;
+
+    windowEl.querySelectorAll(".resize-handle").forEach(function (handle) {
+      handle.addEventListener("mousedown", function (e) {
+        if (windowEl.classList.contains("maximized")) return;
+        e.preventDefault();
+        e.stopPropagation();
+        isResizing = true;
+        resizeDir = handle.className.replace("resize-handle resize-", "");
+        resizeStartX = e.clientX;
+        resizeStartY = e.clientY;
+        resizeStartW = windowEl.offsetWidth;
+        resizeStartH = windowEl.offsetHeight;
+        var rect = windowEl.getBoundingClientRect();
+        resizeStartLeft = rect.left;
+        resizeStartTop = rect.top;
+        windowEl.style.transition = "none";
+        document.body.style.cursor = getComputedStyle(handle).cursor;
+      });
+    });
+
+    document.addEventListener("mousemove", function (e) {
+      if (!isResizing) return;
+      var dx = e.clientX - resizeStartX;
+      var dy = e.clientY - resizeStartY;
+      var minW = parseInt(getComputedStyle(windowEl).minWidth) || 480;
+      var minH = parseInt(getComputedStyle(windowEl).minHeight) || 300;
+      var newW = resizeStartW, newH = resizeStartH;
+      var newLeft = resizeStartLeft, newTop = resizeStartTop;
+
+      if (resizeDir.includes("e")) newW = Math.max(minW, resizeStartW + dx);
+      if (resizeDir.includes("w")) { newW = Math.max(minW, resizeStartW - dx); newLeft = resizeStartLeft + (resizeStartW - newW); }
+      if (resizeDir.includes("s")) newH = Math.max(minH, resizeStartH + dy);
+      if (resizeDir.includes("n")) { newH = Math.max(minH, resizeStartH - dy); newTop = Math.max(24, resizeStartTop + (resizeStartH - newH)); }
+
+      windowEl.style.width = newW + "px";
+      windowEl.style.height = newH + "px";
+      windowEl.style.left = newLeft + "px";
+      windowEl.style.top = newTop + "px";
+      windowEl.style.transform = "none";
+    });
+
+    document.addEventListener("mouseup", function () {
+      if (isResizing) {
+        isResizing = false;
+        windowEl.style.transition = "";
+        document.body.style.cursor = "";
+      }
     });
   }
 

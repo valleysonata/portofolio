@@ -241,11 +241,16 @@
   height: 600px;
 }
 
+.window[data-app="safari"] .window-titlebar {
+  height: 52px;
+  min-height: 52px;
+}
+
 /* ── Spotify window overrides ── */
 .window[data-app="spotify"] {
   width: 350px;
   height: 500px;
-  border-radius: 10px;
+  border-radius: 0;
   overflow: hidden;
 }
 
