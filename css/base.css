@@ -1,4 +1,4 @@
-/* base.css — body, global typography, text selection */
+/* base.css — body, global typography, scanlines, phosphor glow */
 
 body {
   background: #0d0d0d;
@@ -6,9 +6,52 @@ body {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 13px;
   line-height: 1.7;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  position: relative;
+  text-shadow: 0 0 1px rgba(224, 224, 224, 0.25);
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Faint scanlines overlay (covers entire viewport, ignores pointer) ── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0px,
+    rgba(255, 255, 255, 0) 1px,
+    rgba(255, 255, 255, 0.035) 1px,
+    rgba(255, 255, 255, 0.035) 2px
+  );
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* ── Subtle vignette (darker edges, like a curved CRT) ── */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 50%,
+    rgba(0, 0, 0, 0.35) 100%
+  );
+  pointer-events: none;
+  z-index: 9997;
+}
+
+/* ── Main content area (constrains width, centers between chrome + statusbar) ── */
+.terminal-body {
   max-width: 620px;
   margin: 0 auto;
-  padding: 4rem 2rem 8rem;
+  padding: 2.4rem 2rem 5rem;
+  position: relative;
+  z-index: 1;
 }
 
 .name {

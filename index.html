@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>raka — portfolio</title>
 
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%230d0d0d'/%3E%3Ctext x='8' y='12' font-family='monospace' font-size='11' fill='%23e0e0e0' text-anchor='middle'%3E%E2%96%8B%3C/text%3E%3C/svg%3E">
+
+  <!-- Open Graph / SEO -->
+  <meta name="description" content="Adyaraka Banyu Langit — incoming CS @NYCU, AI & software. Personal portfolio with a terminal-aesthetic AI chat agent.">
+  <meta property="og:title" content="raka — portfolio">
+  <meta property="og:description" content="Adyaraka Banyu Langit — incoming CS @NYCU, AI & software.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://valleysonata.github.io/portofolio/">
+
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 
@@ -15,59 +25,100 @@
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/buttons.css">
   <link rel="stylesheet" href="css/chat.css">
+  <link rel="stylesheet" href="css/boot.css">
 </head>
 <body>
 
-  <!-- ASCII matrix rain canvas (driven by js/matrix.js) -->
-  <div class="canvas-container">
-    <canvas id="matrix-canvas"></canvas>
+  <!-- ── Boot overlay (covers everything until dismissed or 3s) ── -->
+  <div id="boot-screen">
+    <div class="boot-inner"></div>
   </div>
 
-  <!-- Hero: name + tagline -->
-  <div class="line l2">
-    <div class="name">Adyaraka Banyu Langit</div>
-    <div class="sub">incoming CS <span class="w">@NYCU</span> · AI &amp; software</div>
+  <!-- ── Window chrome (macOS-style title bar) ── -->
+  <div class="window-chrome">
+    <div class="window-dots">
+      <span class="dot red"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+    </div>
+    <div class="window-title">raka — portfolio</div>
   </div>
 
-  <!-- Contact links -->
-  <div class="cmd line l3">
-    <div class="cmd-line">
-      <span class="ps1"><span class="u">raka</span>@portfolio:~$</span>
-      <span class="input">cat contact.txt</span>
-    </div>
-    <div class="btns">
-      <a class="btn" href="mailto:banyulangitadyaraka@gmail.com">gmail</a>
-      <a class="btn" href="https://github.com/valleysonata" target="_blank">github</a>
-      <a class="btn" href="https://www.linkedin.com/in/adyaraka-banyu-langit-63456a317/" target="_blank">linkedin</a>
-    </div>
-  </div>
+  <!-- ── Main terminal content ── -->
+  <div class="terminal-body">
 
-  <!-- AI chat agent -->
-  <div class="cmd line l4">
-    <div class="cmd-line">
-      <span class="ps1"><span class="u">raka</span>@portfolio:~/ask$</span>
-      <span class="input">./raka-agent --interactive</span>
+    <!-- ASCII matrix rain canvas (driven by js/matrix.js) -->
+    <div class="canvas-container">
+      <canvas id="matrix-canvas"></canvas>
     </div>
 
-    <div id="chat-log">
-      <div class="chat-msg-agent done">
-        <span class="chat-label">raka-agent &gt; </span>hey — i'm an ai trained on raka's resume. ask me about his background, skills, or experience.
+    <!-- Terminal "history" — every UI section is a "run" + its output -->
+    <div class="terminal-output">
+
+      <!-- whoami -->
+      <div class="terminal-block line l2">
+        <div class="cmd-line">
+          <span class="ps1"><span class="u">raka</span>@portfolio:~$</span>
+          <span class="input">whoami</span>
+        </div>
+        <div class="cmd-result">
+          <div class="name">adyaraka banyu langit</div>
+          <div class="sub">incoming cs <span class="w">@nycu</span> · ai &amp; software</div>
+        </div>
       </div>
+
+      <!-- cat contact.txt -->
+      <div class="terminal-block line l3">
+        <div class="cmd-line">
+          <span class="ps1"><span class="u">raka</span>@portfolio:~$</span>
+          <span class="input">cat contact.txt</span>
+        </div>
+        <div class="cmd-result">
+          <div class="btns">
+            <a class="btn" href="mailto:banyulangitadyaraka@gmail.com">gmail</a>
+            <a class="btn" href="https://github.com/valleysonata" target="_blank">github</a>
+            <a class="btn" href="https://www.linkedin.com/in/adyaraka-banyu-langit-63456a317/" target="_blank">linkedin</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ./raka-agent --interactive (the AI chat) -->
+      <div class="terminal-block line l4">
+        <div class="cmd-line">
+          <span class="ps1"><span class="u">raka</span>@portfolio:~$</span>
+          <span class="input">./raka-agent --interactive</span>
+        </div>
+        <div class="cmd-result">
+          <div id="chat-log">
+            <div class="chat-msg-agent done">
+              <span class="chat-label">raka-agent &gt; </span>hey — i'm an ai trained on raka's resume. ask me about his background, skills, or experience.
+            </div>
+          </div>
+          <div class="chat-input-row">
+            <span class="ps1" style="white-space:nowrap;"><span class="u">you</span>@ask:~$</span>
+            <div class="input-container">
+              <input
+                id="chat-input"
+                type="text"
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <div id="term-cursor" class="terminal-cursor blink-mode">▋</div>
+            </div>
+          </div>
+          <div class="chat-hint">press enter to send</div>
+        </div>
+      </div>
+
     </div>
 
-    <div class="chat-input-row">
-      <span class="ps1" style="white-space:nowrap;"><span class="u">you</span>@ask:~$</span>
-      <div class="input-container">
-        <input
-          id="chat-input"
-          type="text"
-          autocomplete="off"
-          spellcheck="false"
-        />
-        <div id="term-cursor" class="terminal-cursor blink-mode">▋</div>
-      </div>
-    </div>
-    <div class="chat-hint">press enter to send</div>
+  </div>
+
+  <!-- ── Status bar (vim-style, fixed bottom) ── -->
+  <div class="status-bar">
+    <span class="status-mode">NORMAL</span>
+    <span class="status-file">~/portfolio/index.html</span>
+    <span class="status-pos">1:1</span>
   </div>
 
   <!--
@@ -112,13 +163,19 @@
     2. cursor.js   → sets window.Cursor (needs #chat-input in DOM)
     3. messages.js → sets window.Messages (needs #chat-log in DOM)
     4. matrix.js   → self-contained, needs #matrix-canvas
-    5. chat.js     → orchestrates everything above
+    5. boot.js     → fires on DOMContentLoaded
+    6. chat.js     → orchestrates everything above
   -->
   <script src="js/config.js"></script>
   <script src="js/cursor.js"></script>
   <script src="js/messages.js"></script>
   <script src="js/matrix.js"></script>
+  <script src="js/boot.js"></script>
   <script src="js/chat.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => window.Boot.start());
+  </script>
 
 </body>
 </html>

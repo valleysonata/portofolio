@@ -1,0 +1,84 @@
+/* boot.css — fullscreen boot sequence overlay (skippable) */
+
+#boot-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: #0d0d0d;
+  padding: 4rem 2rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  color: #e0e0e0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+#boot-screen .boot-inner {
+  max-width: 620px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+#boot-screen .boot-ascii {
+  color: #e0e0e0;
+  font-size: 11px;
+  line-height: 1.18;
+  white-space: pre;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 0 4px rgba(224, 224, 224, 0.4);
+}
+
+#boot-screen .boot-line {
+  margin-bottom: 0.2rem;
+  white-space: pre;
+  min-height: 1.4em;
+}
+
+#boot-screen .boot-line.ok    { color: #e0e0e0; }
+#boot-screen .boot-line.dim   { color: #666; }
+#boot-screen .boot-line.welcome { color: #e0e0e0; margin-top: 1.2rem; }
+
+#boot-screen .boot-ok-tag {
+  color: #28c840;
+}
+
+#boot-screen .boot-prompt {
+  color: #555;
+  margin-top: 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+#boot-screen .boot-prompt .u {
+  color: #e0e0e0;
+}
+
+#boot-screen .boot-cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1em;
+  background: #e0e0e0;
+  vertical-align: text-bottom;
+  animation: terminalBlink 1.1s step-end infinite;
+  box-shadow: 0 0 4px rgba(224, 224, 224, 0.5);
+}
+
+#boot-screen .boot-skip {
+  color: #444;
+  font-size: 11px;
+  margin-top: 1rem;
+}
+
+#boot-screen .boot-fade {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+#boot-screen.is-done {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}

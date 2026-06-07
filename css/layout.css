@@ -1,6 +1,86 @@
-/* layout.css — terminal chrome: prompt lines, canvas container, contact row */
+/* layout.css — window chrome (title bar), status bar, terminal prompt rows, canvas */
 
-/* ASCII canvas wrapper */
+/* ── Window chrome (macOS-style title bar) ── */
+.window-chrome {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 28px;
+  background: #181818;
+  border-bottom: 1px solid #2a2a2a;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  user-select: none;
+}
+
+.window-dots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.window-dots .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.window-dots .dot.red    { background: #ff5f57; box-shadow: inset 0 0 0 0.5px #d04a43; }
+.window-dots .dot.yellow { background: #febc2e; box-shadow: inset 0 0 0 0.5px #d9a023; }
+.window-dots .dot.green  { background: #28c840; box-shadow: inset 0 0 0 0.5px #1fa831; }
+
+.window-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #888;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+
+/* ── Status bar (vim-style, bottom) ── */
+.status-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: 22px;
+  background: #181818;
+  border-top: 1px solid #2a2a2a;
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  color: #888;
+  user-select: none;
+}
+
+.status-mode {
+  background: #28c840;
+  color: #0d0d0d;
+  padding: 0 10px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.status-file {
+  flex: 1;
+  text-align: center;
+  color: #888;
+}
+
+.status-pos {
+  padding: 0 12px;
+  color: #888;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── ASCII canvas wrapper ── */
 .canvas-container {
   margin-bottom: 1.8rem;
   opacity: 0;
@@ -14,13 +94,23 @@ canvas {
   user-select: none;
 }
 
-/* Terminal command block */
-.cmd { margin-top: 1.8rem; }
+/* ── Terminal command block (a "run" + its output) ── */
+.terminal-block {
+  margin-top: 1.4rem;
+}
 
+/* The "typed command" line */
 .cmd-line {
   display: flex;
   gap: 0.5em;
   flex-wrap: wrap;
+  align-items: baseline;
+}
+
+/* The output below a command */
+.cmd-result {
+  margin-top: 0.4rem;
+  margin-bottom: 0.2rem;
 }
 
 /* Prompt and input text colors */
@@ -33,6 +123,6 @@ canvas {
 .btns {
   display: flex;
   gap: 0.6rem;
-  margin-top: 0.4rem;
+  margin-top: 0.3rem;
   flex-wrap: wrap;
 }

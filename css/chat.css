@@ -46,7 +46,7 @@
   outline: none;
   width: 100%;
   padding: 0.15rem 0;
-  caret-color: #e0e0e0;
+  caret-color: transparent;
   position: relative;
   z-index: 2;
 }
@@ -62,17 +62,20 @@
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 13px;
+  font-size: 14px;
   color: #e0e0e0;
   pointer-events: none;
   line-height: 1;
   margin-top: -1px;
   z-index: 1;
   display: block;
+  text-shadow:
+    0 0 4px rgba(224, 224, 224, 0.6),
+    0 0 8px rgba(224, 224, 224, 0.25);
 }
 
 /* Hide block cursor the moment the native caret is active */
-#chat-input:focus + .terminal-cursor {
+#chat-input:focus ~ .terminal-cursor {
   display: none !important;
 }
 
@@ -86,6 +89,9 @@
   animation: terminalBlink 1.1s step-end infinite;
   vertical-align: middle;
   margin-left: 2px;
+  text-shadow:
+    0 0 4px rgba(224, 224, 224, 0.5),
+    0 0 8px rgba(224, 224, 224, 0.2);
 }
 
 /* ── Hint text ── */
