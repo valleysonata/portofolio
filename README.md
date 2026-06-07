@@ -19,9 +19,7 @@ Pure HTML, CSS, and vanilla JS.
 
 ## About
 
-A retro terminal-styled personal portfolio for Adyaraka Banyu Langit. The page drops visitors straight into a fake `~/` shell: an ASCII name logo with falling rain, a `cat contact.txt` link row, and an interactive `raka-agent` chat at the bottom that answers questions about the owner's resume in real time.
-
-Everything is static - no framework, no bundler - and the whole site is one HTML file plus a few CSS and JS modules. The AI agent runs through a small Cloudflare Worker that proxies requests to Groq, so the API key never ships in the frontend bundle.
+A retro terminal-styled personal portfolio website; the whole site is one HTML file plus a few CSS and JS modules. The AI agent runs through a small Cloudflare Worker that proxies requests to Groq, so the API key never ships in the frontend bundle.
 
 ## Features
 
@@ -160,7 +158,7 @@ While switching to Groq AI, the API key was accidentally committed to a public G
 A push went to the wrong repository (a different project). Trying to fix it with `git pull --rebase` caused conflicts. The fix was `rm -rf .git`, which deleted all 20+ original commits. The project had to be rebuilt from scratch.
 
 **4. File structure issues**
-Files got nested in `Downloads/portofolio-main (1)/portofolio-main/` paths, and coffee shop project files accidentally got mixed in. The repo structure was messy and unprofessional.
+Files got nested in `Downloads/portofolio-main (1)/portofolio-main/` paths, and other project files accidentally got mixed in. The repo structure was messy and unprofessional.
 
 **5. No backend**
 The API key was sitting in the frontend code, public to anyone who opened DevTools. No way to hide credentials.
@@ -189,4 +187,4 @@ The API key was sitting in the frontend code, public to anyone who opened DevToo
 3. **Verify the remote before pushing.** Accidentally pushing to the wrong repo causes chaos.
 4. **Use a backend for API key security.** Frontend-only architecture is fine for no-key APIs, but you need a backend when keys are required.
 5. **Read error messages carefully.** "Communication channel closed" was clearly an API issue, not a code issue.
-6. **Test before declaring victory.** The chat should have been tested end-to-end (including the CORS preflight) before calling it done.
+
