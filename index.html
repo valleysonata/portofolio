@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>raka — portfolio</title>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Styles (load order matters: reset → base → layout → components) -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/chat.css">
+</head>
+<body>
+
+  <!-- ASCII matrix rain canvas (driven by js/matrix.js) -->
+  <div class="canvas-container">
+    <canvas id="matrix-canvas"></canvas>
+  </div>
+
+  <!-- Hero: name + tagline -->
+  <div class="line l2">
+    <div class="name">Adyaraka Banyu Langit</div>
+    <div class="sub">incoming CS <span class="w">@NYCU</span> · AI &amp; software</div>
+  </div>
+
+  <!-- Contact links -->
+  <div class="cmd line l3">
+    <div class="cmd-line">
+      <span class="ps1"><span class="u">raka</span>@portfolio:~$</span>
+      <span class="input">cat contact.txt</span>
+    </div>
+    <div class="btns">
+      <a class="btn" href="mailto:banyulangitadyaraka@gmail.com">gmail</a>
+      <a class="btn" href="https://github.com/valleysonata" target="_blank">github</a>
+      <a class="btn" href="https://www.linkedin.com/in/adyaraka-banyu-langit-63456a317/" target="_blank">linkedin</a>
+    </div>
+  </div>
+
+  <!-- AI chat agent -->
+  <div class="cmd line l4">
+    <div class="cmd-line">
+      <span class="ps1"><span class="u">raka</span>@portfolio:~/ask$</span>
+      <span class="input">./raka-agent --interactive</span>
+    </div>
+
+    <div id="chat-log">
+      <div class="chat-msg-agent done">
+        <span class="chat-label">raka-agent &gt; </span>hey — i'm an ai trained on raka's resume. ask me about his background, skills, or experience.
+      </div>
+    </div>
+
+    <div class="chat-input-row">
+      <span class="ps1" style="white-space:nowrap;"><span class="u">you</span>@ask:~$</span>
+      <div class="input-container">
+        <input
+          id="chat-input"
+          type="text"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <div id="term-cursor" class="terminal-cursor blink-mode">▋</div>
+      </div>
+    </div>
+    <div class="chat-hint">press enter to send</div>
+  </div>
+
+  <!--
+    Resume context for raka-agent.
+    Hidden from the UI; read by js/config.js at runtime.
+    Update this whenever your resume changes — no other files need editing.
+  -->
+  <div id="raw-resume-context" style="display:none !important; visibility:hidden !important;">
+    Adyaraka Banyu Langit
+    Email: banyulangitadyaraka@gmail.com | Phone: +62-877-4311-0466
+
+    EDUCATION
+    - National Yang Ming Chiao Tung University (NYCU), Hsinchu, Taiwan
+      Incoming Bachelor of Science in Computer Science, starting September 2026
+      Honors: NYCU International Student Scholarship (Type B)
+    - Rosedale Global High School, Ontario Secondary School Diploma (OSSD)
+      Markham, Ontario | Sep 2023 – Jun 2026
+
+    WORK EXPERIENCE
+    - Data Analyst Intern @ Work Unusual, Jakarta, Indonesia | Jan 2026 – Apr 2026
+      · Processed and analyzed operational records (2024–2025) using Jupyter Notebook to map business waste metrics and workflow efficiency across multiple operational categories.
+      · Performed statistical analysis using pandas, NumPy, and SciPy, including correlation analysis and Kruskal-Wallis testing to surface significant operational patterns.
+      · Built data visualizations and trend analyses with Matplotlib and Seaborn to identify efficiency changes and communicate findings to stakeholders.
+      · Conducted exploratory data analysis (EDA) on multi-category operational waste data to generate actionable business insights.
+
+    TECHNICAL SKILLS
+    Languages: Python, C, SQL, HTML, CSS, JavaScript
+    Frameworks/Libraries: pandas, NumPy, SciPy, Matplotlib, Seaborn, Jupyter Notebook
+    AI & Cloud: Generative AI, Prompt Engineering, Machine Learning, Cloud MLOps, GPU compute optimization, intelligent system architectures (RAG & Autonomous Agents)
+    Tools: Git, GitHub, VS Code, Microsoft Excel, Canva, Notion
+
+    CERTIFICATIONS
+    - HackerRank SQL Basic: Joins, subqueries, multi-table query optimization
+    - Alibaba Cloud Academy: Generative AI, Prompt Engineering, ML/DL, GPU ECS, PAI Platform, RAG & Agents
+    - HP LIFE: Data Science & Analytics Course
+    - Coding Bee Academy: Python Programming Course, Achieved grade A
+  </div>
+
+  <!--
+    Scripts — load order is critical:
+    1. config.js   → sets window.PORTFOLIO_CONFIG and window.SYSTEM_PROMPT
+    2. cursor.js   → sets window.Cursor (needs #chat-input in DOM)
+    3. messages.js → sets window.Messages (needs #chat-log in DOM)
+    4. matrix.js   → self-contained, needs #matrix-canvas
+    5. chat.js     → orchestrates everything above
+  -->
+  <script src="js/config.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/messages.js"></script>
+  <script src="js/matrix.js"></script>
+  <script src="js/chat.js"></script>
+
+</body>
+</html>

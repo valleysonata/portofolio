@@ -1,0 +1,13 @@
+{
+  "name": "raka-agent-proxy",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker proxy for Groq API",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "login": "wrangler login"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}

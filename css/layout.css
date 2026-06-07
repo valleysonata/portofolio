@@ -1,0 +1,38 @@
+/* layout.css — terminal chrome: prompt lines, canvas container, contact row */
+
+/* ASCII canvas wrapper */
+.canvas-container {
+  margin-bottom: 1.8rem;
+  opacity: 0;
+  transform: translateY(3px);
+  animation: fadein 0.3s ease 0.05s forwards;
+  display: inline-block;
+}
+
+canvas {
+  display: block;
+  user-select: none;
+}
+
+/* Terminal command block */
+.cmd { margin-top: 1.8rem; }
+
+.cmd-line {
+  display: flex;
+  gap: 0.5em;
+  flex-wrap: wrap;
+}
+
+/* Prompt and input text colors */
+.ps1    { color: #555; }
+.ps1 .u { color: #e0e0e0; }
+.input  { color: #e0e0e0; }
+.out    { margin-top: 0.3rem; }
+
+/* Contact link row */
+.btns {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+  flex-wrap: wrap;
+}

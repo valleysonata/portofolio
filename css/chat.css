@@ -1,0 +1,96 @@
+/* chat.css — chat log, message bubbles, terminal input row, cursors */
+
+/* ── Log container ── */
+#chat-log {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 320px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+#chat-log::-webkit-scrollbar { display: none; }
+
+/* ── Message types ── */
+.chat-msg-user              { color: #e0e0e0; }
+.chat-msg-user .chat-label  { color: #555; }
+
+.chat-msg-agent             { color: #aaa; }
+.chat-msg-agent .chat-label { color: #555; }
+.chat-msg-agent.done        { color: #b0b0b0; }
+
+/* ── Input row ── */
+.chat-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-top: 0.5rem;
+  position: relative;
+}
+
+.input-container {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+#chat-input {
+  background: none;
+  border: none;
+  color: #e0e0e0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  outline: none;
+  width: 100%;
+  padding: 0.15rem 0;
+  caret-color: #e0e0e0;
+  position: relative;
+  z-index: 2;
+}
+
+#chat-input:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Block cursor (idle / unfocused state) ── */
+.terminal-cursor {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px;
+  color: #e0e0e0;
+  pointer-events: none;
+  line-height: 1;
+  margin-top: -1px;
+  z-index: 1;
+  display: block;
+}
+
+/* Hide block cursor the moment the native caret is active */
+#chat-input:focus + .terminal-cursor {
+  display: none !important;
+}
+
+.blink-mode {
+  animation: terminalBlink 1.1s step-end infinite;
+}
+
+/* ── Typing indicator dot ── */
+.typing-dot {
+  display: inline-block;
+  animation: terminalBlink 1.1s step-end infinite;
+  vertical-align: middle;
+  margin-left: 2px;
+}
+
+/* ── Hint text ── */
+.chat-hint {
+  color: #444;
+  font-size: 11px;
+  margin-top: 0.4rem;
+}
