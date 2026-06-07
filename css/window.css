@@ -237,8 +237,8 @@
 
 /* ── Safari window overrides ── */
 .window[data-app="safari"] {
-  width: 900px;
-  height: 600px;
+  width: 720px;
+  height: 480px;
 }
 
 .window[data-app="safari"] .window-titlebar {
@@ -250,7 +250,7 @@
 .window[data-app="spotify"] {
   width: 350px;
   height: 500px;
-  border-radius: 0;
+  border-radius: 10px;
   overflow: hidden;
 }
 
