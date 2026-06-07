@@ -1,5 +1,6 @@
 
-<img width="960" alt="portfolio banner" src="https://github.com/user-attachments/assets/3062ebdd-deb6-4439-a77a-fa11601ddbda" />
+<img width="960" height="452" alt="sdads" src="https://github.com/user-attachments/assets/4f1ad39a-13f9-4aca-a64f-eee123fd8152" />
+
 
 ## Portfolio V2
 
@@ -21,7 +22,7 @@ Pure HTML, CSS, and vanilla JS. No frameworks, no bundlers.
 
 ## About
 
-A fully interactive macOS Sequoia-style desktop environment that runs entirely in the browser. Features a working terminal with an AI agent, a Safari-style browser, Spotify player, Launchpad app launcher, and native-feeling window management with genie animations — all built from scratch with vanilla JS. The AI agent runs through a Cloudflare Worker proxy to Groq, keeping the API key secure.
+A fully interactive macOS Sequoia-style desktop environment that runs entirely in the browser. Features a working terminal with an AI agent, a Safari-style browser, Spotify player, Launchpad app launcher, and native-feeling window management with genie-like animations. The AI agent runs through a Cloudflare Worker proxy to Groq, keeping the API key secure.
 
 ## Features
 
