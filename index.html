@@ -39,7 +39,7 @@
   <!-- Menu bar -->
   <div class="mac-menubar">
     <div class="menubar-left">
-      <span class="apple-logo">&#63743;</span>
+      <span class="apple-logo"><img src="assets/apple-logo.svg" alt="Apple"></span>
       <span class="menubar-app menubar-item">Finder</span>
       <span class="menubar-item">File</span>
       <span class="menubar-item">Edit</span>
@@ -72,14 +72,7 @@
     <div class="desktop-icons">
       <div class="desktop-icon" data-app="terminal" title="Double-click to open">
         <div class="desktop-icon-img">
-          <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="1" y="1" width="50" height="50" rx="10" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
-            <rect x="1" y="1" width="50" height="14" rx="10" fill="#2a2a2a"/>
-            <circle cx="8" cy="8" r="2.5" fill="#ff5f57"/>
-            <circle cx="15" cy="8" r="2.5" fill="#febc2e"/>
-            <circle cx="22" cy="8" r="2.5" fill="#28c840"/>
-            <text x="26" y="37" font-family="'IBM Plex Mono', monospace" font-size="16" fill="#e0e0e0" text-anchor="middle" font-weight="500">&gt;_</text>
-          </svg>
+          <img src="assets/terminal-icon.svg" alt="Terminal" width="52" height="52">
         </div>
         <span class="desktop-icon-label">Terminal</span>
       </div>
@@ -91,11 +84,7 @@
     <div class="dock">
       <div class="dock-item" data-app="terminal" title="Terminal">
         <div class="dock-item-img">
-          <svg width="42" height="42" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="1" y="1" width="50" height="50" rx="10" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
-            <rect x="1" y="1" width="50" height="14" rx="10" fill="#2a2a2a"/>
-            <text x="26" y="37" font-family="'IBM Plex Mono', monospace" font-size="16" fill="#e0e0e0" text-anchor="middle" font-weight="500">&gt;_</text>
-          </svg>
+          <img src="assets/terminal-icon.svg" alt="Terminal" width="42" height="42">
         </div>
       </div>
     </div>
@@ -115,72 +104,24 @@
       <div class="window-title">raka — zsh — 80×24</div>
     </div>
     <div class="window-body">
-
-      <!-- Boot section (types out on open) -->
-      <div class="boot-section" id="boot-section"></div>
-
-      <!-- Terminal content (always visible) -->
-      <div class="terminal-body">
-        <div class="canvas-container">
-          <canvas id="matrix-canvas"></canvas>
-        </div>
-
-        <!-- whoami -->
-        <div class="terminal-block line l2">
-          <div class="cmd-line">
-            <span class="ps1"><span class="u">raka</span>@portfolio:~$</span>
-            <span class="input">whoami</span>
-          </div>
-          <div class="cmd-result">
-            <div class="name">adyaraka banyu langit</div>
-            <div class="sub">incoming cs <span class="w">@nycu</span> · ai &amp; software</div>
+      <div class="terminal-flow" id="terminal-flow">
+        <div class="neofetch-left">
+          <div class="canvas-container">
+            <canvas id="matrix-canvas"></canvas>
           </div>
         </div>
-
-        <!-- cat contact.txt -->
-        <div class="terminal-block line l3">
-          <div class="cmd-line">
-            <span class="ps1"><span class="u">raka</span>@portfolio:~$</span>
-            <span class="input">cat contact.txt</span>
-          </div>
-          <div class="cmd-result">
-            <div class="btns">
-              <a class="btn" href="mailto:banyulangitadyaraka@gmail.com">gmail</a>
-              <a class="btn" href="https://github.com/valleysonata" target="_blank">github</a>
-              <a class="btn" href="https://www.linkedin.com/in/adyaraka-banyu-langit-63456a317/" target="_blank">linkedin</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- ./raka-agent --interactive -->
-        <div class="terminal-block line l4">
-          <div class="cmd-line">
-            <span class="ps1"><span class="u">raka</span>@portfolio:~$</span>
-            <span class="input">./raka-agent --interactive</span>
-          </div>
-          <div class="cmd-result">
-            <div id="chat-log">
-              <div class="chat-msg-agent done">
-                <span class="chat-label">raka-agent &gt; </span>hey — i'm an ai trained on raka's resume. ask me about his background, skills, or experience.
-              </div>
-            </div>
-            <div class="chat-input-row">
-              <span class="ps1" style="white-space:nowrap;"><span class="u">you</span>@ask:~$</span>
-              <div class="input-container">
-                <input
-                  id="chat-input"
-                  type="text"
-                  autocomplete="off"
-                  spellcheck="false"
-                />
-                <div id="term-cursor" class="terminal-cursor blink-mode">▋</div>
-              </div>
-            </div>
-            <div class="chat-hint">press enter to send</div>
-          </div>
-        </div>
+        <div class="neofetch-right" id="terminal-output"></div>
       </div>
-
+    </div>
+    <div class="window-resize-handles">
+      <div class="resize-handle resize-n"></div>
+      <div class="resize-handle resize-s"></div>
+      <div class="resize-handle resize-e"></div>
+      <div class="resize-handle resize-w"></div>
+      <div class="resize-handle resize-ne"></div>
+      <div class="resize-handle resize-nw"></div>
+      <div class="resize-handle resize-se"></div>
+      <div class="resize-handle resize-sw"></div>
     </div>
   </div>
 
@@ -193,17 +134,6 @@
 
       <div class="canvas-container">
         <canvas id="matrix-canvas-mobile"></canvas>
-      </div>
-
-      <div class="terminal-block">
-        <div class="cmd-line">
-          <span class="ps1"><span class="u">raka</span>@portfolio:~$</span>
-          <span class="input">whoami</span>
-        </div>
-        <div class="cmd-result">
-          <div class="name">adyaraka banyu langit</div>
-          <div class="sub">incoming cs <span class="w">@nycu</span> · ai &amp; software</div>
-        </div>
       </div>
 
       <div class="terminal-block">

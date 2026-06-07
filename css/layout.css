@@ -1,15 +1,25 @@
-/* layout.css — terminal prompt rows, canvas, command output blocks */
+/* layout.css — terminal flow, neofetch layout, command output blocks */
 
-/* ── Terminal content area (sits inside the window body) ── */
-.terminal-body {
+/* ── Terminal flow (single unified container) ── */
+.terminal-flow {
+  display: flex;
+  gap: 1.5rem;
   padding: 1.2rem 1.5rem 2rem;
-  position: relative;
-  z-index: 1;
+  align-items: flex-start;
 }
 
-/* ── ASCII canvas wrapper ── */
+.neofetch-left {
+  flex-shrink: 0;
+  position: sticky;
+  top: 1.2rem;
+}
+
+.neofetch-right {
+  flex: 1;
+  min-width: 0;
+}
+
 .canvas-container {
-  margin-bottom: 1rem;
   display: inline-block;
 }
 
@@ -18,12 +28,11 @@ canvas {
   user-select: none;
 }
 
-/* ── Terminal command block (a "run" + its output) ── */
+/* ── Terminal command block ── */
 .terminal-block {
-  margin-top: 1rem;
+  margin-top: 0.8rem;
 }
 
-/* The "typed command" line */
 .cmd-line {
   display: flex;
   gap: 0.5em;
@@ -31,10 +40,31 @@ canvas {
   align-items: baseline;
 }
 
-/* The output below a command */
 .cmd-result {
   margin-top: 0.3rem;
   margin-bottom: 0.1rem;
+}
+
+/* ── Neofetch info block ── */
+.neofetch-info {
+  margin-bottom: 0.5rem;
+}
+
+.neofetch-info .name {
+  color: #e0e0e0;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.neofetch-info .sub {
+  color: #888;
+  font-size: 12px;
+  margin-top: 0.15rem;
+}
+
+.neofetch-info .w {
+  color: #aaa;
 }
 
 /* Prompt and input text colors */

@@ -12,7 +12,11 @@ window.Messages = (function () {
   "use strict";
 
   const { TYPEWRITER_MS, TYPEWRITER_CHUNK } = window.PORTFOLIO_CONFIG;
-  const chatLog = document.getElementById("chat-log");
+  let chatLog;
+
+  function init() {
+    chatLog = document.getElementById("chat-log");
+  }
 
   /**
    * Append a new message row to the chat log.
@@ -83,5 +87,5 @@ window.Messages = (function () {
     tick();
   }
 
-  return { append, typeOut };
+  return { append, typeOut, init };
 })();

@@ -6,6 +6,7 @@
  * - Dock icon click → open/restore terminal window
  * - Window controls (close, minimize, maximize)
  * - Draggable window
+ * - Window resize (drag edges/corners)
  * - Live clock in menu bar
  * - Mobile bypass (shows portfolio directly)
  *
@@ -36,7 +37,6 @@
   // ── Mobile bypass ──
   const isMobile = window.matchMedia("(max-width: 768px)").matches;
   if (isMobile) {
-    // Show portfolio directly, skip desktop entirely
     const mobilePortfolio = document.querySelector(".mobile-portfolio");
     if (mobilePortfolio) mobilePortfolio.style.display = "block";
     return;
@@ -56,28 +56,32 @@
     if (windowOpen && !windowMinimized) return;
 
     if (windowMinimized) {
-      // Restore from minimize
-      win.classList.remove("minimizing");
+      win.style.display = "flex";
       win.classList.add("open", "animating");
+      void win.offsetHeight;
+      win.classList.remove("minimizing");
       windowMinimized = false;
       windowOpen = true;
       dockTerminal.classList.add("active");
       return;
     }
 
-    // First open: bounce dock icon, then show window
     dockTerminal.classList.add("bouncing");
     setTimeout(() => {
       dockTerminal.classList.remove("bouncing");
-      win.classList.add("open", "animating");
-      win.style.transform = "translate(-50%, -50%) scale(0.7)";
-      win.style.opacity = "0";
+
       win.style.display = "flex";
+      win.style.left = "50%";
+      win.style.top = "100%";
+      win.style.transform = "translate(-50%, 0) scale(0.05) perspective(800px) rotateX(20deg)";
+      win.style.opacity = "0";
+      win.classList.add("open", "animating");
 
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          win.style.transform = "translate(-50%, -50%) scale(1)";
+          win.style.transform = "translate(-50%, -50%) scale(1) perspective(800px) rotateX(0deg)";
           win.style.opacity = "1";
+          win.style.top = "50%";
         });
       });
 
@@ -86,12 +90,11 @@
       dockTerminal.classList.add("active");
       desktopTerminal.classList.add("selected");
 
-      // Start boot after window opens
       setTimeout(() => {
         if (window.Boot && window.Boot.start) {
           window.Boot.start();
         }
-      }, 350);
+      }, 500);
     }, 600);
   }
 
@@ -108,7 +111,10 @@
       windowMaximized = false;
       dockTerminal.classList.remove("active");
       desktopTerminal.classList.remove("selected");
-    }, 300);
+      // Reset terminal for next open
+      const output = document.getElementById("terminal-output");
+      if (output) { output.innerHTML = ""; output.dataset.ran = ""; }
+    }, 450);
   }
 
   // ── Minimize window ──
@@ -120,7 +126,7 @@
     setTimeout(() => {
       win.classList.remove("open", "minimizing");
       win.style.display = "none";
-    }, 400);
+    }, 500);
   }
 
   // ── Maximize / restore window ──
@@ -146,43 +152,35 @@
   }
 
   // ── Event listeners ──
-  // Desktop icon double-click
   desktopTerminal.addEventListener("dblclick", (e) => {
     e.preventDefault();
     openWindow();
   });
 
-  // Desktop icon single click (just select)
   desktopTerminal.addEventListener("click", (e) => {
     e.stopPropagation();
     document.querySelectorAll(".desktop-icon").forEach(el => el.classList.remove("selected"));
     desktopTerminal.classList.add("selected");
   });
 
-  // Click desktop background to deselect
   desktop.addEventListener("click", () => {
     document.querySelectorAll(".desktop-icon").forEach(el => el.classList.remove("selected"));
   });
 
-  // Dock icon click
   dockTerminal.addEventListener("click", () => {
     if (!windowOpen) {
       openWindow();
     } else if (windowMinimized) {
-      openWindow(); // restore
+      openWindow();
     } else {
-      // If already open, focus it (already visible)
       win.style.zIndex = "101";
       setTimeout(() => { win.style.zIndex = "100"; }, 100);
     }
   });
 
-  // Window controls
   btnClose.addEventListener("click", closeWindow);
   btnMinimize.addEventListener("click", minimizeWindow);
   btnMaximize.addEventListener("click", toggleMaximize);
-
-  // Double-click title bar to maximize
   titlebar.addEventListener("dblclick", toggleMaximize);
 
   // ── Draggable window ──
@@ -191,9 +189,8 @@
   let dragOffsetY = 0;
 
   titlebar.addEventListener("mousedown", (e) => {
-    // Don't drag on control buttons
     if (e.target.closest(".window-controls")) return;
-    if (windowMaximized) return; // can't drag when maximized
+    if (windowMaximized) return;
 
     isDragging = true;
     const rect = win.getBoundingClientRect();
@@ -211,10 +208,9 @@
     const x = e.clientX - dragOffsetX;
     const y = e.clientY - dragOffsetY;
 
-    // Constrain to viewport (below menu bar, above dock)
     const maxX = window.innerWidth - win.offsetWidth;
     const maxY = window.innerHeight - win.offsetHeight - 60;
-    const minY = 24; // below menu bar
+    const minY = 24;
 
     const clampedX = Math.max(0, Math.min(x, maxX));
     const clampedY = Math.max(minY, Math.min(y, maxY));
@@ -232,24 +228,96 @@
     }
   });
 
+  // ── Window resize ──
+  let isResizing = false;
+  let resizeDir = "";
+  let resizeStartX = 0;
+  let resizeStartY = 0;
+  let resizeStartW = 0;
+  let resizeStartH = 0;
+  let resizeStartLeft = 0;
+  let resizeStartTop = 0;
+
+  win.querySelectorAll(".resize-handle").forEach(handle => {
+    handle.addEventListener("mousedown", (e) => {
+      if (windowMaximized) return;
+      e.preventDefault();
+      e.stopPropagation();
+
+      isResizing = true;
+      resizeDir = handle.className.replace("resize-handle resize-", "");
+      resizeStartX = e.clientX;
+      resizeStartY = e.clientY;
+      resizeStartW = win.offsetWidth;
+      resizeStartH = win.offsetHeight;
+
+      const rect = win.getBoundingClientRect();
+      resizeStartLeft = rect.left;
+      resizeStartTop = rect.top;
+
+      win.style.transition = "none";
+      document.body.style.cursor = getComputedStyle(handle).cursor;
+    });
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (!isResizing) return;
+
+    const dx = e.clientX - resizeStartX;
+    const dy = e.clientY - resizeStartY;
+    const minW = 480;
+    const minH = 300;
+
+    let newW = resizeStartW;
+    let newH = resizeStartH;
+    let newLeft = resizeStartLeft;
+    let newTop = resizeStartTop;
+
+    if (resizeDir.includes("e")) {
+      newW = Math.max(minW, resizeStartW + dx);
+    }
+    if (resizeDir.includes("w")) {
+      newW = Math.max(minW, resizeStartW - dx);
+      newLeft = resizeStartLeft + (resizeStartW - newW);
+    }
+    if (resizeDir.includes("s")) {
+      newH = Math.max(minH, resizeStartH + dy);
+    }
+    if (resizeDir.includes("n")) {
+      newH = Math.max(minH, resizeStartH - dy);
+      newTop = Math.max(24, resizeStartTop + (resizeStartH - newH));
+    }
+
+    win.style.width = newW + "px";
+    win.style.height = newH + "px";
+    win.style.left = newLeft + "px";
+    win.style.top = newTop + "px";
+    win.style.transform = "none";
+  });
+
+  document.addEventListener("mouseup", () => {
+    if (isResizing) {
+      isResizing = false;
+      win.style.transition = "";
+      document.body.style.cursor = "";
+    }
+  });
+
   // ── Keyboard shortcuts ──
   document.addEventListener("keydown", (e) => {
-    // Cmd/Ctrl + W → close window
     if ((e.metaKey || e.ctrlKey) && e.key === "w" && windowOpen) {
       e.preventDefault();
       closeWindow();
     }
-    // Cmd/Ctrl + M → minimize
     if ((e.metaKey || e.ctrlKey) && e.key === "m" && windowOpen) {
       e.preventDefault();
       minimizeWindow();
     }
-    // Escape → close window
-    if (e.key === "Escape" && windowOpen && !document.getElementById("chat-input").matches(":focus")) {
+    const chatInput = document.getElementById("chat-input");
+    if (e.key === "Escape" && windowOpen && chatInput && !chatInput.matches(":focus")) {
       closeWindow();
     }
   });
 
-  // ── Expose for external use ──
   window.Desktop = { openWindow, closeWindow, minimizeWindow, toggleMaximize };
 })();

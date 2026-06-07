@@ -1,18 +1,7 @@
-/* boot.css — boot sequence, now lives inside the window body */
+/* boot.css — boot lines inside the unified terminal flow */
 
-.boot-section {
-  padding: 1rem 1.5rem 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-  margin-bottom: 0.5rem;
-}
-
-.boot-ascii {
-  color: #e0e0e0;
-  font-size: 10px;
-  line-height: 1.18;
-  white-space: pre;
-  margin-bottom: 1rem;
-  text-shadow: 0 0 4px rgba(224, 224, 224, 0.3);
+.boot-lines {
+  margin-bottom: 0.3rem;
 }
 
 .boot-line {
@@ -30,32 +19,9 @@
   font-weight: 500;
 }
 
-.boot-welcome {
+.boot-welcome-block {
   color: #e0e0e0;
-  margin-top: 0.8rem;
   font-size: 13px;
-}
-
-.boot-prompt {
-  color: #555;
-  margin-top: 0.6rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-}
-
-.boot-prompt .u {
-  color: #e0e0e0;
-}
-
-.boot-cursor {
-  display: inline-block;
-  width: 0.6em;
-  height: 1em;
-  background: #e0e0e0;
-  vertical-align: text-bottom;
-  animation: terminalBlink 1.1s step-end infinite;
-  box-shadow: 0 0 4px rgba(224, 224, 224, 0.4);
 }
 
 .boot-skip {

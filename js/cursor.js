@@ -12,14 +12,16 @@
 window.Cursor = (function () {
   "use strict";
 
-  const input     = document.getElementById("chat-input");
-  const cursorEl  = document.getElementById("term-cursor");
+  let input, cursorEl;
 
-  /**
-   * Show the blinking block when the field is empty;
-   * hide it as soon as the user starts typing.
-   */
+  function init() {
+    input = document.getElementById("chat-input");
+    cursorEl = document.getElementById("term-cursor");
+    if (input) input.addEventListener("input", update);
+  }
+
   function update() {
+    if (!input || !cursorEl) return;
     if (input.value.length > 0) {
       cursorEl.classList.remove("blink-mode");
     } else {
@@ -27,7 +29,5 @@ window.Cursor = (function () {
     }
   }
 
-  input.addEventListener("input", update);
-
-  return { update };
+  return { init, update };
 })();

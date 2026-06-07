@@ -6,7 +6,7 @@
   "use strict";
 
   const { API_ENDPOINT, MODEL, USE_MOCK_MODE } = window.PORTFOLIO_CONFIG;
-  const chatInput = document.getElementById("chat-input");
+  let chatInput;
 
   const KNOWLEDGE_BASE = {
     "hello|hi|hey|greetings": "hey! i'm raka's ai resume agent. ask me about his background, skills, experience, or anything else from his resume.",
@@ -103,11 +103,16 @@
     window.Cursor.update();
   }
 
-  // ΓöÇΓöÇ Events & init ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+  function init() {
+    chatInput = document.getElementById("chat-input");
+    if (!chatInput) return;
+    chatInput.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") sendMessage();
+    });
+    window.Messages.init();
+    window.Cursor.init();
+    window.Cursor.update();
+  }
 
-  chatInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") sendMessage();
-  });
-
-  window.Cursor.update();
+  window.Chat = { init };
 })();
