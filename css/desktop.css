@@ -492,12 +492,6 @@
   border-radius: 6px;
 }
 
-.dock-item[data-app="vscode"] .dock-item-img img,
-.dock-item[data-app="spotify"] .dock-item-img img {
-  width: 38px;
-  height: 38px;
-}
-
 /* Active dot under dock icon when window is open */
 .dock-item.active::after {
   content: "";
