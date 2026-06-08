@@ -644,6 +644,7 @@
   }
   .mobile-terminal {
     padding: 0;
+    font-family: 'IBM Plex Mono', monospace;
   }
   .mobile-terminal .canvas-container {
     margin-bottom: 1.5rem;
