@@ -57,6 +57,10 @@ Open [http://localhost:8000](http://localhost:8000).
 
 Push to `main` — auto-deploys to [valleysonata.github.io/portofolio](https://valleysonata.github.io/portofolio/).
 
+### Contribute
+
+Contributions are very welcome!
+
 ### License
 
 MIT (c) 2025 Adyaraka Banyu Langit - see [LICENSE](LICENSE) for full text.
