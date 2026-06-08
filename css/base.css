@@ -1,10 +1,5 @@
 /* base.css — body, global typography, scanlines, wallpaper, phosphor glow */
 
-/* ── macOS cursor ── */
-body {
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='24' viewBox='0 0 16 24'%3E%3Cpath d='M0 0 L0 18 L4.5 13.5 L8.5 22 L11 21 L7 12.5 L13 12.5 Z' fill='%23000' stroke='%23fff' stroke-width='1.2'/%3E%3C/svg%3E") 0 0, auto;
-}
-
 body {
   background: #0d0d0d;
   background-image: url('../assets/wallpaper.jpg');
@@ -13,7 +8,7 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   color: #e0e0e0;
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
   font-size: 13px;
   line-height: 1.6;
   margin: 0;
@@ -54,13 +49,6 @@ body::after {
 ::selection {
   background: #e0e0e0;
   color: #0d0d0d;
-}
-
-/* ── Pointer cursor for clickable elements ── */
-a, button, .dock-item, .desktop-icon, .launchpad-item,
-.finder-file, .finder-sidebar-item, .vscode-tree-item,
-.menubar-item, .photos-thumb, .window-btn {
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='24' viewBox='0 0 16 24'%3E%3Cpath d='M0 0 L0 18 L4.5 13.5 L8.5 22 L11 21 L7 12.5 L13 12.5 Z' fill='%23000' stroke='%23fff' stroke-width='1.2'/%3E%3Ccircle cx='12' cy='18' r='3' fill='%23000' stroke='%23fff' stroke-width='1'/%3E%3C/svg%3E") 1 1, pointer;
 }
 
 /* ── Click press animation ── */

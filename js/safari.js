@@ -149,6 +149,30 @@
     });
   }
 
+  var refresh_btn = document.getElementById("safari-refresh");
+  if (refresh_btn) {
+    refresh_btn.addEventListener("click", function() {
+      if (history_index >= 0 && history[history_index]) {
+        fetchAndRender(history[history_index]);
+      }
+    });
+  }
+
+  var home_btn = document.getElementById("safari-home");
+  if (home_btn) {
+    home_btn.addEventListener("click", function() {
+      content_area.innerHTML = '<div class="safari-start-page"><div class="safari-start-title">Favorites</div><div class="safari-start-grid"><a class="safari-favorite" href="https://github.com/valleysonata" target="_blank"><img class="safari-fav-icon" src="assets/github-icon.png" alt="GitHub" style="border-radius:10px;"><span>GitHub</span></a><a class="safari-favorite" href="https://www.linkedin.com/in/adyaraka-banyu-langit-63456a317/" target="_blank"><div class="safari-fav-icon" style="background:#0077B5;border-radius:10px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:white;font-size:16px;font-weight:bold;">in</div><span>LinkedIn</span></a><a class="safari-favorite" href="mailto:banyulangitadyaraka@gmail.com"><img class="safari-fav-icon" src="assets/gmail-icon.png" alt="Gmail" style="border-radius:10px;"><span>Gmail</span></a></div></div>';
+      address_input.value = "";
+    });
+  }
+
+  var star_btn = document.getElementById("safari-star");
+  if (star_btn) {
+    star_btn.addEventListener("click", function() {
+      alert("Bookmark added: " + (address_input.value || "Start Page"));
+    });
+  }
+
   window.SafariApp = {
     open: function(url) {
       if (window_el) {

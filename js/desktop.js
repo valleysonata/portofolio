@@ -777,6 +777,167 @@
     });
   });
 
+  // ── Control Center ──
+  var ccPanel = document.getElementById("control-center");
+  var ccBtn = document.getElementById("menubar-cc");
+  var wifiPopup = document.getElementById("wifi-popup");
+  var wifiBtn = document.getElementById("menubar-wifi");
+  var wifiToggle = document.getElementById("wifi-toggle");
+  var brightnessSlider = document.getElementById("brightness-slider");
+  var brightnessPct = document.getElementById("brightness-pct");
+  var volumeSlider = document.getElementById("volume-slider");
+  var volumePct = document.getElementById("volume-pct");
+  var batteryPct = document.getElementById("battery-pct");
+
+  // WiFi state
+  var wifiEnabled = localStorage.getItem("wifiEnabled") !== "false";
+  if (wifiToggle) wifiToggle.checked = wifiEnabled;
+
+  if (ccBtn && ccPanel) {
+    ccBtn.addEventListener("click", function(e) {
+      e.stopPropagation();
+      if (wifiPopup) wifiPopup.style.display = "none";
+      ccPanel.style.display = ccPanel.style.display === "none" ? "block" : "none";
+    });
+  }
+
+  if (wifiBtn && wifiPopup) {
+    wifiBtn.addEventListener("click", function(e) {
+      e.stopPropagation();
+      if (ccPanel) ccPanel.style.display = "none";
+      wifiPopup.style.display = wifiPopup.style.display === "none" ? "block" : "none";
+    });
+  }
+
+  if (wifiToggle) {
+    wifiToggle.addEventListener("change", function() {
+      wifiEnabled = wifiToggle.checked;
+      localStorage.setItem("wifiEnabled", wifiEnabled.toString());
+      var ccWifi = document.getElementById("cc-wifi");
+      if (ccWifi) ccWifi.classList.toggle("active", wifiEnabled);
+    });
+  }
+
+  // CC WiFi tile sync
+  var ccWifi = document.getElementById("cc-wifi");
+  if (ccWifi) {
+    ccWifi.classList.toggle("active", wifiEnabled);
+    ccWifi.addEventListener("click", function() {
+      wifiEnabled = !wifiEnabled;
+      localStorage.setItem("wifiEnabled", wifiEnabled.toString());
+      ccWifi.classList.toggle("active", wifiEnabled);
+      if (wifiToggle) wifiToggle.checked = wifiEnabled;
+    });
+  }
+
+  // CC Bluetooth tile
+  var ccBluetooth = document.getElementById("cc-bluetooth");
+  if (ccBluetooth) {
+    ccBluetooth.addEventListener("click", function() {
+      ccBluetooth.classList.toggle("active");
+    });
+  }
+
+  // CC Dark Mode tile
+  var ccDarkmode = document.getElementById("cc-darkmode");
+  if (ccDarkmode) {
+    ccDarkmode.addEventListener("click", function() {
+      ccDarkmode.classList.toggle("active");
+    });
+  }
+
+  // CC Fullscreen tile
+  var ccFullscreen = document.getElementById("cc-fullscreen");
+  if (ccFullscreen) {
+    ccFullscreen.addEventListener("click", function() {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+        ccFullscreen.classList.remove("active");
+      } else {
+        document.documentElement.requestFullscreen();
+        ccFullscreen.classList.add("active");
+      }
+    });
+  }
+
+  // Brightness slider
+  if (brightnessSlider && brightnessPct) {
+    brightnessSlider.addEventListener("input", function() {
+      brightnessPct.textContent = brightnessSlider.value + "%";
+    });
+  }
+
+  // Volume slider
+  if (volumeSlider && volumePct) {
+    volumeSlider.addEventListener("input", function() {
+      volumePct.textContent = volumeSlider.value + "%";
+    });
+  }
+
+  // Close CC/WiFi on click outside
+  document.addEventListener("click", function(e) {
+    if (ccPanel && ccPanel.style.display !== "none" && !ccPanel.contains(e.target) && e.target !== ccBtn && !ccBtn.contains(e.target)) {
+      ccPanel.style.display = "none";
+    }
+    if (wifiPopup && wifiPopup.style.display !== "none" && !wifiPopup.contains(e.target) && e.target !== wifiBtn && !wifiBtn.contains(e.target)) {
+      wifiPopup.style.display = "none";
+    }
+  });
+
+  // ── Battery percentage ──
+  if (batteryPct && navigator.getBattery) {
+    navigator.getBattery().then(function(battery) {
+      function updateBattery() {
+        batteryPct.textContent = Math.round(battery.level * 100) + "%";
+      }
+      updateBattery();
+      battery.addEventListener("levelchange", updateBattery);
+    }).catch(function() {
+      batteryPct.textContent = "100%";
+    });
+  }
+
+  // ── Dock magnification ──
+  var dockEl = document.querySelector(".dock");
+  if (dockEl) {
+    var dockItems = dockEl.querySelectorAll(".dock-item");
+    var mouseX = null;
+
+    dockEl.addEventListener("mousemove", function(e) {
+      var rect = dockEl.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      updateDockMagnification();
+    });
+
+    dockEl.addEventListener("mouseleave", function() {
+      mouseX = null;
+      dockItems.forEach(function(item) {
+        item.style.transition = "transform 0.2s ease-out";
+        item.style.transform = "";
+      });
+    });
+
+    function updateDockMagnification() {
+      if (mouseX === null) return;
+      var dockWidth = dockEl.offsetWidth;
+      var itemCount = dockItems.length;
+      var iconWidth = dockWidth / itemCount;
+      var maxScale = 1.8;
+      var maxDistance = iconWidth * 2.5;
+
+      dockItems.forEach(function(item, index) {
+        var iconCenter = iconWidth * (index + 0.5);
+        var distance = Math.abs(mouseX - iconCenter);
+        var scale = 1;
+        if (distance < maxDistance) {
+          scale = 1 + (maxScale - 1) * Math.pow(1 - distance / maxDistance, 2);
+        }
+        item.style.transition = "none";
+        item.style.transform = "scale(" + scale + ") translateY(" + ((scale - 1) * -6) + "px)";
+      });
+    }
+  }
+
   window.Desktop = {
     openWindow: openWindow,
     closeWindow: closeWindow,

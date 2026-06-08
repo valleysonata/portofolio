@@ -162,7 +162,7 @@
   transform: translateX(-50%);
   color: #999;
   font-size: 12px;
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
   letter-spacing: 0.01em;
   white-space: nowrap;
   pointer-events: none;
@@ -242,8 +242,8 @@
 }
 
 .window[data-app="safari"] .window-titlebar {
-  height: 52px;
-  min-height: 52px;
+  height: 72px;
+  min-height: 72px;
 }
 
 /* ── Spotify window overrides ── */
