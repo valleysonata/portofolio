@@ -1,8 +1,8 @@
 /* vscode-window.css — VS Code editor styles */
 
 #vscode-window {
-  width: 800px;
-  height: 500px;
+  width: 780px;
+  height: 480px;
 }
 
 .vscode-body {
@@ -60,9 +60,11 @@
 }
 
 .vscode-tree-icon {
-  font-size: 12px;
   width: 16px;
-  text-align: center;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
 

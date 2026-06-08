@@ -143,6 +143,21 @@
     });
   }
 
+  function getFileIcon(name) {
+    var ext = name.split(".").pop();
+    switch (ext) {
+      case "css": return '<svg viewBox="0 0 16 16" width="12" height="12" style="display:block"><path d="M3 1.5h7l3.5 3.5v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z" fill="none" stroke="#555" stroke-width="1"/><text x="8" y="11.5" text-anchor="middle" font-size="8" fill="#42a5f5" font-family="monospace" font-weight="bold">{}</text></svg>';
+      case "js": return '<svg viewBox="0 0 16 16" width="12" height="12" style="display:block"><path d="M3 1.5h7l3.5 3.5v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z" fill="none" stroke="#555" stroke-width="1"/><text x="8" y="11.5" text-anchor="middle" font-size="7" fill="#f5d442" font-family="monospace" font-weight="bold">JS</text></svg>';
+      case "html": return '<svg viewBox="0 0 16 16" width="12" height="12" style="display:block"><path d="M3 1.5h7l3.5 3.5v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z" fill="none" stroke="#555" stroke-width="1"/><text x="8" y="11.5" text-anchor="middle" font-size="7" fill="#e44d26" font-family="monospace" font-weight="bold">&lt;/&gt;</text></svg>';
+      case "md": return '<svg viewBox="0 0 16 16" width="12" height="12" style="display:block"><path d="M3 1.5h7l3.5 3.5v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z" fill="none" stroke="#555" stroke-width="1"/><text x="8" y="11" text-anchor="middle" font-size="6" fill="#888" font-family="sans-serif" font-weight="600">M&#8595;</text></svg>';
+      default: return '<svg viewBox="0 0 16 16" width="12" height="12" style="display:block"><path d="M3 1.5h7l3.5 3.5v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z" fill="none" stroke="#555" stroke-width="1"/></svg>';
+    }
+  }
+
+  function getFolderIcon() {
+    return '<svg viewBox="0 0 16 16" width="12" height="12" style="display:block"><path d="M1.5 2.5h4.8l1.2-1.2h7a.8.8 0 0 1 .8.8v10.6a.8.8 0 0 1-.8.8h-13a.8.8 0 0 1-.8-.8V3.3a.8.8 0 0 1 .8-.8z" fill="#dcb67a"/><path d="M1.5 5h13v9.1a.8.8 0 0 1-.8.8h-13a.8.8 0 0 1-.8-.8z" fill="#c9a44e"/></svg>';
+  }
+
   function renderFileTree() {
     var tree = [
       { name: "css", type: "folder", children: ["base.css", "desktop.css", "window.css", "chat.css"] },
@@ -155,18 +170,16 @@
     tree.forEach(function(item) {
       if (item.type === "folder") {
         html += '<div class="vscode-tree-item folder" data-folder="' + item.name + '">' +
-          '<span class="vscode-tree-icon">&#128193;</span> ' + item.name + '</div>';
+          '<span class="vscode-tree-icon">' + getFolderIcon() + '</span> ' + item.name + '</div>';
         html += '<div class="vscode-tree-children">';
         item.children.forEach(function(child) {
-          var icon = child.endsWith(".css") ? "&#127912;" : child.endsWith(".js") ? "&#9889;" : "&#128196;";
           html += '<div class="vscode-tree-item" data-file="' + child + '">' +
-            '<span class="vscode-tree-icon">' + icon + '</span> ' + child + '</div>';
+            '<span class="vscode-tree-icon">' + getFileIcon(child) + '</span> ' + child + '</div>';
         });
         html += '</div>';
       } else {
-        var icon = item.name.endsWith(".html") ? "&#128196;" : "&#128221;";
         html += '<div class="vscode-tree-item" data-file="' + item.name + '">' +
-          '<span class="vscode-tree-icon">' + icon + '</span> ' + item.name + '</div>';
+          '<span class="vscode-tree-icon">' + getFileIcon(item.name) + '</span> ' + item.name + '</div>';
       }
     });
     fileTree.innerHTML = html;

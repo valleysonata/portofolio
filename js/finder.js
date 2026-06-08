@@ -83,14 +83,25 @@
   }
 
   function getIcon(name, item) {
-    if (item.type === "folder") return "&#128193;";
+    if (item.type === "folder") return '<svg viewBox="0 0 16 16" width="14" height="14" style="display:block"><path d="M1.5 2.5h4.8l1.2-1.2h7a.8.8 0 0 1 .8.8v10.6a.8.8 0 0 1-.8.8h-13a.8.8 0 0 1-.8-.8V3.3a.8.8 0 0 1 .8-.8z" fill="#dcb67a"/><path d="M1.5 5h13v9.1a.8.8 0 0 1-.8.8h-13a.8.8 0 0 1-.8-.8z" fill="#c9a44e"/></svg>';
     switch (item.ext) {
-      case "html": return "&#128196;";
-      case "css": return "&#127912;";
-      case "js": return "&#9889;";
-      case "img": return "&#127748;";
-      case "md": return "&#128221;";
-      default: return "&#128196;";
+      case "html": return '<svg viewBox="0 0 16 16" width="14" height="14" style="display:block"><path d="M3 1.5h7l3.5 3.5v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z" fill="none" stroke="#555" stroke-width="1"/><text x="8" y="11.5" text-anchor="middle" font-size="7" fill="#e44d26" font-family="monospace" font-weight="bold">&lt;/&gt;</text></svg>';
+      case "css": return '<svg viewBox="0 0 16 16" width="14" height="14" style="display:block"><path d="M3 1.5h7l3.5 3.5v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z" fill="none" stroke="#555" stroke-width="1"/><text x="8" y="11.5" text-anchor="middle" font-size="8" fill="#42a5f5" font-family="monospace" font-weight="bold">{}</text></svg>';
+      case "js": return '<svg viewBox="0 0 16 16" width="14" height="14" style="display:block"><path d="M3 1.5h7l3.5 3.5v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z" fill="none" stroke="#555" stroke-width="1"/><text x="8" y="11.5" text-anchor="middle" font-size="7" fill="#f5d442" font-family="monospace" font-weight="bold">JS</text></svg>';
+      case "img": return '<svg viewBox="0 0 16 16" width="14" height="14" style="display:block"><rect x="2" y="2" width="12" height="12" rx="1.5" fill="none" stroke="#555" stroke-width="1"/><circle cx="5.5" cy="5.5" r="1.5" fill="#66bb6a"/><path d="M2 11l3.5-3 2.5 2 2.5-3 3.5 4" fill="none" stroke="#66bb6a" stroke-width="1" stroke-linejoin="round"/></svg>';
+      case "md": return '<svg viewBox="0 0 16 16" width="14" height="14" style="display:block"><path d="M3 1.5h7l3.5 3.5v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z" fill="none" stroke="#555" stroke-width="1"/><text x="8" y="11" text-anchor="middle" font-size="6" fill="#888" font-family="sans-serif" font-weight="600">M&#8595;</text></svg>';
+      default: return '<svg viewBox="0 0 16 16" width="14" height="14" style="display:block"><path d="M3 1.5h7l3.5 3.5v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z" fill="none" stroke="#555" stroke-width="1"/></svg>';
+    }
+  }
+
+  function getSidebarIcon(path) {
+    switch (path) {
+      case "portofolio": return '<svg viewBox="0 0 16 16" width="13" height="13" style="display:block"><path d="M1.5 2.5h4.8l1.2-1.2h7a.8.8 0 0 1 .8.8v10.6a.8.8 0 0 1-.8.8h-13a.8.8 0 0 1-.8-.8V3.3a.8.8 0 0 1 .8-.8z" fill="#dcb67a"/><path d="M1.5 5h13v9.1a.8.8 0 0 1-.8.8h-13a.8.8 0 0 1-.8-.8z" fill="#c9a44e"/></svg>';
+      case "Desktop": return '<svg viewBox="0 0 16 16" width="13" height="13" style="display:block"><rect x="1.5" y="2" width="13" height="9" rx="1" fill="none" stroke="#888" stroke-width="1.2"/><line x1="5.5" y1="13" x2="10.5" y2="13" stroke="#888" stroke-width="1.2" stroke-linecap="round"/><line x1="8" y1="11" x2="8" y2="13" stroke="#888" stroke-width="1.2"/></svg>';
+      case "Documents": return '<svg viewBox="0 0 16 16" width="13" height="13" style="display:block"><path d="M3 1.5h7l3.5 3.5v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z" fill="none" stroke="#888" stroke-width="1.2"/><line x1="5" y1="7" x2="11" y2="7" stroke="#888" stroke-width="1"/><line x1="5" y1="9.5" x2="11" y2="9.5" stroke="#888" stroke-width="1"/></svg>';
+      case "Downloads": return '<svg viewBox="0 0 16 16" width="13" height="13" style="display:block"><path d="M8 2v8m-3-3l3 3 3-3" fill="none" stroke="#888" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v2.5a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V11" fill="none" stroke="#888" stroke-width="1.2" stroke-linecap="round"/></svg>';
+      case "Trash": return '<svg viewBox="0 0 16 16" width="13" height="13" style="display:block"><path d="M3 4.5h10" fill="none" stroke="#888" stroke-width="1.2" stroke-linecap="round"/><path d="M5.5 4.5V3a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v1.5" fill="none" stroke="#888" stroke-width="1.1"/><path d="M4 4.5l.7 8.4a1 1 0 0 0 1 .9h4.6a1 1 0 0 0 1-.9l.7-8.4" fill="none" stroke="#888" stroke-width="1.1"/></svg>';
+      default: return '<svg viewBox="0 0 16 16" width="13" height="13" style="display:block"><path d="M1.5 2.5h4.8l1.2-1.2h7a.8.8 0 0 1 .8.8v10.6a.8.8 0 0 1-.8.8h-13a.8.8 0 0 1-.8-.8V3.3a.8.8 0 0 1 .8-.8z" fill="#dcb67a"/></svg>';
     }
   }
 

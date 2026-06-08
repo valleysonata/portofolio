@@ -1,8 +1,8 @@
 /* finder-window.css — Finder file manager styles */
 
 #finder-window {
-  width: 700px;
-  height: 450px;
+  width: 800px;
+  height: 500px;
 }
 
 .finder-toolbar {
@@ -121,9 +121,12 @@
 }
 
 .finder-sidebar-icon {
-  font-size: 14px;
   width: 18px;
-  text-align: center;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .finder-sidebar-divider {
@@ -171,8 +174,17 @@
 }
 
 .finder-file-icon {
-  font-size: 36px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
+}
+
+.finder-file-icon svg {
+  width: 32px;
+  height: 32px;
 }
 
 .finder-file-name {
