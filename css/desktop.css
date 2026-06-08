@@ -203,7 +203,7 @@
 .dock {
   display: flex;
   align-items: flex-end;
-  gap: 4px;
+  gap: 3px;
   padding: 4px 8px;
   background: rgba(255, 255, 255, 0.18);
   backdrop-filter: blur(24px);
@@ -218,9 +218,9 @@
 
 .dock-divider {
   width: 1px;
-  height: 36px;
+  height: 30px;
   background: rgba(255, 255, 255, 0.2);
-  margin: 0 4px;
+  margin: 0 2px;
   align-self: center;
   flex-shrink: 0;
 }
@@ -244,8 +244,8 @@
 }
 
 .dock-item {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -257,30 +257,23 @@
 }
 
 .dock-item:hover {
-  transform: scale(1.25) translateY(-4px);
-}
-
-.dock-item[data-app="finder"] {
-  width: 56px;
-  height: 56px;
-}
-
-.dock-item[data-app="finder"] .dock-item-img {
-  width: 52px;
-  height: 52px;
-}
-
-.dock-item[data-app="finder"]:hover {
-  transform: scale(1.3) translateY(-6px);
+  transform: scale(1.3) translateY(-4px);
 }
 
 .dock-item-img {
-  width: 44px;
-  height: 44px;
+  width: 38px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+.dock-item-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
 }
 
 /* Active dot under dock icon when window is open */
