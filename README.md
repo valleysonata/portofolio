@@ -1,7 +1,7 @@
 
-<img width="959" height="481" alt="new" src="https://github.com/user-attachments/assets/a00e6c9a-3177-4431-b167-01edaefeddfe" />
+<img width="960" height="483" alt="sexyy" src="https://github.com/user-attachments/assets/b75203e8-3ca3-488e-8b6d-a76bd63be1fa" />
 
-## Portfolio 🍎
+## Portfolio V2🍎
 
 <div align="center">
 
@@ -15,7 +15,7 @@ macOS Sequoia-inspired desktop environment with an AI chat agent.
 
 ---
 
-A browser-based macOS Sequoia desktop with a working terminal, Safari browser, Spotify player, Finder, Photos, VS Code, Launchpad, and an AI assistant. No frameworks, no build tools, just HTML/CSS/JS.
+A browser-based macOS Sequoia desktop with a working terminal, Safari browser, Spotify player, Finder, Photos, VS Code, Launchpad, and an AI assistant. 
 
 ### Features
 
