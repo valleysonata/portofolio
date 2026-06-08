@@ -260,6 +260,20 @@
   transform: scale(1.25) translateY(-4px);
 }
 
+.dock-item[data-app="finder"] {
+  width: 56px;
+  height: 56px;
+}
+
+.dock-item[data-app="finder"] .dock-item-img {
+  width: 52px;
+  height: 52px;
+}
+
+.dock-item[data-app="finder"]:hover {
+  transform: scale(1.3) translateY(-6px);
+}
+
 .dock-item-img {
   width: 44px;
   height: 44px;
