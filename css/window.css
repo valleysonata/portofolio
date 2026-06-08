@@ -257,3 +257,58 @@
 .window[data-app="spotify"] .window-body {
   border-radius: 0;
 }
+
+/* ── Shared nav button (back/forward chevrons) ── */
+.nav-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: none;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.12s ease;
+  padding: 0;
+}
+
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.nav-btn:active {
+  transform: scale(0.92);
+  background: rgba(255, 255, 255, 0.18);
+  transition: transform 0.06s, background 0.06s;
+}
+
+.nav-btn:disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.nav-btn svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Lightbox variant — larger */
+.nav-btn.nav-btn-lg {
+  width: 36px;
+  height: 36px;
+}
+
+.nav-btn.nav-btn-lg svg {
+  width: 16px;
+  height: 16px;
+}

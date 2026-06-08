@@ -3,6 +3,8 @@
 
   var overlay = document.getElementById("launchpad-overlay");
   var grid = overlay ? overlay.querySelector(".launchpad-grid") : null;
+  var searchInput = overlay ? overlay.querySelector("#launchpad-search") : null;
+  var items = grid ? grid.querySelectorAll(".launchpad-item") : [];
 
   function openApp(name) {
     switch (name) {
@@ -36,6 +38,8 @@
       setTimeout(function() {
         overlay.style.display = "none";
       }, 300);
+      if (searchInput) searchInput.value = "";
+      filterItems("");
     }
   }
 
@@ -47,7 +51,60 @@
       overlay.style.display = "flex";
       void overlay.offsetHeight;
       overlay.classList.add("visible");
+      if (searchInput) {
+        searchInput.value = "";
+        setTimeout(function() { searchInput.focus(); }, 100);
+      }
     }
+  }
+
+  function filterItems(query) {
+    var q = query.toLowerCase();
+    items.forEach(function(item) {
+      var label = item.querySelector(".launchpad-item-label");
+      var name = label ? label.textContent.toLowerCase() : "";
+      var action = (item.getAttribute("data-action") || "").toLowerCase();
+      if (!q || name.indexOf(q) !== -1 || action.indexOf(q) !== -1) {
+        item.style.display = "";
+      } else {
+        item.style.display = "none";
+      }
+    });
+  }
+
+  function openFirstVisible() {
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].style.display !== "none") {
+        items[i].click();
+        return true;
+      }
+    }
+    return false;
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener("input", function() {
+      filterItems(searchInput.value);
+    });
+
+    searchInput.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        openFirstVisible();
+      }
+      if (e.key === "Escape") {
+        if (searchInput.value) {
+          searchInput.value = "";
+          filterItems("");
+        } else {
+          close();
+        }
+      }
+    });
+
+    searchInput.addEventListener("click", function(e) {
+      e.stopPropagation();
+    });
   }
 
   if (grid) {

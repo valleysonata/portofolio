@@ -14,29 +14,7 @@
 
 /* ── Back / Forward buttons ── */
 .safari-nav-btn {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  border: none;
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 10px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.15s, color 0.15s;
-  flex-shrink: 0;
-}
-
-.safari-nav-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.safari-nav-btn:disabled {
-  opacity: 0.3;
-  cursor: default;
+  /* inherits from .nav-btn */
 }
 
 /* ── Address bar ── */

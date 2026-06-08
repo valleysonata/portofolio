@@ -47,10 +47,10 @@
       lightbox = document.createElement("div");
       lightbox.className = "photos-lightbox";
       lightbox.innerHTML =
-        '<button class="photos-lightbox-close">&times;</button>' +
-        '<button class="photos-lightbox-nav photos-lightbox-prev">&#9664;</button>' +
+        '<button class="nav-btn nav-btn-lg photos-lightbox-close">&times;</button>' +
+        '<button class="nav-btn nav-btn-lg photos-lightbox-nav photos-lightbox-prev"><svg viewBox="0 0 16 16"><polyline points="10 3 5 8 10 13"/></svg></button>' +
         '<img src="" alt="">' +
-        '<button class="photos-lightbox-nav photos-lightbox-next">&#9654;</button>';
+        '<button class="nav-btn nav-btn-lg photos-lightbox-nav photos-lightbox-next"><svg viewBox="0 0 16 16"><polyline points="6 3 11 8 6 13"/></svg></button>';
       document.body.appendChild(lightbox);
 
       lightbox.querySelector(".photos-lightbox-close").addEventListener("click", closeLightbox);
