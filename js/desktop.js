@@ -787,7 +787,6 @@
   var brightnessPct = document.getElementById("brightness-pct");
   var volumeSlider = document.getElementById("volume-slider");
   var volumePct = document.getElementById("volume-pct");
-  var batteryPct = document.getElementById("battery-pct");
 
   // WiFi state
   var wifiEnabled = localStorage.getItem("wifiEnabled") !== "false";
@@ -885,58 +884,30 @@
   });
 
   // ── Battery percentage ──
-  if (batteryPct && navigator.getBattery) {
-    navigator.getBattery().then(function(battery) {
-      function updateBattery() {
-        batteryPct.textContent = Math.round(battery.level * 100) + "%";
-      }
-      updateBattery();
-      battery.addEventListener("levelchange", updateBattery);
-    }).catch(function() {
-      batteryPct.textContent = "100%";
+  // Battery percentage text removed — only icon shown
+
+  // ── Spotlight ──
+  var spotlightBtn = document.getElementById("menubar-spotlight");
+  if (spotlightBtn) {
+    spotlightBtn.addEventListener("click", function(e) {
+      e.stopPropagation();
+      if (ccPanel) ccPanel.style.display = "none";
+      if (wifiPopup) wifiPopup.style.display = "none";
+      alert("Spotlight Search\n\nCmd+Space to search apps, files, and more.");
     });
   }
 
-  // ── Dock magnification ──
-  var dockEl = document.querySelector(".dock");
-  if (dockEl) {
-    var dockItems = dockEl.querySelectorAll(".dock-item");
-    var mouseX = null;
-
-    dockEl.addEventListener("mousemove", function(e) {
-      var rect = dockEl.getBoundingClientRect();
-      mouseX = e.clientX - rect.left;
-      updateDockMagnification();
+  // ── Brightness overlay ──
+  var brightnessOverlay = document.getElementById("brightness-overlay");
+  if (brightnessSlider && brightnessOverlay) {
+    brightnessSlider.addEventListener("input", function() {
+      var val = parseInt(brightnessSlider.value);
+      brightnessOverlay.style.opacity = (100 - val) / 100;
     });
-
-    dockEl.addEventListener("mouseleave", function() {
-      mouseX = null;
-      dockItems.forEach(function(item) {
-        item.style.transition = "transform 0.2s ease-out";
-        item.style.transform = "";
-      });
-    });
-
-    function updateDockMagnification() {
-      if (mouseX === null) return;
-      var dockWidth = dockEl.offsetWidth;
-      var itemCount = dockItems.length;
-      var iconWidth = dockWidth / itemCount;
-      var maxScale = 1.8;
-      var maxDistance = iconWidth * 2.5;
-
-      dockItems.forEach(function(item, index) {
-        var iconCenter = iconWidth * (index + 0.5);
-        var distance = Math.abs(mouseX - iconCenter);
-        var scale = 1;
-        if (distance < maxDistance) {
-          scale = 1 + (maxScale - 1) * Math.pow(1 - distance / maxDistance, 2);
-        }
-        item.style.transition = "none";
-        item.style.transform = "scale(" + scale + ") translateY(" + ((scale - 1) * -6) + "px)";
-      });
-    }
   }
+
+  // ── Volume slider (cosmetic) ──
+  // Just updates the display — no system audio control
 
   window.Desktop = {
     openWindow: openWindow,

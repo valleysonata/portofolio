@@ -29,7 +29,9 @@
 
 .menubar-right {
   margin-left: auto;
-  gap: 14px;
+  gap: 10px;
+  align-items: center;
+  height: 100%;
 }
 
 .apple-logo {
@@ -109,8 +111,8 @@
 }
 
 .menubar-icon {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -121,6 +123,8 @@
   padding: 0;
   cursor: pointer;
   transition: opacity 0.15s;
+  border-radius: 4px;
+  flex-shrink: 0;
 }
 
 .menubar-icon:hover {
@@ -132,11 +136,6 @@
   align-items: center;
   gap: 4px;
   line-height: 1;
-}
-
-.menubar-battery-pct {
-  font-size: 11px;
-  font-variant-numeric: tabular-nums;
 }
 
 .menubar-time {
@@ -324,6 +323,26 @@
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
+/* ── Brightness overlay ── */
+#brightness-overlay {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  pointer-events: none;
+  z-index: 9996;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* ── Spotlight icon ── */
+.menubar-spotlight {
+  opacity: 0.85;
+}
+
+.menubar-spotlight:hover {
+  opacity: 1;
+}
+
 /* ── Desktop (the area between menubar and dock) ── */
 .desktop {
   position: fixed;
@@ -454,7 +473,7 @@
 }
 
 .dock-item:hover {
-  /* magnification handled by JS */
+  transform: scale(1.3) translateY(-4px);
 }
 
 .dock-item-img {

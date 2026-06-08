@@ -42,6 +42,8 @@
 </head>
 <body>
 
+  <div id="brightness-overlay"></div>
+
   <!-- ══════════════════════════════════════════════════════════════ -->
   <!-- APPLE BOOT SCREEN (first thing visible on page load)          -->
   <!-- ══════════════════════════════════════════════════════════════ -->
@@ -121,7 +123,6 @@
     </div>
     <div class="menubar-right">
       <span class="menubar-battery" id="battery-indicator">
-        <span class="menubar-battery-pct" id="battery-pct">100%</span>
         <svg width="20" height="12" viewBox="0 0 20 12" fill="none" stroke="currentColor" stroke-width="1">
           <rect x="0.5" y="0.5" width="16" height="11" rx="2" fill="none"/>
           <rect x="17" y="3" width="2.5" height="5" rx="1" fill="currentColor" opacity="0.5"/>
@@ -145,6 +146,12 @@
           </label>
         </div>
       </div>
+      <button class="menubar-icon menubar-spotlight" id="menubar-spotlight" title="Spotlight">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </button>
       <button class="menubar-icon menubar-cc" id="menubar-cc" title="Control Center">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
           <rect x="1" y="1" width="6" height="6" rx="1.5"/>
@@ -251,7 +258,7 @@
       </div>
       <div class="dock-item" data-app="vscode" title="VS Code">
         <div class="dock-item-img">
-          <img src="assets/visual-studio-code-icon.png" alt="VS Code">
+          <img src="assets/vscode-icon.png" alt="VS Code">
         </div>
       </div>
       <div class="dock-item" data-app="spotify" title="Spotify">
@@ -326,14 +333,7 @@
         </div>
         <button class="safari-nav-btn nav-btn" id="safari-star" title="Add Bookmark"><svg viewBox="0 0 16 16"><polygon points="8,1.5 9.8,5.2 14,5.8 11,8.7 11.7,13 8,11 4.3,13 5,8.7 2,5.8 6.2,5.2" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></button>
       </div>
-      <div class="safari-tab-bar">
-        <div class="safari-tab active">
-          <span>Start Page</span>
-          <button class="safari-tab-close">&times;</button>
-        </div>
-        <button class="safari-tab-new" title="New Tab">+</button>
-      </div>
-    </div>
+</div>
     <div class="window-body safari-content">
       <div class="safari-loading-bar" id="safari-loading-bar"></div>
       <div id="safari-page-container">
@@ -609,7 +609,7 @@
         <div class="launchpad-item-label">Photos</div>
       </div>
       <div class="launchpad-item" data-action="vscode">
-        <div class="launchpad-item-icon"><img src="assets/visual-studio-code-icon.png" alt="VS Code" width="64" height="64"></div>
+        <div class="launchpad-item-icon"><img src="assets/vscode-icon.png" alt="VS Code" width="64" height="64"></div>
         <div class="launchpad-item-label">VS Code</div>
       </div>
       <div class="launchpad-item" data-action="spotify">
