@@ -218,14 +218,7 @@
 
   <!-- Desktop area -->
   <div class="desktop">
-    <div class="desktop-icons">
-      <div class="desktop-icon" data-app="terminal" title="Double-click to open">
-        <div class="desktop-icon-img">
-          <img src="assets/terminal-icon.svg" alt="Terminal" width="52" height="52">
-        </div>
-        <span class="desktop-icon-label">Terminal</span>
-      </div>
-    </div>
+    <div class="desktop-icons" id="desktop-icons"></div>
   </div>
 
   <!-- Dock -->
@@ -423,7 +416,7 @@
       <div class="finder-sidebar">
         <div class="finder-sidebar-header">Favorites</div>
         <div class="finder-sidebar-item active" data-path="portofolio">
-          <span class="finder-sidebar-icon"><svg viewBox="0 0 16 16" width="13" height="13" style="display:block"><path d="M1.5 2.5h4.8l1.2-1.2h7a.8.8 0 0 1 .8.8v10.6a.8.8 0 0 1-.8.8h-13a.8.8 0 0 1-.8-.8V3.3a.8.8 0 0 1 .8-.8z" fill="#dcb67a"/><path d="M1.5 5h13v9.1a.8.8 0 0 1-.8.8h-13a.8.8 0 0 1-.8-.8z" fill="#c9a44e"/></svg></span> portofolio
+          <span class="finder-sidebar-icon"><img src="assets/folder-icon.png" style="width:13px;height:13px;object-fit:contain;display:block;"></span> portofolio
         </div>
         <div class="finder-sidebar-item" data-path="Desktop">
           <span class="finder-sidebar-icon"><svg viewBox="0 0 16 16" width="13" height="13" style="display:block"><rect x="1.5" y="2" width="13" height="9" rx="1" fill="none" stroke="#888" stroke-width="1.2"/><line x1="5.5" y1="13" x2="10.5" y2="13" stroke="#888" stroke-width="1.2" stroke-linecap="round"/><line x1="8" y1="11" x2="8" y2="13" stroke="#888" stroke-width="1.2"/></svg></span> Desktop
@@ -626,6 +619,18 @@
       </div>
     </div>
     <div class="launchpad-close-hint">Press Esc or click anywhere to close</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- SPOTLIGHT SEARCH OVERLAY                                      -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+
+  <div id="spotlight-overlay" style="display:none;">
+    <div class="spotlight-bar">
+      <svg class="spotlight-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="spotlight-input" placeholder="Spotlight Search" spellcheck="false" autocomplete="off" />
+    </div>
+    <div class="spotlight-results" id="spotlight-results"></div>
   </div>
 
   <!-- ══════════════════════════════════════════════════════════════ -->

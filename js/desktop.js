@@ -78,7 +78,6 @@
   var desktop = document.querySelector(".desktop");
   var dock = document.querySelector(".dock");
   var dockTerminal = document.querySelector(".dock-item[data-app='terminal']");
-  var desktopTerminal = document.querySelector(".desktop-icon[data-app='terminal']");
   var dockSafari = document.querySelector(".dock-item[data-app='safari']");
   var dockSpotify = document.querySelector(".dock-item[data-app='spotify']");
   var dockLaunchpad = document.querySelector(".dock-item[data-app='launchpad']");
@@ -255,7 +254,6 @@
       windowOpen = true;
       windowMinimized = false;
       dockTerminal.classList.add("active");
-      if (desktopTerminal) desktopTerminal.classList.add("selected");
       setMenubarApp("Terminal");
 
       setTimeout(function () { win.classList.remove("animating"); }, 550);
@@ -281,7 +279,6 @@
       windowMinimized = false;
       windowMaximized = false;
       dockTerminal.classList.remove("active");
-      if (desktopTerminal) desktopTerminal.classList.remove("selected");
       var output = document.getElementById("terminal-output");
       if (output) { output.innerHTML = ""; output.dataset.ran = ""; }
       setMenubarApp("Finder");
@@ -319,20 +316,188 @@
     }
   }
 
-  // ── Terminal event listeners ──
-  if (desktopTerminal) {
-    desktopTerminal.addEventListener("dblclick", function (e) {
-      e.preventDefault();
-      openWindow();
+  // ── Desktop icons ──
+  var desktopIcons = document.getElementById("desktop-icons");
+
+  function getFileIcon(name) {
+    var ext = name.split(".").pop();
+    switch (ext) {
+      case "html": return '<svg viewBox="0 0 16 16" width="14" height="14" style="display:block"><path d="M3 1.5h7l3.5 3.5v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z" fill="none" stroke="#555" stroke-width="1"/><text x="8" y="11.5" text-anchor="middle" font-size="7" fill="#e44d26" font-family="monospace" font-weight="bold">&lt;/&gt;</text></svg>';
+      case "css": return '<svg viewBox="0 0 16 16" width="14" height="14" style="display:block"><path d="M3 1.5h7l3.5 3.5v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z" fill="none" stroke="#555" stroke-width="1"/><text x="8" y="11.5" text-anchor="middle" font-size="8" fill="#42a5f5" font-family="monospace" font-weight="bold">{}</text></svg>';
+      case "js": return '<svg viewBox="0 0 16 16" width="14" height="14" style="display:block"><path d="M3 1.5h7l3.5 3.5v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z" fill="none" stroke="#555" stroke-width="1"/><text x="8" y="11.5" text-anchor="middle" font-size="7" fill="#f5d442" font-family="monospace" font-weight="bold">JS</text></svg>';
+      case "md": return '<svg viewBox="0 0 16 16" width="14" height="14" style="display:block"><path d="M3 1.5h7l3.5 3.5v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z" fill="none" stroke="#555" stroke-width="1"/><text x="8" y="11" text-anchor="middle" font-size="6" fill="#888" font-family="sans-serif" font-weight="600">M&#8595;</text></svg>';
+      case "txt": return '<svg viewBox="0 0 16 16" width="14" height="14" style="display:block"><path d="M3 1.5h7l3.5 3.5v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z" fill="none" stroke="#555" stroke-width="1"/><text x="8" y="11" text-anchor="middle" font-size="6" fill="#aaa" font-family="sans-serif">A</text></svg>';
+      default: return '<svg viewBox="0 0 16 16" width="14" height="14" style="display:block"><path d="M3 1.5h7l3.5 3.5v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z" fill="none" stroke="#555" stroke-width="1"/></svg>';
+    }
+  }
+
+  function renderDesktop() {
+    if (!desktopIcons || !window.FinderFS) return;
+    var desktopFolder = window.FinderFS.Desktop;
+    if (!desktopFolder || !desktopFolder.children) return;
+
+    var html = "";
+
+    // Terminal always first
+    html += '<div class="desktop-icon" data-app="terminal" title="Double-click to open">' +
+      '<div class="desktop-icon-img"><img src="assets/terminal-icon.svg" alt="Terminal" width="52" height="52"></div>' +
+      '<span class="desktop-icon-label">Terminal</span></div>';
+
+    // Desktop folder items
+    var items = desktopFolder.children;
+    var names = Object.keys(items).sort(function(a, b) {
+      var aF = items[a].type === "folder" ? 0 : 1;
+      var bF = items[b].type === "folder" ? 0 : 1;
+      return aF - bF || a.localeCompare(b);
     });
 
-    desktopTerminal.addEventListener("click", function (e) {
-      e.stopPropagation();
-      document.querySelectorAll(".desktop-icon").forEach(function (el) { el.classList.remove("selected"); });
-      desktopTerminal.classList.add("selected");
+    names.forEach(function(name) {
+      var item = items[name];
+      var icon;
+      if (item.type === "folder") {
+        icon = '<img src="assets/folder-icon.png" alt="' + name + '" width="52" height="52" style="object-fit:contain;">';
+      } else {
+        icon = getFileIcon(name);
+      }
+      html += '<div class="desktop-icon" data-type="' + item.type + '" data-name="' + name + '" title="' + name + '">' +
+        '<div class="desktop-icon-img">' + icon + '</div>' +
+        '<span class="desktop-icon-label">' + name + '</span></div>';
+    });
+
+    desktopIcons.innerHTML = html;
+
+    // Bind events
+    desktopIcons.querySelectorAll(".desktop-icon").forEach(function(el) {
+      el.addEventListener("click", function(e) {
+        e.stopPropagation();
+        document.querySelectorAll(".desktop-icon").forEach(function(d) { d.classList.remove("selected"); });
+        el.classList.add("selected");
+      });
+
+      el.addEventListener("dblclick", function(e) {
+        e.preventDefault();
+        var appName = el.getAttribute("data-app");
+        var type = el.getAttribute("data-type");
+        var name = el.getAttribute("data-name");
+
+        if (appName === "terminal") {
+          openWindow();
+        } else if (type === "folder") {
+          openGenericWindow(finderWin, dockFinder, "Finder", function() {
+            if (window.FinderApp) window.FinderApp.navigateTo("Desktop");
+          });
+        } else if (type === "file") {
+          var ext = name.split(".").pop();
+          if (["html", "css", "js", "md"].indexOf(ext) !== -1) {
+            openGenericWindow(vscodeWin, dockVscode, "VS Code", function() {
+              if (window.VSCodeApp) window.VSCodeApp.openFile(name, ext === "md" ? "markdown" : ext);
+            });
+          } else if (ext === "txt") {
+            var file = items[name];
+            if (file && file.content) {
+              alert(name + "\n\n" + file.content);
+            } else {
+              alert(name + "\n\n(empty file)");
+            }
+          }
+        }
+      });
     });
   }
 
+  // Initial render after Finder is ready
+  setTimeout(renderDesktop, 100);
+
+  // ── Spotlight Search ──
+  var spotlightOverlay = document.getElementById("spotlight-overlay");
+  var spotlightInput = document.getElementById("spotlight-input");
+  var spotlightResults = document.getElementById("spotlight-results");
+  var spotlightBtn = document.getElementById("menubar-spotlight");
+
+  var spotlightApps = [
+    { name: "Terminal", icon: "assets/terminal-icon.svg", action: function() { openWindow(); } },
+    { name: "Finder", icon: "assets/Finder.png", action: function() { openGenericWindow(finderWin, dockFinder, "Finder", function() { if (window.FinderApp) window.FinderApp.init(); }); } },
+    { name: "Safari", icon: "assets/safari-icon.png", action: function() { openGenericWindow(safariWin, dockSafari, "Safari", function() { if (window.SafariApp) window.SafariApp.init(); }); } },
+    { name: "Photos", icon: "assets/apple-photos.svg", action: function() { openGenericWindow(photosWin, dockPhotos, "Photos", function() { if (window.PhotosApp) window.PhotosApp.init(); }); } },
+    { name: "VS Code", icon: "assets/vscode-icon.png", action: function() { openGenericWindow(vscodeWin, dockVscode, "VS Code", function() { if (window.VSCodeApp) window.VSCodeApp.init(); }); } },
+    { name: "Spotify", icon: "assets/spotify-icon.png", action: function() { openGenericWindow(spotifyWin, dockSpotify, "Spotify", function() { if (window.SpotifyApp) window.SpotifyApp.init(); }); } },
+    { name: "Launchpad", icon: "assets/launchpad-icon.svg", action: function() { if (window.Launchpad) window.Launchpad.toggle(); } },
+    { name: "GitHub", icon: "assets/github-icon.png", action: function() { window.open("https://github.com/valleysonata", "_blank"); } },
+    { name: "LinkedIn", icon: "assets/gmail-icon.png", action: function() { window.open("https://www.linkedin.com/in/adyaraka-banyu-langit-63456a317/", "_blank"); } },
+    { name: "Gmail", icon: "assets/gmail-icon.png", action: function() { window.location.href = "mailto:banyulangitadyaraka@gmail.com"; } },
+  ];
+
+  function openSpotlight() {
+    if (!spotlightOverlay) return;
+    spotlightOverlay.style.display = "flex";
+    spotlightInput.value = "";
+    spotlightResults.innerHTML = "";
+    setTimeout(function() { spotlightInput.focus(); }, 50);
+  }
+
+  function closeSpotlight() {
+    if (!spotlightOverlay) return;
+    spotlightOverlay.style.display = "none";
+    spotlightInput.value = "";
+    spotlightResults.innerHTML = "";
+  }
+
+  function filterSpotlight(query) {
+    if (!spotlightResults) return;
+    if (!query.trim()) { spotlightResults.innerHTML = ""; return; }
+    var q = query.toLowerCase();
+    var matches = spotlightApps.filter(function(app) {
+      return app.name.toLowerCase().indexOf(q) !== -1;
+    });
+    var html = "";
+    matches.forEach(function(app) {
+      html += '<div class="spotlight-result" data-index="' + spotlightApps.indexOf(app) + '">' +
+        '<img src="' + app.icon + '" class="spotlight-result-icon" alt="' + app.name + '">' +
+        '<span class="spotlight-result-name">' + app.name + '</span></div>';
+    });
+    if (matches.length === 0) {
+      html = '<div class="spotlight-empty">No results</div>';
+    }
+    spotlightResults.innerHTML = html;
+
+    spotlightResults.querySelectorAll(".spotlight-result").forEach(function(el) {
+      el.addEventListener("click", function() {
+        var idx = parseInt(el.getAttribute("data-index"));
+        closeSpotlight();
+        spotlightApps[idx].action();
+      });
+    });
+  }
+
+  if (spotlightBtn) {
+    spotlightBtn.addEventListener("click", function(e) {
+      e.stopPropagation();
+      if (ccPanel) ccPanel.style.display = "none";
+      if (wifiPopup) wifiPopup.style.display = "none";
+      openSpotlight();
+    });
+  }
+
+  if (spotlightOverlay) {
+    spotlightOverlay.addEventListener("click", function(e) {
+      if (e.target === spotlightOverlay) closeSpotlight();
+    });
+  }
+
+  if (spotlightInput) {
+    spotlightInput.addEventListener("input", function() {
+      filterSpotlight(spotlightInput.value);
+    });
+    spotlightInput.addEventListener("keydown", function(e) {
+      if (e.key === "Escape") closeSpotlight();
+      if (e.key === "Enter") {
+        var first = spotlightResults.querySelector(".spotlight-result");
+        if (first) first.click();
+      }
+    });
+  }
+
+  // ── Terminal event listeners ──
   desktop.addEventListener("click", function () {
     document.querySelectorAll(".desktop-icon").forEach(function (el) { el.classList.remove("selected"); });
   });
@@ -376,6 +541,7 @@
     dockFinder.addEventListener("click", function () {
       openGenericWindow(finderWin, dockFinder, "Finder", function() {
         if (window.FinderApp) window.FinderApp.init();
+        renderDesktop();
       });
     });
   }
@@ -677,8 +843,12 @@
   document.addEventListener("keydown", function (e) {
     if ((e.metaKey || e.ctrlKey) && e.key === "w" && windowOpen) { e.preventDefault(); closeWindow(); }
     if ((e.metaKey || e.ctrlKey) && e.key === "m" && windowOpen) { e.preventDefault(); minimizeWindow(); }
+    if ((e.metaKey || e.ctrlKey) && e.key === " ") { e.preventDefault(); openSpotlight(); }
     var chatInput = document.getElementById("chat-input");
-    if (e.key === "Escape" && windowOpen && chatInput && !chatInput.matches(":focus")) { closeWindow(); }
+    if (e.key === "Escape") {
+      if (spotlightOverlay && spotlightOverlay.style.display !== "none") { closeSpotlight(); return; }
+      if (windowOpen && chatInput && !chatInput.matches(":focus")) { closeWindow(); }
+    }
   });
 
   // ── Click to focus terminal ──
@@ -886,16 +1056,7 @@
   // ── Battery percentage ──
   // Battery percentage text removed — only icon shown
 
-  // ── Spotlight ──
-  var spotlightBtn = document.getElementById("menubar-spotlight");
-  if (spotlightBtn) {
-    spotlightBtn.addEventListener("click", function(e) {
-      e.stopPropagation();
-      if (ccPanel) ccPanel.style.display = "none";
-      if (wifiPopup) wifiPopup.style.display = "none";
-      alert("Spotlight Search\n\nCmd+Space to search apps, files, and more.");
-    });
-  }
+  // ── Spotlight (handled above with overlay) ──
 
   // ── Brightness overlay ──
   var brightnessOverlay = document.getElementById("brightness-overlay");

@@ -155,7 +155,7 @@
   }
 
   function getFolderIcon() {
-    return '<svg viewBox="0 0 16 16" width="12" height="12" style="display:block"><path d="M1.5 2.5h4.8l1.2-1.2h7a.8.8 0 0 1 .8.8v10.6a.8.8 0 0 1-.8.8h-13a.8.8 0 0 1-.8-.8V3.3a.8.8 0 0 1 .8-.8z" fill="#dcb67a"/><path d="M1.5 5h13v9.1a.8.8 0 0 1-.8.8h-13a.8.8 0 0 1-.8-.8z" fill="#c9a44e"/></svg>';
+    return '<img src="assets/folder-icon.png" style="width:100%;height:100%;object-fit:contain;display:block;">';
   }
 
   function renderFileTree() {

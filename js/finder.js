@@ -8,6 +8,8 @@
 
   var trashCount = 0;
 
+  var FOLDER_ICON = '<img src="assets/folder-icon.png" style="width:100%;height:100%;object-fit:contain;display:block;">';
+
   // ── Virtual file system ──
   var fs = {
     "portofolio": {
@@ -61,7 +63,31 @@
         "README.md": { type: "file", ext: "md" },
       }
     },
-    "Desktop": { type: "folder", children: {} },
+    "Desktop": {
+      type: "folder",
+      children: {
+        "untitled folder": {
+          type: "folder",
+          children: {
+            "welcome.txt": { type: "file", ext: "txt", content: "Thank you for visiting!\n\nCheck out my github: https://github.com/valleysonata" }
+          }
+        },
+        "Projects": {
+          type: "folder",
+          children: {
+            "index.html": { type: "file", ext: "html" },
+            "style.css": { type: "file", ext: "css" },
+            "script.js": { type: "file", ext: "js" }
+          }
+        },
+        "Notes": {
+          type: "folder",
+          children: {
+            "todo.md": { type: "file", ext: "md" }
+          }
+        }
+      }
+    },
     "Documents": { type: "folder", children: {} },
     "Downloads": { type: "folder", children: {} },
     "Trash": { type: "folder", children: {} }
@@ -83,7 +109,7 @@
   }
 
   function getIcon(name, item) {
-    if (item.type === "folder") return '<svg viewBox="0 0 16 16" width="14" height="14" style="display:block"><path d="M1.5 2.5h4.8l1.2-1.2h7a.8.8 0 0 1 .8.8v10.6a.8.8 0 0 1-.8.8h-13a.8.8 0 0 1-.8-.8V3.3a.8.8 0 0 1 .8-.8z" fill="#dcb67a"/><path d="M1.5 5h13v9.1a.8.8 0 0 1-.8.8h-13a.8.8 0 0 1-.8-.8z" fill="#c9a44e"/></svg>';
+    if (item.type === "folder") return FOLDER_ICON;
     switch (item.ext) {
       case "html": return '<svg viewBox="0 0 16 16" width="14" height="14" style="display:block"><path d="M3 1.5h7l3.5 3.5v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z" fill="none" stroke="#555" stroke-width="1"/><text x="8" y="11.5" text-anchor="middle" font-size="7" fill="#e44d26" font-family="monospace" font-weight="bold">&lt;/&gt;</text></svg>';
       case "css": return '<svg viewBox="0 0 16 16" width="14" height="14" style="display:block"><path d="M3 1.5h7l3.5 3.5v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z" fill="none" stroke="#555" stroke-width="1"/><text x="8" y="11.5" text-anchor="middle" font-size="8" fill="#42a5f5" font-family="monospace" font-weight="bold">{}</text></svg>';
@@ -96,12 +122,12 @@
 
   function getSidebarIcon(path) {
     switch (path) {
-      case "portofolio": return '<svg viewBox="0 0 16 16" width="13" height="13" style="display:block"><path d="M1.5 2.5h4.8l1.2-1.2h7a.8.8 0 0 1 .8.8v10.6a.8.8 0 0 1-.8.8h-13a.8.8 0 0 1-.8-.8V3.3a.8.8 0 0 1 .8-.8z" fill="#dcb67a"/><path d="M1.5 5h13v9.1a.8.8 0 0 1-.8.8h-13a.8.8 0 0 1-.8-.8z" fill="#c9a44e"/></svg>';
+      case "portofolio": return '<img src="assets/folder-icon.png" style="width:13px;height:13px;object-fit:contain;display:block;">';
       case "Desktop": return '<svg viewBox="0 0 16 16" width="13" height="13" style="display:block"><rect x="1.5" y="2" width="13" height="9" rx="1" fill="none" stroke="#888" stroke-width="1.2"/><line x1="5.5" y1="13" x2="10.5" y2="13" stroke="#888" stroke-width="1.2" stroke-linecap="round"/><line x1="8" y1="11" x2="8" y2="13" stroke="#888" stroke-width="1.2"/></svg>';
       case "Documents": return '<svg viewBox="0 0 16 16" width="13" height="13" style="display:block"><path d="M3 1.5h7l3.5 3.5v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z" fill="none" stroke="#888" stroke-width="1.2"/><line x1="5" y1="7" x2="11" y2="7" stroke="#888" stroke-width="1"/><line x1="5" y1="9.5" x2="11" y2="9.5" stroke="#888" stroke-width="1"/></svg>';
       case "Downloads": return '<svg viewBox="0 0 16 16" width="13" height="13" style="display:block"><path d="M8 2v8m-3-3l3 3 3-3" fill="none" stroke="#888" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v2.5a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V11" fill="none" stroke="#888" stroke-width="1.2" stroke-linecap="round"/></svg>';
       case "Trash": return '<svg viewBox="0 0 16 16" width="13" height="13" style="display:block"><path d="M3 4.5h10" fill="none" stroke="#888" stroke-width="1.2" stroke-linecap="round"/><path d="M5.5 4.5V3a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v1.5" fill="none" stroke="#888" stroke-width="1.1"/><path d="M4 4.5l.7 8.4a1 1 0 0 0 1 .9h4.6a1 1 0 0 0 1-.9l.7-8.4" fill="none" stroke="#888" stroke-width="1.1"/></svg>';
-      default: return '<svg viewBox="0 0 16 16" width="13" height="13" style="display:block"><path d="M1.5 2.5h4.8l1.2-1.2h7a.8.8 0 0 1 .8.8v10.6a.8.8 0 0 1-.8.8h-13a.8.8 0 0 1-.8-.8V3.3a.8.8 0 0 1 .8-.8z" fill="#dcb67a"/></svg>';
+      default: return '<img src="assets/folder-icon.png" style="width:13px;height:13px;object-fit:contain;display:block;">';
     }
   }
 
@@ -112,6 +138,7 @@
       case "css": return "css";
       case "js": return "javascript";
       case "md": return "markdown";
+      case "txt": return "plaintext";
       default: return "plaintext";
     }
   }
@@ -172,11 +199,18 @@
         if (type === "folder") {
           navigateInto(name);
         } else {
-          // Open in VS Code
           var ext = name.split(".").pop();
           if (["html", "css", "js", "md"].indexOf(ext) !== -1) {
             if (window.VSCodeApp && window.VSCodeApp.openFile) {
               window.VSCodeApp.openFile(name, getLanguage(name));
+            }
+          } else if (ext === "txt") {
+            var folder = getCurrentFolder();
+            var file = folder[name];
+            if (file && file.content) {
+              alert(name + "\n\n" + file.content);
+            } else {
+              alert(name + "\n\n(empty file)");
             }
           }
         }
@@ -410,6 +444,9 @@
       trashCount = 0;
       updateTrashBadge();
       if (currentPath[0] === "Trash") render();
-    }
+    },
+    getFS: function() { return fs; }
   };
+
+  window.FinderFS = fs;
 })();
