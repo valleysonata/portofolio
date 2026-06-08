@@ -1,0 +1,249 @@
+/* finder-window.css — Finder file manager styles */
+
+#finder-window {
+  width: 700px;
+  height: 450px;
+}
+
+.finder-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(30, 30, 30, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex: 1;
+  margin-left: 4px;
+}
+
+.finder-nav-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.finder-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.finder-breadcrumb {
+  flex: 1;
+  text-align: center;
+  color: #ccc;
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.finder-toolbar-right {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.finder-tool-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: none;
+  background: rgba(255, 255, 255, 0.06);
+  color: #ccc;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.finder-tool-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.finder-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.finder-sidebar {
+  width: 160px;
+  min-width: 160px;
+  background: rgba(25, 25, 25, 0.95);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 0;
+  overflow-y: auto;
+}
+
+.finder-sidebar-header {
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 12px 8px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.finder-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  font-size: 13px;
+  color: #ccc;
+  cursor: pointer;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  transition: background 0.1s;
+}
+
+.finder-sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.finder-sidebar-item.active {
+  background: rgba(0, 102, 214, 0.4);
+  color: #fff;
+}
+
+.finder-sidebar-icon {
+  font-size: 14px;
+  width: 18px;
+  text-align: center;
+}
+
+.finder-sidebar-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 8px 12px;
+}
+
+.finder-content {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  background: #1a1a1a;
+}
+
+.finder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 12px;
+}
+
+.finder-file {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.1s;
+  user-select: none;
+}
+
+.finder-file:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.finder-file.selected {
+  background: rgba(0, 102, 214, 0.3);
+}
+
+.finder-file.drag-over {
+  background: rgba(0, 102, 214, 0.5);
+  outline: 2px dashed rgba(0, 102, 214, 0.8);
+}
+
+.finder-file-icon {
+  font-size: 36px;
+  line-height: 1;
+}
+
+.finder-file-name {
+  font-size: 11px;
+  color: #ccc;
+  text-align: center;
+  word-break: break-all;
+  max-width: 80px;
+  line-height: 1.3;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.finder-file-name-input {
+  font-size: 11px;
+  color: #ccc;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid #0066d6;
+  border-radius: 3px;
+  padding: 1px 4px;
+  text-align: center;
+  width: 80px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  outline: none;
+}
+
+.finder-statusbar {
+  height: 22px;
+  min-height: 22px;
+  background: rgba(30, 30, 30, 0.95);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 11px;
+  color: #888;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ── Context menu ── */
+.finder-context-menu {
+  position: fixed;
+  min-width: 160px;
+  background: rgba(30, 30, 30, 0.95);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  padding: 4px 0;
+  z-index: 99999;
+}
+
+.finder-context-item {
+  padding: 4px 16px;
+  font-size: 13px;
+  color: #e8e8e8;
+  cursor: default;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  transition: background 0.1s;
+}
+
+.finder-context-item:hover {
+  background: #0066d6;
+  color: #fff;
+  border-radius: 4px;
+  margin: 0 4px;
+  padding: 4px 12px;
+}
+
+.finder-context-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 4px 0;
+}

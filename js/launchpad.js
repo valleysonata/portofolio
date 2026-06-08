@@ -81,6 +81,33 @@
             });
           }
           break;
+        case "finder":
+          if (window.Desktop && window.Desktop.openGenericWindow && window.FinderApp) {
+            var finderWin = document.getElementById("finder-window");
+            var dockFinder = document.querySelector(".dock-item[data-app='finder']");
+            window.Desktop.openGenericWindow(finderWin, dockFinder, "Finder", function() {
+              window.FinderApp.init();
+            });
+          }
+          break;
+        case "photos":
+          if (window.Desktop && window.Desktop.openGenericWindow && window.PhotosApp) {
+            var photosWin = document.getElementById("photos-window");
+            var dockPhotos = document.querySelector(".dock-item[data-app='photos']");
+            window.Desktop.openGenericWindow(photosWin, dockPhotos, "Photos", function() {
+              window.PhotosApp.init();
+            });
+          }
+          break;
+        case "vscode":
+          if (window.Desktop && window.Desktop.openGenericWindow && window.VSCodeApp) {
+            var vscodeWin = document.getElementById("vscode-window");
+            var dockVscode = document.querySelector(".dock-item[data-app='vscode']");
+            window.Desktop.openGenericWindow(vscodeWin, dockVscode, "VS Code", function() {
+              window.VSCodeApp.init();
+            });
+          }
+          break;
         case "github":
           window.open("https://github.com/valleysonata", "_blank");
           break;

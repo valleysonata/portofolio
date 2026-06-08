@@ -1,0 +1,153 @@
+/* photos-window.css — Photos gallery styles */
+
+#photos-window {
+  width: 750px;
+  height: 500px;
+}
+
+.photos-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.photos-sidebar {
+  width: 160px;
+  min-width: 160px;
+  background: rgba(25, 25, 25, 0.95);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 0;
+  overflow-y: auto;
+}
+
+.photos-sidebar-header {
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 12px 8px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.photos-sidebar-item {
+  padding: 5px 12px;
+  font-size: 13px;
+  color: #ccc;
+  cursor: pointer;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  transition: background 0.1s;
+}
+
+.photos-sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.photos-sidebar-item.active {
+  background: rgba(0, 102, 214, 0.4);
+  color: #fff;
+}
+
+.photos-content {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  background: #1a1a1a;
+}
+
+.photos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+}
+
+.photos-thumb {
+  aspect-ratio: 1;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.15s;
+}
+
+.photos-thumb:hover {
+  transform: scale(1.03);
+}
+
+.photos-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Lightbox ── */
+.photos-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 99998;
+  background: rgba(0, 0, 0, 0.92);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.photos-lightbox.visible {
+  display: flex;
+  opacity: 1;
+}
+
+.photos-lightbox img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.photos-lightbox-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.photos-lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.photos-lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.photos-lightbox-nav:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.photos-lightbox-prev { left: 16px; }
+.photos-lightbox-next { right: 16px; }

@@ -67,6 +67,12 @@
   var windowMinimized = false;
   var windowMaximized = false;
   var activeAppName = "Finder";
+  var zCounter = 100;
+
+  function bringToFront(windowEl) {
+    zCounter++;
+    windowEl.style.zIndex = zCounter;
+  }
 
   var menubarApp = document.querySelector(".menubar-app-text");
   var desktop = document.querySelector(".desktop");
@@ -76,6 +82,10 @@
   var dockSafari = document.querySelector(".dock-item[data-app='safari']");
   var dockSpotify = document.querySelector(".dock-item[data-app='spotify']");
   var dockLaunchpad = document.querySelector(".dock-item[data-app='launchpad']");
+  var dockFinder = document.querySelector(".dock-item[data-app='finder']");
+  var dockPhotos = document.querySelector(".dock-item[data-app='photos']");
+  var dockVscode = document.querySelector(".dock-item[data-app='vscode']");
+  var dockTrash = document.querySelector(".dock-item[data-app='trash']");
   var win = document.getElementById("terminal-window");
   var titlebar = win.querySelector(".window-titlebar");
   var btnClose = win.querySelector(".window-btn.close");
@@ -133,9 +143,7 @@
   // ── Generic window open/close for Safari/Spotify ──
   function openGenericWindow(windowEl, dockItem, appName, onOpen) {
     if (windowEl.classList.contains("open")) {
-      // Already open — just focus
-      windowEl.style.zIndex = "101";
-      setTimeout(function () { windowEl.style.zIndex = ""; }, 100);
+      bringToFront(windowEl);
       setMenubarApp(appName);
       return;
     }
@@ -203,9 +211,7 @@
 
   function openWindow() {
     if (windowOpen && !windowMinimized) {
-      // Already open — just focus
-      win.style.zIndex = "101";
-      setTimeout(function () { win.style.zIndex = "100"; }, 100);
+      bringToFront(win);
       setMenubarApp("Terminal");
       return;
     }
@@ -365,9 +371,48 @@
     });
   }
 
+  // ── Finder dock click ──
+  if (dockFinder) {
+    dockFinder.addEventListener("click", function () {
+      openGenericWindow(finderWin, dockFinder, "Finder", function() {
+        if (window.FinderApp) window.FinderApp.init();
+      });
+    });
+  }
+
+  // ── Photos dock click ──
+  if (dockPhotos) {
+    dockPhotos.addEventListener("click", function () {
+      openGenericWindow(photosWin, dockPhotos, "Photos", function() {
+        if (window.PhotosApp) window.PhotosApp.init();
+      });
+    });
+  }
+
+  // ── VS Code dock click ──
+  if (dockVscode) {
+    dockVscode.addEventListener("click", function () {
+      openGenericWindow(vscodeWin, dockVscode, "VS Code", function() {
+        if (window.VSCodeApp) window.VSCodeApp.init();
+      });
+    });
+  }
+
+  // ── Trash dock click ──
+  if (dockTrash) {
+    dockTrash.addEventListener("click", function () {
+      openGenericWindow(finderWin, dockTrash, "Finder", function() {
+        if (window.FinderApp) window.FinderApp.navigateTo("Trash");
+      });
+    });
+  }
+
   // ── Safari/Spotify window close buttons ──
   var safariWin = document.getElementById("safari-window");
   var spotifyWin = document.getElementById("spotify-window");
+  var finderWin = document.getElementById("finder-window");
+  var photosWin = document.getElementById("photos-window");
+  var vscodeWin = document.getElementById("vscode-window");
 
   if (safariWin) {
     var safariClose = safariWin.querySelector(".window-btn.close");
@@ -392,9 +437,50 @@
     if (spotifyMin) spotifyMin.addEventListener("click", function () {
       closeGenericWindow(spotifyWin, dockSpotify);
     });
-    // Make Spotify draggable
     makeDraggable(spotifyWin, dockSpotify, "Spotify");
     makeResizable(spotifyWin);
+  }
+
+  // ── Finder window setup ──
+  if (finderWin) {
+    var finderClose = finderWin.querySelector(".window-btn.close");
+    var finderMin = finderWin.querySelector(".window-btn.minimize");
+    if (finderClose) finderClose.addEventListener("click", function () {
+      closeGenericWindow(finderWin, dockFinder);
+    });
+    if (finderMin) finderMin.addEventListener("click", function () {
+      closeGenericWindow(finderWin, dockFinder);
+    });
+    makeDraggable(finderWin, dockFinder, "Finder");
+    makeResizable(finderWin);
+  }
+
+  // ── Photos window setup ──
+  if (photosWin) {
+    var photosClose = photosWin.querySelector(".window-btn.close");
+    var photosMin = photosWin.querySelector(".window-btn.minimize");
+    if (photosClose) photosClose.addEventListener("click", function () {
+      closeGenericWindow(photosWin, dockPhotos);
+    });
+    if (photosMin) photosMin.addEventListener("click", function () {
+      closeGenericWindow(photosWin, dockPhotos);
+    });
+    makeDraggable(photosWin, dockPhotos, "Photos");
+    makeResizable(photosWin);
+  }
+
+  // ── VS Code window setup ──
+  if (vscodeWin) {
+    var vscodeClose = vscodeWin.querySelector(".window-btn.close");
+    var vscodeMin = vscodeWin.querySelector(".window-btn.minimize");
+    if (vscodeClose) vscodeClose.addEventListener("click", function () {
+      closeGenericWindow(vscodeWin, dockVscode);
+    });
+    if (vscodeMin) vscodeMin.addEventListener("click", function () {
+      closeGenericWindow(vscodeWin, dockVscode);
+    });
+    makeDraggable(vscodeWin, dockVscode, "VS Code");
+    makeResizable(vscodeWin);
   }
 
   // ── Generic drag handler for any window ──
@@ -436,6 +522,7 @@
 
     // Focus on click
     windowEl.addEventListener("mousedown", function () {
+      bringToFront(windowEl);
       setMenubarApp(appName);
     });
   }
@@ -596,6 +683,7 @@
 
   // ── Click to focus terminal ──
   win.addEventListener("mousedown", function () {
+    bringToFront(win);
     setMenubarApp("Terminal");
   });
 
@@ -610,10 +698,8 @@
 
   // ── Bring All to Front ──
   function bringAllToFront() {
-    var windows = document.querySelectorAll(".window.open");
-    windows.forEach(function (w) {
-      w.style.zIndex = "101";
-      setTimeout(function () { w.style.zIndex = ""; }, 100);
+    document.querySelectorAll(".window.open").forEach(function (w) {
+      bringToFront(w);
     });
   }
 
@@ -698,6 +784,7 @@
     toggleMaximize: toggleMaximize,
     openGenericWindow: openGenericWindow,
     closeGenericWindow: closeGenericWindow,
-    setMenubarApp: setMenubarApp
+    setMenubarApp: setMenubarApp,
+    bringToFront: bringToFront
   };
 })();

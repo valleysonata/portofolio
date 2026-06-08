@@ -1,0 +1,175 @@
+/* vscode-window.css — VS Code editor styles */
+
+#vscode-window {
+  width: 800px;
+  height: 500px;
+}
+
+.vscode-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.vscode-sidebar {
+  width: 180px;
+  min-width: 180px;
+  background: rgba(25, 25, 25, 0.98);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  overflow-y: auto;
+}
+
+.vscode-sidebar-header {
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 8px 12px 6px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.vscode-file-tree {
+  padding: 0 4px;
+}
+
+.vscode-tree-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  font-size: 13px;
+  color: #ccc;
+  cursor: pointer;
+  font-family: 'IBM Plex Mono', monospace;
+  border-radius: 4px;
+  transition: background 0.1s;
+}
+
+.vscode-tree-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.vscode-tree-item.active {
+  background: rgba(0, 102, 214, 0.3);
+  color: #fff;
+}
+
+.vscode-tree-item.folder {
+  font-weight: 500;
+}
+
+.vscode-tree-icon {
+  font-size: 12px;
+  width: 16px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.vscode-tree-children {
+  padding-left: 16px;
+}
+
+.vscode-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.vscode-tabs {
+  display: flex;
+  background: rgba(30, 30, 30, 0.98);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  min-height: 32px;
+  overflow-x: auto;
+}
+
+.vscode-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  color: #888;
+  cursor: pointer;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  white-space: nowrap;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  transition: background 0.1s, color 0.1s;
+}
+
+.vscode-tab:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.vscode-tab.active {
+  background: #1a1a1a;
+  color: #fff;
+  border-bottom: 2px solid #007acc;
+}
+
+.vscode-tab-close {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  border: none;
+  background: transparent;
+  color: #666;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.1s, background 0.1s;
+}
+
+.vscode-tab:hover .vscode-tab-close {
+  opacity: 1;
+}
+
+.vscode-tab-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.vscode-editor {
+  flex: 1;
+  overflow: hidden;
+  background: #1a1a1a;
+}
+
+.vscode-editor textarea {
+  width: 100%;
+  height: 100%;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  border: none;
+  padding: 8px 12px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+  tab-size: 2;
+  white-space: pre;
+  overflow: auto;
+}
+
+.vscode-statusbar {
+  height: 22px;
+  min-height: 22px;
+  background: #007acc;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 12px;
+  font-size: 11px;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.vscode-statusbar span {
+  opacity: 0.9;
+}
