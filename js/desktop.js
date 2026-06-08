@@ -68,7 +68,7 @@
   var windowMaximized = false;
   var activeAppName = "Finder";
 
-  var menubarApp = document.querySelector(".menubar-app");
+  var menubarApp = document.querySelector(".menubar-app-text");
   var desktop = document.querySelector(".desktop");
   var dock = document.querySelector(".dock");
   var dockTerminal = document.querySelector(".dock-item[data-app='terminal']");
@@ -597,6 +597,98 @@
   // ── Click to focus terminal ──
   win.addEventListener("mousedown", function () {
     setMenubarApp("Terminal");
+  });
+
+  // ── Show Desktop (minimize all) ──
+  function showDesktop() {
+    if (windowOpen && !windowMinimized) minimizeWindow();
+    var safariWin = document.getElementById("safari-window");
+    var spotifyWin = document.getElementById("spotify-window");
+    if (safariWin && safariWin.classList.contains("open")) closeGenericWindow(safariWin, dockSafari);
+    if (spotifyWin && spotifyWin.classList.contains("open")) closeGenericWindow(spotifyWin, dockSpotify);
+  }
+
+  // ── Bring All to Front ──
+  function bringAllToFront() {
+    var windows = document.querySelectorAll(".window.open");
+    windows.forEach(function (w) {
+      w.style.zIndex = "101";
+      setTimeout(function () { w.style.zIndex = ""; }, 100);
+    });
+  }
+
+  // ── Menubar dropdown actions ──
+  document.querySelectorAll(".menubar-dropdown-item").forEach(function (item) {
+    item.addEventListener("click", function () {
+      var action = item.getAttribute("data-action");
+      if (!action) return;
+
+      switch (action) {
+        case "new-terminal":
+          openWindow();
+          break;
+        case "close":
+          var activeWin = document.querySelector(".window.open");
+          if (activeWin) {
+            var id = activeWin.id;
+            if (id === "terminal-window") closeWindow();
+            else if (id === "safari-window") closeGenericWindow(safariWin, dockSafari);
+            else if (id === "spotify-window") closeGenericWindow(spotifyWin, dockSpotify);
+          }
+          break;
+        case "copy":
+          var sel = window.getSelection();
+          if (sel) navigator.clipboard.writeText(sel.toString()).catch(function() {});
+          break;
+        case "select-all":
+          document.execCommand("selectAll");
+          break;
+        case "fullscreen":
+          if (document.fullscreenElement) document.exitFullscreen();
+          else document.documentElement.requestFullscreen();
+          break;
+        case "show-desktop":
+          showDesktop();
+          break;
+        case "go-terminal":
+          openWindow();
+          break;
+        case "go-safari":
+          openGenericWindow(safariWin, dockSafari, "Safari", function() {
+            if (window.SafariApp) window.SafariApp.init();
+          });
+          break;
+        case "go-spotify":
+          openGenericWindow(spotifyWin, dockSpotify, "Spotify", function() {
+            if (window.SpotifyApp) window.SpotifyApp.init();
+          });
+          break;
+        case "go-launchpad":
+          if (window.Launchpad) window.Launchpad.toggle();
+          break;
+        case "minimize-all":
+          showDesktop();
+          break;
+        case "bring-all":
+          bringAllToFront();
+          break;
+        case "about-mac":
+        case "about":
+          alert("raka-os v2.0.3\nPortfolio Desktop Environment\n\nAdyaraka Banyu Langit\nIncoming CS @NYCU\n\nBuilt with HTML, CSS, vanilla JS\nNo frameworks. No bundlers. $0 cost.");
+          break;
+        case "lock-screen":
+          showDesktop();
+          document.getElementById("apple-boot").style.display = "flex";
+          document.getElementById("apple-boot").style.opacity = "1";
+          break;
+        case "preferences":
+          alert("Preferences coming soon.");
+          break;
+        case "shortcuts":
+          alert("Keyboard Shortcuts:\n\nCtrl/⌘ + W — Close window\nCtrl/⌘ + M — Minimize window\nEsc — Close terminal / Launchpad");
+          break;
+      }
+    });
   });
 
   window.Desktop = {

@@ -57,14 +57,64 @@
   <!-- Menu bar -->
   <div class="mac-menubar">
     <div class="menubar-left">
-      <span class="apple-logo"><img src="assets/apple-logo.svg" alt="Apple"></span>
-      <span class="menubar-app menubar-item">Finder</span>
-      <span class="menubar-item">File</span>
-      <span class="menubar-item">Edit</span>
-      <span class="menubar-item">View</span>
-      <span class="menubar-item">Go</span>
-      <span class="menubar-item">Window</span>
-      <span class="menubar-item">Help</span>
+      <span class="apple-logo has-dropdown"><img src="assets/apple-logo.svg" alt="Apple">
+        <div class="menubar-dropdown">
+          <div class="menubar-dropdown-item" data-action="about-mac">About This Mac</div>
+          <div class="menubar-dropdown-divider"></div>
+          <div class="menubar-dropdown-item" data-action="show-desktop">Show Desktop</div>
+          <div class="menubar-dropdown-divider"></div>
+          <div class="menubar-dropdown-item" data-action="lock-screen">Lock Screen</div>
+        </div>
+      </span>
+      <span class="menubar-app menubar-item has-dropdown"><span class="menubar-app-text">Finder</span>
+        <div class="menubar-dropdown">
+          <div class="menubar-dropdown-item" data-action="about-mac">About This Mac</div>
+          <div class="menubar-dropdown-divider"></div>
+          <div class="menubar-dropdown-item" data-action="preferences">Preferences...</div>
+        </div>
+      </span>
+      <span class="menubar-item has-dropdown">File
+        <div class="menubar-dropdown">
+          <div class="menubar-dropdown-item" data-action="new-terminal">New Terminal Window</div>
+          <div class="menubar-dropdown-divider"></div>
+          <div class="menubar-dropdown-item" data-action="close">Close Window</div>
+        </div>
+      </span>
+      <span class="menubar-item has-dropdown">Edit
+        <div class="menubar-dropdown">
+          <div class="menubar-dropdown-item" data-action="copy">Copy</div>
+          <div class="menubar-dropdown-item" data-action="select-all">Select All</div>
+        </div>
+      </span>
+      <span class="menubar-item has-dropdown">View
+        <div class="menubar-dropdown">
+          <div class="menubar-dropdown-item" data-action="fullscreen">Toggle Fullscreen</div>
+          <div class="menubar-dropdown-divider"></div>
+          <div class="menubar-dropdown-item" data-action="show-desktop">Show Desktop</div>
+        </div>
+      </span>
+      <span class="menubar-item has-dropdown">Go
+        <div class="menubar-dropdown">
+          <div class="menubar-dropdown-item" data-action="go-terminal">Terminal</div>
+          <div class="menubar-dropdown-item" data-action="go-safari">Safari</div>
+          <div class="menubar-dropdown-item" data-action="go-spotify">Spotify</div>
+          <div class="menubar-dropdown-divider"></div>
+          <div class="menubar-dropdown-item" data-action="go-launchpad">Launchpad</div>
+        </div>
+      </span>
+      <span class="menubar-item has-dropdown">Window
+        <div class="menubar-dropdown">
+          <div class="menubar-dropdown-item" data-action="minimize-all">Minimize All</div>
+          <div class="menubar-dropdown-item" data-action="bring-all">Bring All to Front</div>
+        </div>
+      </span>
+      <span class="menubar-item has-dropdown">Help
+        <div class="menubar-dropdown">
+          <div class="menubar-dropdown-item" data-action="about">About Portfolio</div>
+          <div class="menubar-dropdown-divider"></div>
+          <div class="menubar-dropdown-item" data-action="shortcuts">Keyboard Shortcuts</div>
+        </div>
+      </span>
     </div>
     <div class="menubar-right">
       <span class="menubar-icon">
