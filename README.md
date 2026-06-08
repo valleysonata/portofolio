@@ -1,5 +1,6 @@
 
-<img width="960" height="452" alt="sdads" src="https://github.com/user-attachments/assets/4f1ad39a-13f9-4aca-a64f-eee123fd8152" />
+<img width="959" height="481" alt="new" src="https://github.com/user-attachments/assets/a00e6c9a-3177-4431-b167-01edaefeddfe" />
+
 
 
 ## Portfolio V2🍎
