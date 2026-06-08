@@ -17,25 +17,6 @@
 
 </div>
 
----
-
-## Project Stats
-
-<div align="center">
-
-| | |
-|---|---|
-| **Lines of code** | ~2,800 (frontend only) |
-| **Files** | 25 (HTML + CSS + JS) |
-| **Frameworks used** | 0 |
-| **Cost** | $0 |
-| **Languages** | HTML, CSS, JavaScript |
-| **AI backend** | Groq AI (free tier) |
-| **Hosting** | GitHub Pages (free) |
-| **Cloud** | Cloudflare Workers (free tier, 100k req/day) |
-| **Rage Quits** | ♾️ |
-
-</div>
 
 ---
 
